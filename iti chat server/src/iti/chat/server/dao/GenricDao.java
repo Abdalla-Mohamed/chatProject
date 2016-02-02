@@ -25,8 +25,8 @@ abstract public class GenricDao<T> {
     private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
     private final String userName = "chat";
     private final String password = "chat";
-    private Connection con=null;
-    private Statement Stmt = null;
+    Connection con=null;
+    Statement Stmt = null;
     ResultSet result = null;
    // private String query = null;
 
@@ -97,7 +97,6 @@ abstract public class GenricDao<T> {
     public ArrayList<T> excuteQury(String query) {
         try {
             openConnection();
-            Stmt = con.createStatement();
             result = Stmt.executeQuery(query);
             closeConnection();  
         } catch (SQLException ex) {
@@ -118,6 +117,7 @@ abstract public class GenricDao<T> {
     
     public void openConnection() throws SQLException
     {
+             Stmt = con.createStatement();
              con = DriverManager.getConnection(DBurl, userName, password);
 
     }

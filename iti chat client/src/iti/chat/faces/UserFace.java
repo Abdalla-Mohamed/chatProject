@@ -14,7 +14,6 @@ import java.rmi.RemoteException;
  * @author Abdalla
  */
 public interface UserFace extends Remote{
-    
     String serviceName="userService";
     int checkMail(String mail) throws RemoteException;
     int checkpass(String mail,String pass) throws RemoteException;
