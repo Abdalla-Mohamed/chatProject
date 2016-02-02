@@ -6,7 +6,13 @@
 package iti.chat.server.dao;
 
 import iti.chat.entites.Client;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -14,33 +20,41 @@ import java.util.ArrayList;
  */
 public class DaoUser extends GenricDao<Client>{
 
-    public DaoUser(Class<Client> type) {
-        super(type);
-    }
-
     @Override
-    public int createImp(Client o) {
+    int createImp(Client o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Client readImp(int id) {
+    Client readImp(int id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void updateImp(Client o) {
+    void updateImp(Client o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void deleteImp(Client o) {
+    void deleteImp(Client o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public ArrayList<Client> getAllImp() {
+    ArrayList<Client> getAllImp() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+     
+     public boolean checkMail(String mail) {
+        boolean check = false;
+            ArrayList<Client> result = excuteQury("Select * from Uset_Tab where Email='" + mail + "' ");
+            if (result.size()>1) {
+                check = true;
+            } else {
+                check = false;
+            }
+        return check;
+    }
+
     
 }
