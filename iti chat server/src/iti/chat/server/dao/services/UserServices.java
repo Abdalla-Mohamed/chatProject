@@ -20,6 +20,7 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
 
     Vector<Client> userList ;
     DaoUser daoUser;
+    int check;
     
     public UserServices() throws RemoteException {
     }
@@ -28,27 +29,39 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     
     @Override
     public int checkMail(String mail) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       check=daoUser.checkMailDoa(mail);
+       return check;
     }
 
     @Override
-    public boolean checkpass(String mail, String pass) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int checkpass(String mail, String pass) throws RemoteException {
+        check=daoUser.checkPassDoa(mail,pass);
+       return check;
     }
 
     @Override
     public int checkUserName(String userName) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          check=daoUser.checkUserNameDoa(userName);
+       return check;
     }
 
     @Override
     public int signup(Client newuser) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         if(checkMail(newuser.getEmail())==1&&checkUserName(newuser.getUserName())==1)
+        {
+            check=daoUser.create(newuser);
+        }
+        return check;
     }
 
     @Override
     public int signin(Client user) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            check=0;
+        if(checkMail(user.getEmail())==1&&checkpass(user.getEmail(), user.getPassword())==1)
+        {
+            check=1;
+        }
+        return check;
     }
 
     @Override
