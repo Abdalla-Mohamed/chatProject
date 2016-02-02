@@ -14,8 +14,7 @@ import java.util.ArrayList;
  */
 public class DaoAdmin extends GenricDao<Admins> {
 
-    public DaoAdmin(Class<Admins> type) {
-        super(type);
+    public DaoAdmin() {
     }
 
     @Override

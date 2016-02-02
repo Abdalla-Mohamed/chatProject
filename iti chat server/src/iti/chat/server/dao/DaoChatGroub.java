@@ -14,8 +14,8 @@ import java.util.ArrayList;
  */
 public class DaoChatGroub extends GenricDao<ChatGroup> {
 
-    public DaoChatGroub(Class<ChatGroup> type) {
-        super(type);
+    public DaoChatGroub() {
+
     }
 
     @Override
