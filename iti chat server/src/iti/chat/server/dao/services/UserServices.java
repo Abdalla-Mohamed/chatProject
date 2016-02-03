@@ -11,6 +11,7 @@ import iti.chat.server.dao.DaoUser;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
+import iti.chat.faces.ClientFace;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.util.Vector;
  */
 public class UserServices extends UnicastRemoteObject implements UserFace{
 
-    Vector<Client> userList ;
+    Vector<ClientFace> userList ;
     DaoUser daoUser;
     int check;
     
@@ -67,6 +68,18 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     @Override
     public int resetPass(Client userForget) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+  @Override
+    public void register(ClientFace c) throws RemoteException {
+        userList.add(c);
+        System.out.println("client add");
+    }
+
+    @Override
+    public void unRegister(ClientFace c) throws RemoteException {
+        userList.remove(c);
+        System.out.println("client remove");
     }
     
 }

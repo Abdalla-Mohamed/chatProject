@@ -5,7 +5,10 @@
  */
 package iti.chat.client.connections;
 
+import iti.chat.client.Services.ClientImpOperation;
+import iti.chat.faces.ClientFace;
 import iti.chat.faces.UserFace;
+import static iti.chat.faces.UserFace.serviceName;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -21,14 +24,16 @@ public class ConnctionHndlr {
 
     Registry registry;
     UserFace user;
-    public ConnctionHndlr() {
+    ClientFace client;
 
-         try {
-            
-         //   v.setVisible(true);
+    public ConnctionHndlr() {
+        try {
+            client = new ClientImpOperation();
+
+            //   v.setVisible(true);serviceName
             registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
-            user = (UserFace) registry.lookup("ChatService");
-            
+            user = (UserFace) registry.lookup(serviceName);
+            user.register(client);
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();
         }

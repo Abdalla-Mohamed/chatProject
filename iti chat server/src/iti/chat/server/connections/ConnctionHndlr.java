@@ -39,7 +39,7 @@ public class ConnctionHndlr {
         }
     }
     
-    public void stopServive()
+    public void stopService()
     {
         try {
             registry.unbind(serviceName);
