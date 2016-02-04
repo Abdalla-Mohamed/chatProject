@@ -42,7 +42,8 @@ public class DaoAdmin extends GenricDao<Admins> {
 
     @Override
     public Admins readImp(int id) {
-        Admins admin = null;
+        Admins admin = new Admins();
+        admin.setAdminId(id);
         try {
             query = "SELECT ADMIN_NAME,ADMIN_PASS FROM ADMINS WHERE ADMIN_ID='" + id + "'";
             result = Stmt.executeQuery(query);
