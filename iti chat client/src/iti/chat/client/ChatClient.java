@@ -5,6 +5,8 @@
  */
 package iti.chat.client;
 
+import iti.chat.client.connections.ConnctionHndlr;
+
 /**
  *
  * @author Abdalla
@@ -15,7 +17,8 @@ public class ChatClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        ConnctionHndlr connctionHndlr = new ConnctionHndlr();
+        
     }
     
 }

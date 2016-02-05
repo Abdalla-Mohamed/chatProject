@@ -24,7 +24,7 @@ public class DaoUser extends GenricDao<Client> {
     int createImp(Client obj) {
         int check = 0;
         try {            
-            query = "INSERT INTO Uset_Tab(userName,DisplayName,email,Password,BirthDate,Phone,gender,country,Status)"
+            query = "INSERT INTO CLIENT(USER_NAME,DISPLAY_NAME,EMAIL,PASSWORD,BIRTH_DATE,PHONE,GENDER,COUNTRY,STATUS)"
                     + "VALUES('" + obj.getUserName() + "','" + obj.getDisplayName() + "','" + obj.getEmail() + "','" + obj.getPassword() + "','" + obj.getBirthDate() + "','" + obj.getPhone() + "','" + obj.getGender() + "','" + obj.getCountry() + "','" + obj.getStatus() + ")";
             if (Stmt.executeUpdate(query) > 0) {
                 check = 1;
@@ -61,7 +61,7 @@ public class DaoUser extends GenricDao<Client> {
 
     public int checkMailDoa(String mail) {
         int check = 0;
-        ArrayList<Client> result = excuteQury("Select * from Uset_Tab where Email='" + mail + "' ");
+        ArrayList<Client> result = excuteQury("Select * from CLIENT where Email='" + mail + "' ");
         if (result.size() > 1) {
             check = 1;
         } else {
@@ -72,7 +72,7 @@ public class DaoUser extends GenricDao<Client> {
     
     public int checkPassDoa(String mail, String pass) {
         int check = 0;
-        ArrayList<Client> result = excuteQury("Select uPassword from Uset_Tab where Email='" + mail + "' ");
+        ArrayList<Client> result = excuteQury("Select PASSWORD from CLIENT where Email='" + mail + "' ");
         if (result.size() > 1) {
             check = 1;
         } else {
@@ -83,19 +83,20 @@ public class DaoUser extends GenricDao<Client> {
     
     public Client readImpByEmail(String mail, String pass) {
         
-        ArrayList<Client> result = excuteQury("Select * from Uset_Tab where Email='" + mail + "' AND uPassword ='" + pass + "' ");
+        ArrayList<Client> result = excuteQury("Select * from CLIENT where Email='" + mail + "' AND PASSWORD ='" + pass + "' ");
         
         return result.get(0);
     }
+
     public Client readImpByEmail2(String mail, String pass) {
         ResultSet res = null;
         Client client = new Client();
         try {
-            query= "Select * from Uset_Tab where Email='" + mail + "' AND uPassword ='" + pass + "' ";
+            query= "Select * from CLIENT where Email='" + mail + "' AND PASSWORD ='" + pass + "' ";
             res=Stmt.executeQuery(query);
             while (res.next()) {
               client.setClientId(res.getInt("CLIENT_ID"));
-              client.setUserName(res.getString("userName"));
+              client.setUserName(res.getString("USER_NAME"));
               client.setDisplayName(res.getString("DisplayName"));
               client.setEmail(res.getString("email"));
               client.setPassword(res.getString("Password"));
@@ -112,9 +113,9 @@ public class DaoUser extends GenricDao<Client> {
         return client;
     }
     
-    public int checkUserNameDoa(String userName) {
+    public int checkUserNameDoa(String user_name) {
         int check = 0;
-        ArrayList<Client> result = excuteQury("Select * from Uset_Tab where userName='" + userName + "' ");
+        ArrayList<Client> result = excuteQury("Select * from CLIENT where USER_NAME='" + user_name + "' ");
         if (result.size() > 1) {
             check = 1;
         } else {

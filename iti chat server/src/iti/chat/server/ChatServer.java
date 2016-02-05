@@ -5,6 +5,8 @@
  */
 package iti.chat.server;
 
+import iti.chat.server.connections.ConnctionHndlr;
+
 /**
  *
  * @author Abdalla
@@ -15,7 +17,7 @@ public class ChatServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
+        new ConnctionHndlr().openService();
     }
     
 }
