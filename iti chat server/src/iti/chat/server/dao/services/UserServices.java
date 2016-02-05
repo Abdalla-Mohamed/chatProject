@@ -24,6 +24,8 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     int check;
     
     public UserServices() throws RemoteException {
+        userList = new Vector<>();
+        daoUser =  new DaoUser();
     }
 
     
@@ -74,6 +76,7 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     public void register(ClientFace c) throws RemoteException {
         userList.add(c);
         System.out.println("client add");
+        c.recieve("registred");
     }
 
     @Override

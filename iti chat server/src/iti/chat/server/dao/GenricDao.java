@@ -13,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import oracle.jdbc.OracleDriver;
 
 /**
  *
@@ -21,27 +22,32 @@ import java.util.logging.Logger;
  */
 abstract public class GenricDao<T> {
 
-    
-    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
     private final String userName = "chat";
     private final String password = "chat";
-    Connection con=null;
+    Connection con = null;
     Statement Stmt = null;
     ResultSet result = null;
    // private String query = null;
 
-    
     public GenricDao() {
-        
+        try {
+            DriverManager.registerDriver(new OracleDriver());
+            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     public int create(T o) {
         int createImp = 0;
         try {
             openConnection();
-             createImp = createImp(o);
+            createImp = createImp(o);
             closeConnection();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -49,17 +55,17 @@ abstract public class GenricDao<T> {
     }
 
     public T read(int id) {
-        
-        T readImp = null; 
+
+        T readImp = null;
         try {
             openConnection();
             readImp = readImp(id);
             closeConnection();
-           
+
         } catch (SQLException ex) {
             Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-         return readImp;
+        return readImp;
     }
 
     public void update(T o) {
@@ -83,7 +89,7 @@ abstract public class GenricDao<T> {
     }
 
     public ArrayList<T> getAll() {
-         ArrayList<T> allImp = null;
+        ArrayList<T> allImp = null;
         try {
             openConnection();
             allImp = getAllImp();
@@ -98,33 +104,33 @@ abstract public class GenricDao<T> {
         try {
             openConnection();
             result = Stmt.executeQuery(query);
-            closeConnection();  
+            result.next();
+            System.out.println(result.getString(1));
+            closeConnection();
         } catch (SQLException ex) {
             Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return (ArrayList<T>) result;
+        return new ArrayList<>() ;
     }
 
-    abstract  int createImp(T o);
+    abstract int createImp(T o);
 
-    abstract  T readImp(int id);
+    abstract T readImp(int id);
 
-    abstract  void updateImp(T o);
+    abstract void updateImp(T o);
 
-    abstract  void deleteImp(T o);
+    abstract void deleteImp(T o);
 
-    abstract  ArrayList<T> getAllImp();
-    
-    public void openConnection() throws SQLException
-    {
-             Stmt = con.createStatement();
-             con = DriverManager.getConnection(DBurl, userName, password);
+    abstract ArrayList<T> getAllImp();
+
+    public void openConnection() throws SQLException {
+        con = DriverManager.getConnection(DBurl, userName, password);
+        Stmt = con.createStatement();
 
     }
-    public void closeConnection() throws SQLException
-    {
-            con.close();
+
+    public void closeConnection() throws SQLException {
+        con.close();
     }
-    
 
 }
