@@ -5,6 +5,8 @@
  */
 package framepackage;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author user
@@ -30,8 +32,8 @@ public class clientloginframe extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        txtEmail = new javax.swing.JTextField();
+        txtPass = new javax.swing.JPasswordField();
         jToggleButton1 = new javax.swing.JToggleButton();
         jToggleButton2 = new javax.swing.JToggleButton();
 
@@ -46,13 +48,18 @@ public class clientloginframe extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("password  :");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtEmailActionPerformed(evt);
             }
         });
 
         jToggleButton1.setText("log in ");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
+            }
+        });
 
         jToggleButton2.setText("forget password");
 
@@ -74,8 +81,8 @@ public class clientloginframe extends javax.swing.JFrame {
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGap(52, 52, 52)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
@@ -95,9 +102,9 @@ public class clientloginframe extends javax.swing.JFrame {
                             .addGap(37, 37, 37)
                             .addComponent(jLabel2))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(35, 35, 35)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addContainerGap(86, Short.MAX_VALUE)))
         );
 
@@ -121,9 +128,38 @@ public class clientloginframe extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtEmailActionPerformed
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        if (txtEmail.getText().trim() != null && new String(txtPass.getPassword()) != null) {
+
+            String username = txtEmail.getText();
+            String password = new String(txtPass.getPassword());
+
+            //connection con with server has object from recive implement client interface extend remote
+            //con.login
+            /*
+            
+            public void connectToServer() {
+        try {
+
+            clientReg = LocateRegistry.createRegistry(CLIENT_PORT);
+            clientReg.rebind(CLIENT_SERVICE, reciever);
+        } catch (RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Connection Error !!!", "Error", JOptionPane.ERROR_MESSAGE);
+            System.exit(1);
+        }
+
+
+    }
+            then open main form
+             */
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Email & Password Required to login.", "Invalid Login", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,6 +188,8 @@ public class clientloginframe extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -165,9 +203,9 @@ public class clientloginframe extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JToggleButton jToggleButton2;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JPasswordField txtPass;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"	
+           elementFormDefault="unqualified">
+
+    <xs:element name="massage" type="massageType" />
+    <xs:complexType name="massageType">
+        <xs:sequence>
+            <xs:element name="msg" type="msgc" minOccurs="1" maxOccurs="unbounded">
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="msgc">
+        <xs:sequence>
+            <xs:element name="from" type="xs:string"/>
+            <xs:element name="to" type="xs:string"/>
+            <xs:element name="date" type="xs:string"/>
+            <xs:element name="body" type="xs:string"/>
+        </xs:sequence>
+        <xs:attribute name="color" type="xs:string"/>
+        <xs:attribute name="size" type="xs:int"/>
+        <xs:attribute name="font" type="xs:string"/>
+    </xs:complexType>
+
+</xs:schema>
