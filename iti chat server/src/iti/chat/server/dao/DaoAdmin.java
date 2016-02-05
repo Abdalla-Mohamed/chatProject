@@ -27,7 +27,7 @@ public class DaoAdmin extends GenricDao<Admins> {
     public int createImp(Admins o) {
         int chk = 0;
         try {
-            query = "INSERT INTO ADMIN "
+            query = "INSERT INTO ADMINS "
                     + "VALUES ('" + o.getAdminId() + "', '" + o.getAdminName() + "', '" + o.getAdminPass() + "')";
             if (Stmt.executeUpdate(query) > 0) {
                 chk = 1;
@@ -42,17 +42,38 @@ public class DaoAdmin extends GenricDao<Admins> {
 
     @Override
     public Admins readImp(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Admins admin = new Admins();
+        admin.setAdminId(id);
+        try {
+            query = "SELECT ADMIN_NAME,ADMIN_PASS FROM ADMINS WHERE ADMIN_ID='" + id + "'";
+            result = Stmt.executeQuery(query);
+            admin.setAdminName(result.getString("ADMIN_NAME"));
+            admin.setAdminPass(result.getString("ADMIN_PASS"));
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return admin;
     }
 
     @Override
     public void updateImp(Admins o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            query = "UPDATE ADMINS SET ADMIN_PASS" + o.getAdminPass()
+                    + " WHERE ADMIN_ID = " + o.getAdminId();
+            Stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            Logger.getLogger(DaoAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void deleteImp(Admins o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            query = "DELETE FROM ADMINS WHERE ADMIN_ID=" + o.getAdminId();
+            Stmt.executeUpdate(query);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
