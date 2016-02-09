@@ -14,11 +14,11 @@ import java.rmi.RemoteException;
  */
 public interface ClientFace extends Remote{
     
-     void recieve (String msg)throws RemoteException;
-      public void recieveFile() throws RemoteException;
+    void recieve (String msg)throws RemoteException;
+    public void recieveFile() throws RemoteException;
     public void serverIsDown() throws RemoteException;
-     public void refreshContactsList(String email) throws RemoteException;
-      public void recieveAnnoucementNotification(String serverAnnounce) throws RemoteException;
-      public void recieveFriendStatus(int i, String sentMail) throws RemoteException;
+    public void refreshContactsList(String email) throws RemoteException;
+    public void recieveAnnoucementNotification(String serverAnnounce) throws RemoteException;
+    public void recieveFriendStatus(int i, String sentMail) throws RemoteException;
     public void recieveFriendRequest(String sentMail) throws RemoteException;
 }

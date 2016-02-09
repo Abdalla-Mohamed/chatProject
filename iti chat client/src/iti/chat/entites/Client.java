@@ -25,12 +25,13 @@ import java.util.List;
 public class Client implements Serializable {
 
     @Id
-    @Column(name = "CLIENT_ID")
+    @Column(name = "CLIENT_ID",sequnce = "seq_cli.nextval")
     private Integer clientId;
     @Column(name = "USER_NAME")
     private String userName;
     @Column(name = "DISPLAY_NAME")
     private String displayName;
+    @Id
     @Column(name = "EMAIL")
     private String email;
     @Column(name = "PASSWORD")
@@ -56,6 +57,7 @@ public class Client implements Serializable {
     @OneToMany(type = ChatGroup.class)
     private List<ChatGroup> chatGroupList;
     @ManyToOne(type = Question.class)
+    @Column(name = "SECQUS")
     private Question question;
     @OneToMany(type = FriendList.class)
     private List<FriendList> friendList;
@@ -69,8 +71,9 @@ public class Client implements Serializable {
         this.clientId = clientId;
     }
 
-    public Client(Integer clientId, String userName, String displayName, String email, String password, Date birthDate, String qAns) {
-        this.clientId = clientId;
+    public Client( String userName, String displayName, String email, String password, Date birthDate, String qAns) {
+        
+        this.clientId = 0;
         this.userName = userName;
         this.displayName = displayName;
         this.email = email;
@@ -245,7 +248,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "iti.chat.entites.Client[ clientId=" + clientId + " ]";
+        return "" + clientId ;
     }
 
 }

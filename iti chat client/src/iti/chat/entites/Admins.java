@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Table(name = "ADMINS")
 public class Admins implements Serializable {
     @Id
-    @Column(name = "ADMIN_ID")
+    @Column(name = "ADMIN_ID",sequnce = "seq_admin.nextval"   )
     private Integer adminId;
     @Column(name = "ADMIN_NAME")
     private String adminName;

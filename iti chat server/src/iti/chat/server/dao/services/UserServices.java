@@ -52,9 +52,13 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
 
     @Override
     public int signup(Client newuser) throws RemoteException {
-         if(checkMail(newuser.getEmail())==1&&checkUserName(newuser.getUserName())==1)
+        check=0;
+         if(checkMail(newuser.getEmail())==0&&checkUserName(newuser.getUserName())==0)
         {
-           daoUser.insert(newuser);
+           newuser.setClientId(0);
+            boolean insert = daoUser.insert(newuser);
+           if(insert)
+               check=1;
         }
         return check;
     }
@@ -62,7 +66,7 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     @Override
     public int signin(Client user) throws RemoteException {
             check=0;
-        if(checkMail(user.getEmail())==1&&checkpass(user.getEmail(), user.getPassword())==1)
+        if(daoUser.check(user))
         {
             check=1;
         }

@@ -8,6 +8,7 @@ package iti.chat.server.dao;
 import iti.chat.annotions.Column;
 import iti.chat.annotions.Id;
 import iti.chat.annotions.Table;
+import iti.chat.config.Config;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -35,7 +36,7 @@ public class GenricDao<T> {
 
 //--------------------------------------------------------------------------
     //<editor-fold defaultstate="collapsed" desc="connection variables">
-    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
+    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
     private final String userName = "chat";
     private final String password = "chat";
     Connection con = null;
@@ -67,16 +68,21 @@ public class GenricDao<T> {
 
     public boolean insert(T o) {
         boolean createImp = false;
-        String insertQuery = createQuery(o, queryKind.Insert);
-        System.out.println(insertQuery);
-//        try {
-//            openConnection();
-//
-//            closeConnection();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            openConnection();
+            String insertQuery = createQuery(o, queryKind.Insert);
+            System.out.println(insertQuery);
+
+            PreparedStatement prepareStatement = con.prepareStatement(insertQuery);
+            int executeQuery = prepareStatement.executeUpdate();
+            if(executeQuery>0){
+                createImp = true;
+            }
+            closeConnection();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return createImp;
     }
 
@@ -286,10 +292,8 @@ public class GenricDao<T> {
                 if (fieldValue != null && !fieldValue.equals("null")) {
                     if (!values.toString().equals("")) {
                         values.append(getValueSprator(kind));
-                    } else {
-                        if (kind != queryKind.Insert) {
-                            values.append(" where ");
-                        }
+                    } else if (kind != queryKind.Insert) {
+                        values.append(" where ");
                     }
                     values.append(convertToValuePart(kind, fieldColmName, fieldValue));
 
@@ -346,8 +350,7 @@ public class GenricDao<T> {
                     ColmnValue = "'" + field.get(realObj) + "'";
 
                 } else if (field.getType() == Date.class) {
-                    ColmnValue = "" + field.get(realObj);
-
+                    ColmnValue = "to_date('"+ Config.formatedDate((Date) field.get(realObj)) +"' , '"+ Config.dateFormat +"')"  ;
                 } else {
                     ColmnValue = "" + field.get(realObj);
 

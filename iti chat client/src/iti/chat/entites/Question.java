@@ -20,7 +20,7 @@ import java.util.List;
 @Table(name = "QUESTIONS")
 public class Question implements Serializable {
     @Id
-    @Column(name = "Q_ID")
+    @Column(name = "Q_ID",sequnce = "seq_QUS.nextval")
     private Integer qId;
     @Column(name = "Q_VALUE")
     private String qValue;
@@ -84,7 +84,7 @@ public class Question implements Serializable {
 
     @Override
     public String toString() {
-        return "iti.chat.entites.Question[ qId=" + qId + " ]";
+        return ""+qId;
     }
     
 }

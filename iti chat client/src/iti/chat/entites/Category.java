@@ -21,7 +21,7 @@ import java.util.List;
  @Table(name = "CATEGORY")
 public class Category implements Serializable {
     @Id
-    @Column(name = "CAT_ID")
+    @Column(name = "CAT_ID",sequnce = "seq_cat.nextval")
     private Integer catId;
     @Column(name = "CAT_NAME")
     private String catName;
@@ -96,7 +96,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "iti.chat.entites.Category[ catId=" + catId + " ]";
+        return "" + catId ;
     }
     
 }

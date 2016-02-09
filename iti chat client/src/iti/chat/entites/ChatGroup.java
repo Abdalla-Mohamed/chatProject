@@ -23,7 +23,7 @@ import java.util.List;
 @Table(name = "CHAT_GROUP")
 public class ChatGroup implements Serializable {
     @Id
-    @Column(name = "CG_ID")
+    @Column(name = "CG_ID",sequnce = "seq_chat.nextval")
     private Integer cgId;
     @Column(name = "CG_NAME")
     private String cgName;

@@ -30,15 +30,9 @@ public class MessageOperation {
             JAXBElement JAXBMsg = (JAXBElement) unmarsh.unmarshal(new File("src/message/Message.xml"));
 
             MassageType massageType = (MassageType) JAXBMsg.getValue();
-            Msgc mCont=massageType.getMsg().get(0);
-            System.out.println(""+mCont.getBody());
-            System.out.println(""+mCont.getColor());
-            System.out.println(""+mCont.getDate());
-            System.out.println(""+mCont.getFont());
-            System.out.println(""+mCont.getFrom());
-            System.out.println(""+mCont.getSize());
-            System.out.println(""+mCont.getTo());
-            msglist.add(mCont);
+            Msgc mContent=new Msgc();
+            
+            msglist.add(mContent);
         } catch (JAXBException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
