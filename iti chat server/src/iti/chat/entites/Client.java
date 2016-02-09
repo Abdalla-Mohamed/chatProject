@@ -5,8 +5,14 @@
  */
 package iti.chat.entites;
 
+import iti.chat.annotions.Column;
+import iti.chat.annotions.Id;
+import iti.chat.annotions.ManyToMany;
+import iti.chat.annotions.ManyToOne;
+import iti.chat.annotions.OneToMany;
+import iti.chat.annotions.Table;
 import java.io.Serializable;
-
+import java.time.temporal.Temporal;
 
 import java.util.Date;
 import java.util.List;
@@ -15,25 +21,46 @@ import java.util.List;
  *
  * @author Abdalla
  */
-
+@Table(name = "CLIENT")
 public class Client implements Serializable {
+
+    @Id
+    @Column(name = "CLIENT_ID",sequnce = "seq_cli.nextval")
     private Integer clientId;
+    @Column(name = "USER_NAME")
     private String userName;
+    @Column(name = "DISPLAY_NAME")
     private String displayName;
+    @Id
+    @Column(name = "EMAIL")
     private String email;
+    @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "BIRTH_DATE")
     private Date birthDate;
+    @Column(name = "PHONE")
     private String phone;
+    @Column(name = "GENDER")
     private String gender;
+    @Column(name = "COUNTRY")
     private String country;
+    @Column(name = "STATUS")
     private Integer status;
+    @Column(name = "Q_ANS")
     private String qAns;
+    @ManyToMany(type = Category.class)
     private List<Category> categoryList;
+    @ManyToMany(type = ChatGroup.class)
     private List<ChatGroup> myChatList;
+    @ManyToMany(type = Announcement.class)
     private List<Announcement> announcementList;
+    @OneToMany(type = ChatGroup.class)
     private List<ChatGroup> chatGroupList;
+    @ManyToOne(type = Question.class)
     private Question question;
+    @OneToMany(type = FriendList.class)
     private List<FriendList> friendList;
+    @OneToMany(type = FriendList.class)
     private List<FriendList> friendAtList;
 
     public Client() {
@@ -43,8 +70,8 @@ public class Client implements Serializable {
         this.clientId = clientId;
     }
 
-    public Client(Integer clientId, String userName, String displayName, String email, String password, Date birthDate, String qAns) {
-        this.clientId = clientId;
+    public Client( String userName, String displayName, String email, String password, Date birthDate, String qAns) {
+        this.clientId = 0;
         this.userName = userName;
         this.displayName = displayName;
         this.email = email;
@@ -219,7 +246,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "iti.chat.entites.Client[ clientId=" + clientId + " ]";
+        return "" + clientId ;
     }
-    
+
 }

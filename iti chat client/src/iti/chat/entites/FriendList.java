@@ -5,40 +5,40 @@
  */
 package iti.chat.entites;
 
+import iti.chat.annotions.Column;
+import iti.chat.annotions.ManyToOne;
 import java.io.Serializable;
-
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 /**
  *
  * @author Abdalla
  */
-
 public class FriendList implements Serializable {
-   
+
+    protected FriendListPK friendListPK;
+    @Column(name ="fCat")
+    @ManyToOne(type = Category.class)
     private Category category;
+    @Column(name = "U_ID")
+    @ManyToOne(type = Client.class)
     private Client owner;
+     @Column(name = "F_ID")
+    @ManyToOne(type = Client.class)
     private Client friend;
 
     public FriendList() {
     }
 
-    public FriendList( Client client, Client client1) {
+    public FriendList(Client client, Client client1) {
         this.owner = client;
         this.friend = client1;
     }
-    
-    public FriendList(Client client, Client client1,Category category) {
+
+    public FriendList(Client client, Client client1, Category category) {
         this.category = category;
         this.owner = client;
         this.friend = client1;
     }
-
-    
-
-   
-
 
     public Category getCategory() {
         return category;
@@ -64,5 +64,4 @@ public class FriendList implements Serializable {
         this.friend = friend;
     }
 
-    
 }

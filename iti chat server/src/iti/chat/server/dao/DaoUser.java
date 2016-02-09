@@ -20,44 +20,11 @@ public class DaoUser extends GenricDao<Client> {
 
     String query;
 
-    @Override
-    int createImp(Client obj) {
-        int check = 0;
-        try {            
-            query = "INSERT INTO CLIENT(USER_NAME,DISPLAY_NAME,EMAIL,PASSWORD,BIRTH_DATE,PHONE,GENDER,COUNTRY,STATUS)"
-                    + "VALUES('" + obj.getUserName() + "','" + obj.getDisplayName() + "','" + obj.getEmail() + "','" + obj.getPassword() + "','" + obj.getBirthDate() + "','" + obj.getPhone() + "','" + obj.getGender() + "','" + obj.getCountry() + "','" + obj.getStatus() + ")";
-            if (Stmt.executeUpdate(query) > 0) {
-                check = 1;
-            }
-            else
-            {
-                check=0;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DaoUser.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return check;
+    public DaoUser() {
+        super(Client.class);
     }
 
-    @Override
-    Client readImp(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    void updateImp(Client o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    void deleteImp(Client o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    ArrayList<Client> getAllImp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+ 
 
     public int checkMailDoa(String mail) {
         int check = 0;
@@ -71,6 +38,8 @@ public class DaoUser extends GenricDao<Client> {
     }
     
     public int checkPassDoa(String mail, String pass) {
+        Client client = new Client( null, null, mail, pass, null, null);
+        
         int check = 0;
         ArrayList<Client> result = excuteQury("Select PASSWORD from CLIENT where Email='" + mail + "' ");
         if (result.size() > 1) {
@@ -122,6 +91,10 @@ public class DaoUser extends GenricDao<Client> {
             check = 0;
         }
         return check;
+    }
+
+    private ArrayList<Client> excuteQury(String string) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

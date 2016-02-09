@@ -5,6 +5,9 @@
  */
 package iti.chat.entites;
 
+import iti.chat.annotions.Column;
+import iti.chat.annotions.Id;
+import iti.chat.annotions.Table;
 import java.io.Serializable;
 
 
@@ -12,11 +15,15 @@ import java.io.Serializable;
  *
  * @author Abdalla
  */
+@Table(name = "ADMINS")
 public class Admins implements Serializable {
+    @Id
+    @Column(name = "ADMIN_ID",sequnce = "seq_admin.nextval"   )
     private Integer adminId;
+    @Column(name = "ADMIN_NAME")
     private String adminName;
+    @Column(name = "ADMIN_PASS")
     private String adminPass;
-
     public Admins() {
     }
 
