@@ -32,7 +32,7 @@ public class ConnctionHndlr {
         try {
             UserFace obj = new UserServices();
             registry = LocateRegistry.createRegistry(5005);
-            registry.rebind(serviceName, obj);
+            registry.rebind(UserFace.serviceName, obj);
             System.out.println("start.........");
         } catch (RemoteException ex) {
             ex.printStackTrace();
