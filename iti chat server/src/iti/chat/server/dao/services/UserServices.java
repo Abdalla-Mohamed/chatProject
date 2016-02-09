@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 import iti.chat.faces.ClientFace;
+import java.util.ArrayList;
+import javax.swing.text.Style;
 
 /**
  *
@@ -83,6 +85,46 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     public void unRegister(ClientFace c) throws RemoteException {
         userList.remove(c);
         System.out.println("client remove");
+    }
+
+    @Override
+    public void changeStatus(ClientFace c) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void sendMessage(String msg, String session, String to, String from, Style msgStyle) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void sendFile() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String loadContactList() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList loadFriendsAddRequests() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void acceptFriendRequest(String myEmail, String friendEmail) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addFriend(String myEmail, String friendEmail) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void blockFriend(String myEmail, String frienfEmail) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

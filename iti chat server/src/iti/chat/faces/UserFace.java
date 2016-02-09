@@ -8,6 +8,8 @@ package iti.chat.faces;
 import iti.chat.entites.Client;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import javax.swing.text.Style;
 
 /**
  *
@@ -23,4 +25,12 @@ public interface UserFace extends Remote{
     int resetPass(Client userForget) throws RemoteException;
     void register(ClientFace c)throws RemoteException;
     void unRegister(ClientFace c)throws RemoteException;
+    void changeStatus(ClientFace c)throws RemoteException;
+    public void sendMessage(String msg, String session, String to, String from,Style msgStyle) throws RemoteException;
+     public void sendFile()throws RemoteException;
+      public String loadContactList()throws RemoteException;
+      public ArrayList loadFriendsAddRequests()throws RemoteException;
+       public void acceptFriendRequest(String myEmail, String friendEmail) throws RemoteException;
+       public boolean addFriend(String myEmail, String friendEmail) throws RemoteException;
+       public void blockFriend(String myEmail, String frienfEmail) throws RemoteException;
 }

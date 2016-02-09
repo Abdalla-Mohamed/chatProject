@@ -5,6 +5,29 @@
  */
 package framepackage;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
+import java.io.File;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import message.services.MessageOperation;
+
 /**
  *
  * @author user
@@ -14,8 +37,36 @@ public class chatframe extends javax.swing.JFrame {
     /**
      * Creates new form chatframe
      */
+     ArrayList<String> msglist;
+     MessageOperation msgsave;
+     String path;
+     static String colortext = "red";
+     ArrayList<String> filelines;
+     String line;
+    StyleContext sc;
+    private String friendEmail_;
+     DefaultStyledDocument doc;
+    DefaultStyledDocument msgDoc;
+    Style txtChatStyle;
+    int textSize=12;
+    Color msgColor = Color.red;
+    String textFace="Arial";
+    
     public chatframe() {
         initComponents();
+         String[] fontsList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        for (String font : fontsList) {
+            cmbFont.addItem(font);
+        }
+        msglist = new ArrayList<>();
+        msgsave = new MessageOperation();
+
+        friendEmail_ = "friend email";
+        sc = new StyleContext();
+        doc = new DefaultStyledDocument(sc);
+        txtAreaMessage.setDocument(doc);
+        textSize = Integer.parseInt(cmbSize.getSelectedItem().toString());
+        
     }
 
     /**
@@ -27,103 +78,152 @@ public class chatframe extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        txtAreaMessage = new javax.swing.JTextArea();
+        txtSend = new javax.swing.JTextField();
+        btnSend = new javax.swing.JButton();
+        cmbFont = new javax.swing.JComboBox<>();
+        cmbSize = new javax.swing.JComboBox<>();
+        cmbColor = new javax.swing.JComboBox<>();
+        btnColor = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
+        jMenu_send = new javax.swing.JMenu();
+        jMenuItem_sendPic = new javax.swing.JMenuItem();
+        jMenuItem_sendFile = new javax.swing.JMenuItem();
+        jMenuItem_sendVideo = new javax.swing.JMenuItem();
+        jMenu_option = new javax.swing.JMenu();
+        jMenuItem_saveHistory = new javax.swing.JMenuItem();
+        jMenuItem_addFriendToChat = new javax.swing.JMenuItem();
+        jMenu_font = new javax.swing.JMenu();
+        jMenuItem_fontColor = new javax.swing.JMenuItem();
+        jMenuItem_fontSize = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtAreaMessage.setColumns(20);
+        txtAreaMessage.setRows(5);
+        jScrollPane1.setViewportView(txtAreaMessage);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtSend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtSendActionPerformed(evt);
             }
         });
 
-        jButton1.setText("send");
+        btnSend.setText("send");
+        btnSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSendActionPerformed(evt);
+            }
+        });
+
+        cmbFont.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbFont.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbFontActionPerformed(evt);
+            }
+        });
+
+        cmbSize.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "8", "10", "12", "14", "16", "20", "24", "30" }));
+        cmbSize.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbSizeActionPerformed(evt);
+            }
+        });
+
+        cmbColor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RED", "GREEN", "BLUE", "BLACK", "YELLOW" }));
+
+        btnColor.setText("color");
+        btnColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnColorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtSend)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(cmbFont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24)
+                        .addComponent(cmbSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnColor)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbFont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnColor))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
+                    .addComponent(txtSend)
+                    .addComponent(btnSend, javax.swing.GroupLayout.DEFAULT_SIZE, 55, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
-        jMenu1.setText("Send ");
+        jMenu_send.setText("Send ");
 
-        jMenuItem1.setText("send pic");
-        jMenu1.add(jMenuItem1);
+        jMenuItem_sendPic.setText("send pic");
+        jMenu_send.add(jMenuItem_sendPic);
 
-        jMenuItem2.setText("send file");
-        jMenu1.add(jMenuItem2);
+        jMenuItem_sendFile.setText("send file");
+        jMenu_send.add(jMenuItem_sendFile);
 
-        jMenuItem3.setText("send vedio");
-        jMenu1.add(jMenuItem3);
+        jMenuItem_sendVideo.setText("send vedio");
+        jMenu_send.add(jMenuItem_sendVideo);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenu_send);
 
-        jMenu2.setText("Option");
+        jMenu_option.setText("Option");
 
-        jMenuItem4.setText("Save chat history");
-        jMenu2.add(jMenuItem4);
-
-        jMenuItem8.setText("Add friend to chat");
-        jMenu2.add(jMenuItem8);
-
-        jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Font");
-
-        jMenuItem5.setText("font style");
-        jMenu3.add(jMenuItem5);
-
-        jMenuItem6.setText("font color");
-        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem_saveHistory.setText("Save chat history");
+        jMenuItem_saveHistory.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem6ActionPerformed(evt);
+                jMenuItem_saveHistoryActionPerformed(evt);
             }
         });
-        jMenu3.add(jMenuItem6);
+        jMenu_option.add(jMenuItem_saveHistory);
 
-        jMenuItem7.setText("font size");
-        jMenu3.add(jMenuItem7);
+        jMenuItem_addFriendToChat.setText("Add friend to chat");
+        jMenu_option.add(jMenuItem_addFriendToChat);
 
-        jMenuBar1.add(jMenu3);
+        jMenuBar1.add(jMenu_option);
+
+        jMenu_font.setText("Font");
+
+        jMenuItem_fontColor.setText("font color");
+        jMenuItem_fontColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_fontColorActionPerformed(evt);
+            }
+        });
+        jMenu_font.add(jMenuItem_fontColor);
+
+        jMenuItem_fontSize.setText("font size");
+        jMenu_font.add(jMenuItem_fontSize);
+
+        jMenuBar1.add(jMenu_font);
 
         setJMenuBar(jMenuBar1);
 
@@ -147,14 +247,139 @@ public class chatframe extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    private void jMenuItem_fontColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_fontColorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem6ActionPerformed
+    }//GEN-LAST:event_jMenuItem_fontColorActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSendActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtSendActionPerformed
 
+    private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
+        String msg = txtSend.getText().trim();
+        Style chatStyle = sc.addStyle("chat", null);
+        chatStyle.addAttribute(StyleConstants.FontSize, textSize);
+        chatStyle.addAttribute(StyleConstants.FontFamily, "tahoma");
+        chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
+        //doc.setParagraphAttributes(doc.getEndPosition().getOffset(),msg.length(), chatStyle,false);
+        if (!(msg.equals(""))) {
+            try {
+                doc.insertString(doc.getEndPosition().getOffset(),  "my email" + "(" + Calendar.getInstance().getTime().toString() + "): " + msg+"\n", chatStyle);
+               // client.addLineStyle(chatStyle, friendEmail_);
+               // client.sendMsg(friendEmail.trim(), this.myEmail, otherSideSession, msg, chatStyle);
+                txtSend.setText("");
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
+            }
+
+        }
+    }//GEN-LAST:event_btnSendActionPerformed
+
+    private void jMenuItem_saveHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_saveHistoryActionPerformed
+        msglist.clear();
+         msgsave = new MessageOperation();
+          
+   //     LinkedList<Style> sessionStyle = client.getLineStyle(mySession);
+        if (!txtAreaMessage.getText().isEmpty()) {
+            String Chat = txtAreaMessage.getText();
+            FileNameExtensionFilter _fileFilter = new FileNameExtensionFilter("XML Files (*.xml)", "xml");
+            JFileChooser fc = new JFileChooser();
+            fc.setFileFilter(_fileFilter);
+            if ((fc.showSaveDialog(this)) == JFileChooser.APPROVE_OPTION) {
+                path = fc.getSelectedFile().getPath() + ".xml";
+            }
+            StringTokenizer chatlines = new StringTokenizer(Chat,"\n");
+            while (chatlines.hasMoreTokens()) {
+              String temp=chatlines.nextToken();
+                if(temp.endsWith("\n"))
+                {
+                    temp=temp.substring(0, temp.length()-1);
+                }
+               
+                msglist.add(temp);
+                
+            }
+            msglist.remove(0);
+            
+             System.err.println(msglist.get(0));
+
+            for (int i = 0; i < msglist.size(); i++) {
+               // savetoXML(msglist.get(i), sessionStyle.get(i), path);
+                
+            }
+
+            this.writeToFile();
+        } 
+    }//GEN-LAST:event_jMenuItem_saveHistoryActionPerformed
+
+    private void cmbSizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbSizeActionPerformed
+        textSize = Integer.parseInt(cmbSize.getSelectedItem().toString());
+        txtSend.setFont(new Font(textFace, Font.PLAIN, textSize));
+        txtSend.setForeground(msgColor);
+    }//GEN-LAST:event_cmbSizeActionPerformed
+
+    private void btnColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnColorActionPerformed
+        Color color = Color.black;
+        msgColor = JColorChooser.showDialog(rootPane, "Select Color.", color);
+        txtSend.setFont(new Font(textFace, Font.PLAIN, textSize));
+        txtSend.setForeground(msgColor);
+    }//GEN-LAST:event_btnColorActionPerformed
+
+    private void cmbFontActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbFontActionPerformed
+       textFace = cmbFont.getSelectedItem().toString();
+        txtSend.setFont(new Font(textFace, Font.PLAIN, textSize));
+        txtSend.setForeground(msgColor);
+    }//GEN-LAST:event_cmbFontActionPerformed
+    
+    public void writeToFile() {
+
+        try {
+            filelines = new ArrayList<String>();
+            Scanner sc = new Scanner(new File(path));
+            line = sc.nextLine();
+
+            while (sc.hasNext()) {
+                filelines.add(line);
+                line = sc.nextLine();
+
+            }//end of while
+            //add the close of </session>
+            filelines.add(line);
+            String xslpath = "<?xml-stylesheet type=" + '"' + "text/xsl" + '"' + " href=" + '"' + "C:\\" + "\\" + "Message.xsl" + '"' + "?> ";
+            /**
+             * add ref to xsl at 2nd line of xml file by add it firstly to the
+             * filelines array list
+             */
+            filelines.add(1, xslpath);
+            
+
+
+            /**
+             * write anew file with xslt path
+             */
+            PrintWriter bw = new PrintWriter(path);
+            bw.write("");
+            for (int r = 0; r < filelines.size(); r++) {
+                bw.append(filelines.get(r));
+                bw.append("\n");
+
+            }
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+      public void savetoXML(String msgline, Style chatStyle, String path) {
+        
+        int size = Integer.parseInt(chatStyle.getAttribute(StyleConstants.FontSize).toString());
+        String fontFamilyName = chatStyle.getAttribute(StyleConstants.FontFamily).toString();
+        String colorTemp = Integer.toHexString(((Color) chatStyle.getAttribute(StyleConstants.Foreground)).getRGB());
+        String color = colorTemp.substring(2, colorTemp.length());
+
+
+        msgsave.saveXML(msgline, path, size,colortext,"","","", fontFamilyName);
+    }
     /**
      * @param args the command line arguments
      */
@@ -192,22 +417,26 @@ public class chatframe extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
+    private javax.swing.JButton btnColor;
+    private javax.swing.JButton btnSend;
+    private javax.swing.JComboBox<String> cmbColor;
+    private javax.swing.JComboBox<String> cmbFont;
+    private javax.swing.JComboBox<String> cmbSize;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem_addFriendToChat;
+    private javax.swing.JMenuItem jMenuItem_fontColor;
+    private javax.swing.JMenuItem jMenuItem_fontSize;
+    private javax.swing.JMenuItem jMenuItem_saveHistory;
+    private javax.swing.JMenuItem jMenuItem_sendFile;
+    private javax.swing.JMenuItem jMenuItem_sendPic;
+    private javax.swing.JMenuItem jMenuItem_sendVideo;
+    private javax.swing.JMenu jMenu_font;
+    private javax.swing.JMenu jMenu_option;
+    private javax.swing.JMenu jMenu_send;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextArea txtAreaMessage;
+    private javax.swing.JTextField txtSend;
     // End of variables declaration//GEN-END:variables
 }
