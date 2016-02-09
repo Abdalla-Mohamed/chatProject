@@ -24,14 +24,14 @@ import javax.mail.internet.MimeMessage;
 
 public class MailerService {
 
-    public int sendMail(String from, String to, String cc, String bcc, String subject, String message) {
+    public int sendMail(String from, String to, String subject, String message) {
 
         try {
             Session session = getSession();
             Message mailMessage = new MimeMessage(session);
             mailMessage.setFrom(new InternetAddress(from));
 
-            setRecipients(mailMessage, to, cc, bcc);
+            setRecipients(mailMessage, to);
 
             mailMessage.setSubject(subject);
 
@@ -57,8 +57,8 @@ public class MailerService {
     private Session getSession() {
 
         String port = "587";
-        final String userName = "jets";//put hs username here
-        final String password = "iti36";//put hs pwd here 
+        final String userName = "itijavachat@gmail.com";//put hs username here
+        final String password = "itijavachat36";//put hs pwd here 
 
         Properties properties = System.getProperties();
         properties.put("mail.smtp.port", port);
@@ -78,7 +78,7 @@ public class MailerService {
         return session;
     }
 
-    private void setRecipients(Message mailMessage, String to, String cc, String bcc) throws Exception {
+    private void setRecipients(Message mailMessage, String to) throws Exception {
 
         if (mailMessage != null) {
             try {
@@ -93,28 +93,28 @@ public class MailerService {
                             .toArray(new InternetAddress[0]));
                 }
                 // set CC recipients
-                if (cc != null) {
-                    List<InternetAddress> ccList = new ArrayList<InternetAddress>();
-                    StringTokenizer tokenizer = new StringTokenizer(cc, ",");
-                    while (tokenizer.hasMoreTokens()) {
-                        ccList.add(new InternetAddress(tokenizer.nextToken()));
-                    }
-                    mailMessage.setRecipients(Message.RecipientType.CC,
-                            (InternetAddress[]) ccList
-                            .toArray(new InternetAddress[0]));
-                }
+//                if (cc != null) {
+//                    List<InternetAddress> ccList = new ArrayList<InternetAddress>();
+//                    StringTokenizer tokenizer = new StringTokenizer(cc, ",");
+//                    while (tokenizer.hasMoreTokens()) {
+//                        ccList.add(new InternetAddress(tokenizer.nextToken()));
+//                    }
+//                    mailMessage.setRecipients(Message.RecipientType.CC,
+//                            (InternetAddress[]) ccList
+//                            .toArray(new InternetAddress[0]));
+//                }
 
                 // set BCC recipients
-                if (bcc != null) {
-                    List<InternetAddress> bccList = new ArrayList<InternetAddress>();
-                    StringTokenizer tokenizer = new StringTokenizer(bcc, ",");
-                    while (tokenizer.hasMoreTokens()) {
-                        bccList.add(new InternetAddress(tokenizer.nextToken()));
-                    }
-                    mailMessage.setRecipients(Message.RecipientType.BCC,
-                            (InternetAddress[]) bccList
-                            .toArray(new InternetAddress[0]));
-                }
+//                if (bcc != null) {
+//                    List<InternetAddress> bccList = new ArrayList<InternetAddress>();
+//                    StringTokenizer tokenizer = new StringTokenizer(bcc, ",");
+//                    while (tokenizer.hasMoreTokens()) {
+//                        bccList.add(new InternetAddress(tokenizer.nextToken()));
+//                    }
+//                    mailMessage.setRecipients(Message.RecipientType.BCC,
+//                            (InternetAddress[]) bccList
+//                            .toArray(new InternetAddress[0]));
+//                }
             } catch (MessagingException e) {
                 e.printStackTrace();
             } catch (Exception e) {

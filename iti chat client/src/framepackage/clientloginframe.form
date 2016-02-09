@@ -72,13 +72,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-<<<<<<< HEAD
                           <Component id="txtPassword" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
                           <Component id="txtUserName" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-=======
-                          <Component id="txtPass" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                          <Component id="txtEmail" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
->>>>>>> origin/master
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -106,17 +101,9 @@
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="2" attributes="0">
-<<<<<<< HEAD
                               <Component id="txtUserName" min="-2" max="-2" attributes="0"/>
-=======
-                              <Component id="txtEmail" min="-2" max="-2" attributes="0"/>
->>>>>>> origin/master
                               <EmptySpace min="35" pref="35" max="35" attributes="0"/>
-<<<<<<< HEAD
                               <Component id="txtPassword" min="-2" max="-2" attributes="0"/>
-=======
-                              <Component id="txtPass" min="-2" max="-2" attributes="0"/>
->>>>>>> origin/master
                           </Group>
                       </Group>
                       <EmptySpace pref="255" max="32767" attributes="0"/>
@@ -142,35 +129,19 @@
             <Property name="text" type="java.lang.String" value="password  :"/>
           </Properties>
         </Component>
-<<<<<<< HEAD
         <Component class="javax.swing.JTextField" name="txtUserName">
-=======
-        <Component class="javax.swing.JTextField" name="txtEmail">
->>>>>>> origin/master
           <Events>
-<<<<<<< HEAD
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUserNameActionPerformed"/>
-=======
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtEmailActionPerformed"/>
->>>>>>> origin/master
           </Events>
         </Component>
-<<<<<<< HEAD
         <Component class="javax.swing.JPasswordField" name="txtPassword">
-=======
-        <Component class="javax.swing.JPasswordField" name="txtPass">
->>>>>>> origin/master
         </Component>
         <Component class="javax.swing.JToggleButton" name="btnLogin">
           <Properties>
             <Property name="text" type="java.lang.String" value="log in "/>
           </Properties>
           <Events>
-<<<<<<< HEAD
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLoginActionPerformed"/>
-=======
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jToggleButton1ActionPerformed"/>
->>>>>>> origin/master
           </Events>
         </Component>
         <Component class="javax.swing.JToggleButton" name="btnForgetPassword">
