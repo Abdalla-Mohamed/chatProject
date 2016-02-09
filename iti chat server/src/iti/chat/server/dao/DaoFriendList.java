@@ -15,32 +15,8 @@ import java.util.ArrayList;
 public class DaoFriendList extends GenricDao<FriendList> {
 
     public DaoFriendList() {
+        super(FriendList.class);
     }
 
-    
-    @Override
-    int createImp(FriendList o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    FriendList readImp(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    void updateImp(FriendList o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    void deleteImp(FriendList o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    ArrayList<FriendList> getAllImp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }

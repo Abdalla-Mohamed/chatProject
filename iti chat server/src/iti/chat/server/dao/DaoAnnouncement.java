@@ -15,33 +15,8 @@ import java.util.ArrayList;
 public class DaoAnnouncement extends GenricDao<Announcement>{
 
     public DaoAnnouncement() {
+        super(Announcement.class);
     }
 
-    
-    
-    @Override
-    int createImp(Announcement o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    Announcement readImp(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    void updateImp(Announcement o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    void deleteImp(Announcement o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    ArrayList<Announcement> getAllImp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }
