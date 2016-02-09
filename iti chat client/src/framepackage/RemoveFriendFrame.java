@@ -13,9 +13,9 @@ import javax.swing.JOptionPane;
  */
 public class RemoveFriendFrame extends javax.swing.JFrame {
 
-    private ArrayList<String> emails = null;
+    private String emails = null;
 
-    public RemoveFriendFrame(ArrayList<String> emails) {
+    public RemoveFriendFrame(String emails) {
         super("Remove Friend From Contacts");
         initComponents();
         this.emails = emails;
@@ -26,16 +26,16 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
     }
 
     private void friendsList() {
-        if (emails != null) {
-            for (String email : emails) {
-                cmbFriendList.addItem(email);
-            }
-        } else {
-            lblNoFriends.setVisible(true);
-            cmbFriendList.addItem("No Friends.");
-            cmbFriendList.setEnabled(false);
-            btnRemove.setEnabled(false);
-        }
+//        if (emails != null) {
+//            for (String email : emails) {
+//                cmbFriendList.addItem(email);
+//            }
+//        } else {
+//            lblNoFriends.setVisible(true);
+//            cmbFriendList.addItem("No Friends.");
+//            cmbFriendList.setEnabled(false);
+//            btnRemove.setEnabled(false);
+//        }
     }
 
     /**
