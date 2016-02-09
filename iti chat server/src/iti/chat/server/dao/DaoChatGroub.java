@@ -15,32 +15,8 @@ import java.util.ArrayList;
 public class DaoChatGroub extends GenricDao<ChatGroup> {
 
     public DaoChatGroub() {
-
+        super(ChatGroup.class);
     }
 
-    @Override
-    public int createImp(ChatGroup o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ChatGroup readImp(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void updateImp(ChatGroup o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void deleteImp(ChatGroup o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<ChatGroup> getAllImp() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }

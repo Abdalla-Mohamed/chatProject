@@ -52,7 +52,7 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     public int signup(Client newuser) throws RemoteException {
          if(checkMail(newuser.getEmail())==1&&checkUserName(newuser.getUserName())==1)
         {
-            check=daoUser.create(newuser);
+           daoUser.insert(newuser);
         }
         return check;
     }

@@ -5,6 +5,10 @@
  */
 package iti.chat.entites;
 
+import iti.chat.annotions.Column;
+import iti.chat.annotions.Id;
+import iti.chat.annotions.ManyToMany;
+import iti.chat.annotions.Table;
 import java.io.Serializable;
 
 import java.util.Date;
@@ -14,13 +18,20 @@ import java.util.List;
  *
  * @author Abdalla
  */
+@Table(name = "ANNOUNCEMENTS")
 public class Announcement implements Serializable {
+    @Id
+    @Column(name = "ANN_ID",sequnce = "seq_annc.nextval")
     private Integer annId;
+    @Column(name = "ANN_TITLE")
     private String annTitle;
+    @Column(name = "ANN_CONTENTS")
     private String annContents;
+    @Column(name = "ANN_DATE")
     private Date annDate;
+    @ManyToMany(type = Client.class)
     private List<Client> clientList;
-
+    
     public Announcement() {
     }
 

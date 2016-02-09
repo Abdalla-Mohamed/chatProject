@@ -5,25 +5,20 @@
  */
 package iti.chat.entites;
 
+import iti.chat.annotions.Column;
 import java.io.Serializable;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
 
 /**
  *
  * @author Abdalla
  */
-@Embeddable
+
 public class FriendListPK implements Serializable {
-    @Basic(optional = false)
-    @Column(name = "F_ID")
+     @Column(name = "F_ID")
     private Integer fId;
-    @Basic(optional = false)
     @Column(name = "U_ID")
     private Integer uId;
-
     public FriendListPK() {
     }
 

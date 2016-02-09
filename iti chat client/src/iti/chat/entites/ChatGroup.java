@@ -5,7 +5,13 @@
  */
 package iti.chat.entites;
 
+import iti.chat.annotions.Column;
+import iti.chat.annotions.Id;
+import iti.chat.annotions.ManyToMany;
+import iti.chat.annotions.ManyToOne;
+import iti.chat.annotions.Table;
 import java.io.Serializable;
+import java.time.temporal.Temporal;
 
 import java.util.Date;
 import java.util.List;
@@ -14,12 +20,19 @@ import java.util.List;
  *
  * @author Abdalla
  */
+@Table(name = "CHAT_GROUP")
 public class ChatGroup implements Serializable {
+    @Id
+    @Column(name = "CG_ID")
     private Integer cgId;
+    @Column(name = "CG_NAME")
     private String cgName;
+    @Column(name = "LAST_MSG")
     private Date lastMsg;
+    @ManyToMany(type = Client.class)
     private List<Client> clientList;
-    private Client client;
+    @ManyToOne(type = Client.class)
+    private Client uAdmin;
 
     public ChatGroup() {
     }
@@ -60,14 +73,7 @@ public class ChatGroup implements Serializable {
         this.clientList = clientList;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -91,6 +97,14 @@ public class ChatGroup implements Serializable {
     @Override
     public String toString() {
         return "iti.chat.entites.ChatGroup[ cgId=" + cgId + " ]";
+    }
+
+    public Client getuAdmin() {
+        return uAdmin;
+    }
+
+    public void setuAdmin(Client uAdmin) {
+        this.uAdmin = uAdmin;
     }
     
 }

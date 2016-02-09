@@ -5,6 +5,11 @@
  */
 package iti.chat.entites;
 
+import iti.chat.annotions.Column;
+import iti.chat.annotions.Id;
+import iti.chat.annotions.ManyToMany;
+import iti.chat.annotions.OneToMany;
+import iti.chat.annotions.Table;
 import java.io.Serializable;
 
 import java.util.List;
@@ -13,11 +18,16 @@ import java.util.List;
  *
  * @author Abdalla
  */
- public class Category implements Serializable {
- 
+ @Table(name = "CATEGORY")
+public class Category implements Serializable {
+    @Id
+    @Column(name = "CAT_ID",sequnce = "seq_cat.nextval")
     private Integer catId;
+    @Column(name = "CAT_NAME")
     private String catName;
+    @ManyToMany
     private List<Client> clientList;
+    @OneToMany(type = FriendList.class)
     private List<FriendList> friendListList;
 
     public Category() {
@@ -86,7 +96,7 @@ import java.util.List;
 
     @Override
     public String toString() {
-        return "iti.chat.entites.Category[ catId=" + catId + " ]";
+        return "" + catId ;
     }
     
 }
