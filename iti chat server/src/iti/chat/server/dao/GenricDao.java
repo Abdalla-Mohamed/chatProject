@@ -5,7 +5,6 @@
  */
 package iti.chat.server.dao;
 
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import iti.chat.annotions.Column;
 import iti.chat.annotions.Id;
 import iti.chat.annotions.Table;
@@ -16,10 +15,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import oracle.jdbc.OracleDriver;

@@ -6,11 +6,6 @@
 package iti.chat.server.dao;
 
 import iti.chat.entites.Admins;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import sun.security.rsa.RSACore;
 
 /**
  *

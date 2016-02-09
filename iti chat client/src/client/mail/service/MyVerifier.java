@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package client.mail.service;
 
 import java.util.regex.Matcher;

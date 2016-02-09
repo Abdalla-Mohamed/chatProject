@@ -4,6 +4,7 @@
  */
 package framepackage;
 
+import java.awt.Cursor;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 
@@ -21,6 +22,7 @@ public class StartFrame extends javax.swing.JFrame {
      */
     public StartFrame() {
         initComponents();
+        this.setVisible(true);
     }
 
     /**
@@ -33,29 +35,21 @@ public class StartFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel2 = new javax.swing.JLabel();
-        txtIPAddressField = new javax.swing.JTextField();
+        txtIPAddress = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtPortNoField = new javax.swing.JTextField();
-        btnConnect = new javax.swing.JButton();
+        txtPortNo = new javax.swing.JTextField();
         btnCancel = new javax.swing.JButton();
+        btnConnect = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("URL Address :");
 
-        txtIPAddressField.setText("localhost");
+        txtIPAddress.setText("localhost");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Port Number :");
-
-        btnConnect.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnConnect.setText("Connect");
-        btnConnect.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConnectActionPerformed(evt);
-            }
-        });
 
         btnCancel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancel.setText("Cancel");
@@ -65,44 +59,58 @@ public class StartFrame extends javax.swing.JFrame {
             }
         });
 
+        btnConnect.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnConnect.setText("Connect");
+        btnConnect.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnConnectMouseEntered(evt);
+            }
+        });
+        btnConnect.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConnectActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIPAddressField, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnConnect)
-                                .addGap(34, 34, 34)
-                                .addComponent(btnCancel))
-                            .addComponent(txtPortNoField))))
-                .addContainerGap(78, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(txtPortNo)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(113, 113, 113)
+                            .addComponent(btnCancel)))
+                    .addComponent(txtIPAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(79, 79, 79))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addComponent(btnConnect)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(79, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtIPAddressField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtIPAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtPortNoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPortNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancel)
                     .addComponent(btnConnect))
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -111,8 +119,8 @@ public class StartFrame extends javax.swing.JFrame {
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
         // TODO add your handling code here:
 
-        String ipAddress = txtIPAddressField.getText().trim();
-        String portNo = txtPortNoField.getText().trim();
+        String ipAddress = txtIPAddress.getText().trim();
+        String portNo = txtPortNo.getText().trim();
         if (validateIPAddress(ipAddress) && validatePortNo(portNo)) {
             this.dispose();
             new clientloginframe().setVisible(true);
@@ -121,8 +129,11 @@ public class StartFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnConnectActionPerformed
 
+    private void btnConnectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseEntered
+        btnConnect.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_btnConnectMouseEntered
+
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-            // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
@@ -145,12 +156,14 @@ public class StartFrame extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(rootPane, "Please Enter an IP Address !!!", "Invalid URL", JOptionPane.ERROR_MESSAGE);
-            validIP = false;
+        
         }
         return validIP;
     }
+   
 
-    private boolean validatePortNo(String portNo) {
+    
+private boolean validatePortNo(String portNo) {
         String regex = "(\\d){1,9}";
         boolean validPort = false;
         int port;
@@ -183,7 +196,10 @@ public class StartFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnConnect;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField txtIPAddressField;
-    private javax.swing.JTextField txtPortNoField;
+    private javax.swing.JTextField txtIPAddress;
+    private javax.swing.JTextField txtPortNo;
     // End of variables declaration//GEN-END:variables
+    public static void main(String[] args) {
+        new StartFrame();
+    }
 }
