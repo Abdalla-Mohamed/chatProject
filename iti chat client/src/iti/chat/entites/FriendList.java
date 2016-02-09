@@ -7,12 +7,14 @@ package iti.chat.entites;
 
 import iti.chat.annotions.Column;
 import iti.chat.annotions.ManyToOne;
+import iti.chat.annotions.Table;
 import java.io.Serializable;
 
 /**
  *
  * @author Abdalla
  */
+@Table(name = "FriendList")
 public class FriendList implements Serializable {
 
     protected FriendListPK friendListPK;

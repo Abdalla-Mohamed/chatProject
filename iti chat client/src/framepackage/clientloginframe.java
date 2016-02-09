@@ -6,6 +6,7 @@
 package framepackage;
 
 import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.entites.Client;
 import javax.swing.JOptionPane;
 
 /**
@@ -158,28 +159,16 @@ public class clientloginframe extends javax.swing.JFrame {
      if (txtUserName.getText().trim() != null && new String(txtPassword.getPassword()) != null) {
 
             String username = txtUserName.getText();
-            String password = new String(txtPassword.getPassword());
-
-            //connection con with server has object from recive implement client interface extend remote
-        //    ConnctionHndlr con = new ConnctionHndlr(username, password);
-        //    con.clientLogin(username, password);
-            
-            /*
-            
-            public void connectToServer() {
-        try {
-
-            clientReg = LocateRegistry.createRegistry(CLIENT_PORT);
-            clientReg.rebind(CLIENT_SERVICE, reciever);
-        } catch (RemoteException ex) {
-            JOptionPane.showMessageDialog(null, "Connection Error !!!", "Error", JOptionPane.ERROR_MESSAGE);
-            System.exit(1);
-        }
-
-
-    }
-            then open main form
-             */
+            String password = txtPassword.getText();
+           
+            Client client=new Client();
+            client.setEmail(username);
+            client.setPassword(password);
+           ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
+           if(connection.singin(client)>0){
+               JOptionPane.showMessageDialog(null, "welcom");
+           }
+                   
         } else {
             JOptionPane.showMessageDialog(rootPane, "Email & Password Required to login.", "Invalid Login", JOptionPane.ERROR_MESSAGE);
         }        

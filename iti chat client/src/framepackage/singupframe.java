@@ -7,8 +7,11 @@ package framepackage;
 
 import client.mail.service.MailerService;
 import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.config.Config;
 import iti.chat.entites.Client;
+import iti.chat.entites.Question;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,6 +52,7 @@ public class singupframe extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        dateChooserDialog1 = new datechooser.beans.DateChooserDialog();
         lblPassword = new javax.swing.JPanel();
         txtFirstName = new javax.swing.JTextField();
         txtLastName = new javax.swing.JTextField();
@@ -81,6 +85,7 @@ public class singupframe extends javax.swing.JFrame {
         txtUserName = new javax.swing.JTextField();
         lblRePass = new javax.swing.JLabel();
         txtRePassword = new javax.swing.JPasswordField();
+        dateBD = new datechooser.beans.DateChooserCombo();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -161,7 +166,7 @@ public class singupframe extends javax.swing.JFrame {
 
         jLabel14.setText("User Name:");
 
-        txtUserName.setText(" mobile number");
+        txtUserName.setText("user name");
         txtUserName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUserNameActionPerformed(evt);
@@ -251,10 +256,11 @@ public class singupframe extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(cmbYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addComponent(jLabel14))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                                 .addGroup(lblPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtLastName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(txtUserName, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(dateBD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, lblPasswordLayout.createSequentialGroup()
                         .addGap(104, 104, 104)
                         .addComponent(btnSubmit, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -289,14 +295,16 @@ public class singupframe extends javax.swing.JFrame {
                     .addComponent(jLabel14)
                     .addComponent(txtUserName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addGroup(lblPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(cmbDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(cmbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(cmbYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(lblPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(dateBD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(lblPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(cmbDay, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addComponent(cmbMonth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(cmbYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(lblPasswordLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmpGender, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -374,17 +382,20 @@ public class singupframe extends javax.swing.JFrame {
         password = new String(txtPassword.getPassword());
         question = cmbQuestion.getSelectedItem().toString();
         birthDate = year + "-" + month + "-" + day;
-        date=new Date(Integer.parseInt(year), Integer.parseInt(month) , Integer.parseInt(day));
+        date=Config.convetToDate(dateBD.getText());
+        
+        
         boolean name = validateName(fName, lName);
         boolean userName = validateUsername(username);
         boolean emai = validateEmail(email);
 
         if (name && userName && emai) {//check validate done 
 
-            Client client = new Client(0, username, fName, email, password, date, question);
+            Client client = new Client( username, fName, email, password, date, question);
+            client.setQuestion(new Question(1));
             ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
 
-       //     if (connection.registerClient(client)) {
+            if (connection.singup(client)>0) {
                 String msg = "Welcome " + username
                         + " .\nYour UserName is : " + email
                         + "\n Your Password is : " + password
@@ -394,7 +405,9 @@ public class singupframe extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Congratulation \n you account has been created."
                         + "\nAn Email has been sent to you with your username & password.", "Register Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-    //        }
+                clientloginframe loginFram=new clientloginframe();
+                loginFram.setVisible(true);
+           }
         }
     }
        private boolean validateName(String fName, String lName) {
@@ -522,6 +535,8 @@ public class singupframe extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbQuestion;
     private javax.swing.JComboBox<String> cmbYear;
     private javax.swing.JComboBox<String> cmpGender;
+    private datechooser.beans.DateChooserCombo dateBD;
+    private datechooser.beans.DateChooserDialog dateChooserDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

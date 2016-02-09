@@ -21,7 +21,7 @@ import java.util.List;
 @Table(name = "ANNOUNCEMENTS")
 public class Announcement implements Serializable {
     @Id
-    @Column(name = "ANN_ID")
+    @Column(name = "ANN_ID",sequnce = "seq_annc.nextval")
     private Integer annId;
     @Column(name = "ANN_TITLE")
     private String annTitle;

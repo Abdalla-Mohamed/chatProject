@@ -6,6 +6,7 @@
 package iti.chat.client.connections;
 
 import iti.chat.client.Services.ClientImpOperation;
+import iti.chat.entites.Client;
 import iti.chat.faces.ClientFace;
 import iti.chat.faces.UserFace;
 import static iti.chat.faces.UserFace.serviceName;
@@ -40,6 +41,44 @@ public class ConnctionHndlr {
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();
         }
+
+    }
+
+    public int singup(Client client) {
+        int check=0;
+        try {
+            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
+            user = (UserFace) registry.lookup(UserFace.serviceName);
+            check = user.signup(client);
+            if (check == 1) {
+                System.out.println("done");
+          //      user.register((ClientFace) client);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return check;
+
+    }
+    
+    public int singin(Client client) {
+        int check=0;
+        try {
+            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
+            user = (UserFace) registry.lookup(UserFace.serviceName);
+            check = user.signin(client);
+            if (check == 1) {
+                System.out.println("done");
+          //      user.register((ClientFace) client);
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return check;
 
     }
 

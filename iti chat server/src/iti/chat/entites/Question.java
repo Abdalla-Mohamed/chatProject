@@ -84,7 +84,7 @@ public class Question implements Serializable {
 
     @Override
     public String toString() {
-        return "iti.chat.entites.Question[ qId=" + qId + " ]";
+        return ""+qId;
     }
     
 }
