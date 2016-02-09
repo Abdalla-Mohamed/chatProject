@@ -21,4 +21,5 @@ public interface ClientFace extends Remote{
     public void recieveAnnoucementNotification(String serverAnnounce) throws RemoteException;
     public void recieveFriendStatus(int i, String sentMail) throws RemoteException;
     public void recieveFriendRequest(String sentMail) throws RemoteException;
+    
 }

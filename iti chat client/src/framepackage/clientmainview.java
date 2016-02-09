@@ -5,6 +5,8 @@
  */
 package framepackage;
 
+import java.awt.Dimension;
+
 /**
  *
  * @author user
@@ -14,8 +16,20 @@ public class clientmainview extends javax.swing.JFrame {
     /**
      * Creates new form NewJFrame1
      */
+//    private String[][] countryList = {{"Available", "ClientGUI.Images/avail.png"},
+//                                      {"Away", "ClientGUI.Images/away1.png"},
+//                                      {"Busy", "ClientGUI.Images/busy1.png"}
+//                                     };
+
     public clientmainview() {
         initComponents();
+//        CountryComboBox customCombobox = new CountryComboBox();
+//        customCombobox.setPreferredSize(new Dimension(90, 20));
+//        customCombobox.setEditable(true);
+//        customCombobox.addItems(countryList);
+//         
+//        add(customCombobox);
+
     }
 
     /**
@@ -27,6 +41,7 @@ public class clientmainview extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jSplitPane1 = new javax.swing.JSplitPane();
         jTree1 = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
         add_friend_Buttom = new javax.swing.JToggleButton();
@@ -34,8 +49,12 @@ public class clientmainview extends javax.swing.JFrame {
         block_Button = new javax.swing.JToggleButton();
         my_avilabilty_ComboBox = new javax.swing.JComboBox<>();
         jMenuBar1 = new javax.swing.JMenuBar();
-        menu = new javax.swing.JMenu();
+        Friends_Menu = new javax.swing.JMenu();
         add_friend_menuItem = new javax.swing.JMenuItem();
+        remove_friend_menuItem = new javax.swing.JMenuItem();
+        block_Friend_MenuItem = new javax.swing.JMenuItem();
+        send_Mail_MenuItem = new javax.swing.JMenuItem();
+        settings_Menu = new javax.swing.JMenu();
         Create_Chat_Group_menuItem = new javax.swing.JMenuItem();
         my_availability_menuItem = new javax.swing.JMenu();
         available_MenuItem = new javax.swing.JMenuItem();
@@ -66,11 +85,17 @@ public class clientmainview extends javax.swing.JFrame {
         treeNode1.add(treeNode2);
         jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
 
-        add_friend_Buttom.setText("add friend");
+        add_friend_Buttom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/add.png"))); // NOI18N
+        add_friend_Buttom.setMaximumSize(new java.awt.Dimension(20, 20));
+        add_friend_Buttom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_friend_ButtomActionPerformed(evt);
+            }
+        });
 
-        new_chat_group_Buttom.setText("new chat group");
+        new_chat_group_Buttom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/27.png"))); // NOI18N
 
-        block_Button.setText("block");
+        block_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/blocked offline.png"))); // NOI18N
 
         my_avilabilty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "my availabilty", "available ", "busy", "invisable" }));
 
@@ -80,48 +105,90 @@ public class clientmainview extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(my_avilabilty_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(new_chat_group_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(new_chat_group_Buttom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(my_avilabilty_ComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(add_friend_Buttom, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                    .addComponent(add_friend_Buttom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(block_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(87, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add_friend_Buttom)
-                    .addComponent(new_chat_group_Buttom))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                    .addComponent(add_friend_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(new_chat_group_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(block_Button)
                     .addComponent(my_avilabilty_ComboBox))
                 .addContainerGap())
         );
 
-        menu.setText("Menu");
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {add_friend_Buttom, block_Button, new_chat_group_Buttom});
 
+        Friends_Menu.setText("Friends");
+
+        add_friend_menuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/add.png"))); // NOI18N
         add_friend_menuItem.setText("Add Friend");
-        menu.add(add_friend_menuItem);
+        add_friend_menuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                add_friend_menuItemActionPerformed(evt);
+            }
+        });
+        Friends_Menu.add(add_friend_menuItem);
 
+        remove_friend_menuItem.setText("Remove Friend");
+        remove_friend_menuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                remove_friend_menuItemActionPerformed(evt);
+            }
+        });
+        Friends_Menu.add(remove_friend_menuItem);
+
+        block_Friend_MenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/blocked offline.png"))); // NOI18N
+        block_Friend_MenuItem.setText("Block Friend");
+        block_Friend_MenuItem.setToolTipText("");
+        block_Friend_MenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                block_Friend_MenuItemActionPerformed(evt);
+            }
+        });
+        Friends_Menu.add(block_Friend_MenuItem);
+
+        send_Mail_MenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/22.png"))); // NOI18N
+        send_Mail_MenuItem.setText("Send Mail");
+        send_Mail_MenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                send_Mail_MenuItemActionPerformed(evt);
+            }
+        });
+        Friends_Menu.add(send_Mail_MenuItem);
+
+        jMenuBar1.add(Friends_Menu);
+
+        settings_Menu.setText("Options");
+
+        Create_Chat_Group_menuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/27.png"))); // NOI18N
         Create_Chat_Group_menuItem.setText("Create Chat Group");
         Create_Chat_Group_menuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Create_Chat_Group_menuItemActionPerformed(evt);
             }
         });
-        menu.add(Create_Chat_Group_menuItem);
+        settings_Menu.add(Create_Chat_Group_menuItem);
 
         my_availability_menuItem.setText("my availability");
         my_availability_menuItem.setToolTipText("");
 
+        available_MenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/13.png"))); // NOI18N
         available_MenuItem.setText("available");
         my_availability_menuItem.add(available_MenuItem);
 
+        busy_MenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/15.png"))); // NOI18N
         busy_MenuItem.setText("busy");
         busy_MenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,6 +197,7 @@ public class clientmainview extends javax.swing.JFrame {
         });
         my_availability_menuItem.add(busy_MenuItem);
 
+        invisible_MenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/14.png"))); // NOI18N
         invisible_MenuItem.setText("invisible");
         invisible_MenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,9 +206,9 @@ public class clientmainview extends javax.swing.JFrame {
         });
         my_availability_menuItem.add(invisible_MenuItem);
 
-        menu.add(my_availability_menuItem);
+        settings_Menu.add(my_availability_menuItem);
 
-        jMenuBar1.add(menu);
+        jMenuBar1.add(settings_Menu);
 
         logout_Menu.setText("Log Out ");
 
@@ -157,10 +225,10 @@ public class clientmainview extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTree1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,6 +254,30 @@ public class clientmainview extends javax.swing.JFrame {
     private void invisible_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invisible_MenuItemActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_invisible_MenuItemActionPerformed
+
+    private void add_friend_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_friend_menuItemActionPerformed
+        AddFriendFram addFriend=new AddFriendFram(" ");//my email
+        addFriend.setVisible(true);
+    }//GEN-LAST:event_add_friend_menuItemActionPerformed
+
+    private void add_friend_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_friend_ButtomActionPerformed
+       AddFriendFram addFriend=new AddFriendFram(" ");//my email
+        addFriend.setVisible(true);
+    }//GEN-LAST:event_add_friend_ButtomActionPerformed
+
+    private void remove_friend_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_friend_menuItemActionPerformed
+        RemoveFriendFrame removeFriend=new RemoveFriendFrame(" ");
+        removeFriend.setVisible(true);
+    }//GEN-LAST:event_remove_friend_menuItemActionPerformed
+
+    private void block_Friend_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block_Friend_MenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_block_Friend_MenuItemActionPerformed
+
+    private void send_Mail_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_send_Mail_MenuItemActionPerformed
+        SendMailFrame sendMail=new SendMailFrame();
+        sendMail.setVisible(true);
+    }//GEN-LAST:event_send_Mail_MenuItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -227,20 +319,25 @@ public class clientmainview extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Create_Chat_Group_menuItem;
+    private javax.swing.JMenu Friends_Menu;
     private javax.swing.JMenuItem Log_Out_MenuItem;
     private javax.swing.JToggleButton add_friend_Buttom;
     private javax.swing.JMenuItem add_friend_menuItem;
     private javax.swing.JMenuItem available_MenuItem;
     private javax.swing.JToggleButton block_Button;
+    private javax.swing.JMenuItem block_Friend_MenuItem;
     private javax.swing.JMenuItem busy_MenuItem;
     private javax.swing.JMenuItem invisible_MenuItem;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JTree jTree1;
     private javax.swing.JMenu logout_Menu;
-    private javax.swing.JMenu menu;
     private javax.swing.JMenu my_availability_menuItem;
     private javax.swing.JComboBox<String> my_avilabilty_ComboBox;
     private javax.swing.JToggleButton new_chat_group_Buttom;
+    private javax.swing.JMenuItem remove_friend_menuItem;
+    private javax.swing.JMenuItem send_Mail_MenuItem;
+    private javax.swing.JMenu settings_Menu;
     // End of variables declaration//GEN-END:variables
 }
