@@ -34,9 +34,9 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="97" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="172" max="32767" attributes="0"/>
+              <EmptySpace pref="43" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -57,8 +57,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="jToggleButton2" max="32767" attributes="0"/>
-                      <Component id="jToggleButton1" max="32767" attributes="0"/>
+                      <Component id="btnForgetPassword" max="32767" attributes="0"/>
+                      <Component id="btnLogin" max="32767" attributes="0"/>
+                      <Component id="btnSingup" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="65" max="32767" attributes="0"/>
               </Group>
@@ -71,8 +72,8 @@
                       </Group>
                       <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPasswordField1" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
-                          <Component id="jTextField1" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                          <Component id="txtPassword" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
+                          <Component id="txtUserName" alignment="0" min="-2" pref="94" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -82,11 +83,13 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="103" max="32767" attributes="0"/>
-                  <Component id="jToggleButton1" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="237" max="32767" attributes="0"/>
+                  <Component id="btnLogin" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="jToggleButton2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                  <Component id="btnForgetPassword" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="btnSingup" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -98,12 +101,12 @@
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="2" attributes="0">
-                              <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtUserName" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="35" pref="35" max="35" attributes="0"/>
-                              <Component id="jPasswordField1" min="-2" max="-2" attributes="0"/>
+                              <Component id="txtPassword" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="86" max="32767" attributes="0"/>
+                      <EmptySpace pref="255" max="32767" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -126,22 +129,36 @@
             <Property name="text" type="java.lang.String" value="password  :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="txtUserName">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextField1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUserNameActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField1">
+        <Component class="javax.swing.JPasswordField" name="txtPassword">
         </Component>
-        <Component class="javax.swing.JToggleButton" name="jToggleButton1">
+        <Component class="javax.swing.JToggleButton" name="btnLogin">
           <Properties>
             <Property name="text" type="java.lang.String" value="log in "/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLoginActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JToggleButton" name="jToggleButton2">
+        <Component class="javax.swing.JToggleButton" name="btnForgetPassword">
           <Properties>
             <Property name="text" type="java.lang.String" value="forget password"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnForgetPasswordActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JToggleButton" name="btnSingup">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="singup"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSingupActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

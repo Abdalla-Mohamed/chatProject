@@ -29,8 +29,6 @@ public class ConnctionHndlr {
     public ConnctionHndlr() {
         try {
             client = new ClientImpOperation();
-
-            //   v.setVisible(true);serviceName
             registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
             user = (UserFace) registry.lookup(serviceName);
             user.register(client);
