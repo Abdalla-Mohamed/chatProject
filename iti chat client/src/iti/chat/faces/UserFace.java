@@ -28,9 +28,11 @@ public interface UserFace extends Remote{
     void changeStatus(ClientFace c)throws RemoteException;
     public void sendMessage(String msg, String session, String to, String from,Style msgStyle) throws RemoteException;
     public void sendFile()throws RemoteException;
-    public String loadContactList()throws RemoteException;
+    public String loadContactList(Client user)throws RemoteException;
     public ArrayList loadFriendsAddRequests()throws RemoteException;
     public void acceptFriendRequest(String myEmail, String friendEmail) throws RemoteException;
     public boolean addFriend(String myEmail, String friendEmail) throws RemoteException;
     public void blockFriend(String myEmail, String frienfEmail) throws RemoteException;
+    public ArrayList loadCategory()throws RemoteException;
+
 }

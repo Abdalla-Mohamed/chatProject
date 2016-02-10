@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class StartFrame extends javax.swing.JFrame {
 
     public static String serverIP;
-    public static int clientPort;
+    public static int serverPort;
 
     /**
      * Creates new form StartFrame
@@ -46,10 +46,22 @@ public class StartFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("URL Address :");
 
-        txtIPAddress.setText("localhost");
+        txtIPAddress.setText("Server IP");
+        txtIPAddress.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtIPAddressFocusGained(evt);
+            }
+        });
+        txtIPAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIPAddressActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Port Number :");
+
+        txtPortNo.setText("Port");
 
         btnCancel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancel.setText("Cancel");
@@ -123,7 +135,7 @@ public class StartFrame extends javax.swing.JFrame {
         String portNo = txtPortNo.getText().trim();
         if (validateIPAddress(ipAddress) && validatePortNo(portNo)) {
             this.dispose();
-            new clientloginframe().setVisible(true);
+            new LoginFrame().setVisible(true);
         }
 
 
@@ -136,6 +148,14 @@ public class StartFrame extends javax.swing.JFrame {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void txtIPAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIPAddressActionPerformed
+        txtIPAddress.setText("");
+    }//GEN-LAST:event_txtIPAddressActionPerformed
+
+    private void txtIPAddressFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIPAddressFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIPAddressFocusGained
 
     private boolean validateIPAddress(String ipAddress) {
         String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
@@ -171,7 +191,7 @@ private boolean validatePortNo(String portNo) {
             if (!(portNo.equals(""))) {
                 if (Pattern.matches(regex, portNo)) {
                     port = Integer.parseInt(portNo);
-                    clientPort = port;
+                    serverPort = port;
                     validPort = true;
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Invalid Port Number !!!", "Invalid Port", JOptionPane.ERROR_MESSAGE);

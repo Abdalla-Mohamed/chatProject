@@ -4,6 +4,7 @@
  */
 package framepackage;
 
+import iti.chat.client.connections.ConnctionHndlr;
 import javax.swing.JOptionPane;
 
 /**
@@ -84,7 +85,7 @@ public class AddFriendFram extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtFriendEmailField, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 127, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
