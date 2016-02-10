@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
 public class StartFrame extends javax.swing.JFrame {
 
     public static String serverIP;
-    public static int clientPort;
+    public static int serverPort;
 
     /**
      * Creates new form StartFrame
@@ -135,7 +135,7 @@ public class StartFrame extends javax.swing.JFrame {
         String portNo = txtPortNo.getText().trim();
         if (validateIPAddress(ipAddress) && validatePortNo(portNo)) {
             this.dispose();
-            new clientloginframe().setVisible(true);
+            new LoginFrame().setVisible(true);
         }
 
 
@@ -191,7 +191,7 @@ private boolean validatePortNo(String portNo) {
             if (!(portNo.equals(""))) {
                 if (Pattern.matches(regex, portNo)) {
                     port = Integer.parseInt(portNo);
-                    clientPort = port;
+                    serverPort = port;
                     validPort = true;
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Invalid Port Number !!!", "Invalid Port", JOptionPane.ERROR_MESSAGE);

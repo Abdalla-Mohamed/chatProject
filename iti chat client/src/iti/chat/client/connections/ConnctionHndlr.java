@@ -5,6 +5,7 @@
  */
 package iti.chat.client.connections;
 
+import framepackage.StartFrame;
 import iti.chat.client.Services.ClientImpOperation;
 import iti.chat.entites.Category;
 import iti.chat.entites.Client;
@@ -29,17 +30,13 @@ public class ConnctionHndlr {
     Registry registry;
     UserFace user;
     ClientFace client;
+    StartFrame startfram;
 
     public ConnctionHndlr() {
         try {
             client = new ClientImpOperation();
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
+            registry = LocateRegistry.getRegistry(StartFrame.serverIP,StartFrame.serverPort);
             user = (UserFace) registry.lookup(UserFace.serviceName);
-//            int checkpass = user.checkpass("a@g.com", " 123");
-  //          if (checkpass == 1) {
-    //            System.out.println("done");
-      //          user.register(client);
-        //    }
 
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();
@@ -50,18 +47,13 @@ public class ConnctionHndlr {
     public int singup(Client client) {
         int check=0;
         try {
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
-            user = (UserFace) registry.lookup(UserFace.serviceName);
             check = user.signup(client);
             if (check == 1) {
                 System.out.println("done");
-          //      user.register((ClientFace) client);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         return check;
 
     }
@@ -69,18 +61,13 @@ public class ConnctionHndlr {
     public int singin(Client client) {
         int check=0;
         try {
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
-            user = (UserFace) registry.lookup(UserFace.serviceName);
             check = user.signin(client);
             if (check == 1) {
                 System.out.println("done");
-          //      user.register((ClientFace) client);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         return check;
 
     }
@@ -88,17 +75,13 @@ public class ConnctionHndlr {
         int check=0;
         try {
             ArrayList<Category> Category=new ArrayList<>();
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
-            user = (UserFace) registry.lookup(UserFace.serviceName);
             Category = user.loadCategory();
             if (Category !=null) {
                 JOptionPane.showMessageDialog(null, "cattegory loadeed");
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         return check;
 
     }  
