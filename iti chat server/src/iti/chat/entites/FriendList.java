@@ -6,6 +6,7 @@
 package iti.chat.entites;
 
 import iti.chat.annotions.Column;
+import iti.chat.annotions.ForignKey;
 import iti.chat.annotions.ManyToOne;
 import iti.chat.annotions.Table;
 import java.io.Serializable;
@@ -14,18 +15,19 @@ import java.io.Serializable;
  *
  * @author Abdalla
  */
-@Table(name = "FriendList")
+
+@Table(name = "FRIEND_LIST")
 public class FriendList implements Serializable {
 
     protected FriendListPK friendListPK;
-    @Column(name ="fCat")
-    @ManyToOne(type = Category.class)
+    @Column(name ="f_cat")
+    @ForignKey(type = Category.class,keyField ="catId" )
     private Category category;
     @Column(name = "U_ID")
-    @ManyToOne(type = Client.class)
+    @ForignKey(type = Client.class ,keyField = "clientId")
     private Client owner;
      @Column(name = "F_ID")
-    @ManyToOne(type = Client.class)
+    @ForignKey(type = Client.class, keyField = "clientId")
     private Client friend;
 
     public FriendList() {
