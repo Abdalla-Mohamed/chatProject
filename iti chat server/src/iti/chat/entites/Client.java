@@ -57,7 +57,7 @@ public class Client implements Serializable {
     @OneToMany(type = ChatGroup.class)
     private List<ChatGroup> chatGroupList;
     @ManyToOne(type = Question.class)
-    @Column(name = "SECQUS")
+    //@Column(name = "SECQUS")
     private Question question;
     @OneToMany(type = FriendList.class)
     private List<FriendList> friendList;

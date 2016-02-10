@@ -28,14 +28,23 @@ public class Main {
         
         Client c = new Client();
         c.setEmail("a@g.com");
+        c.setClientId(1);
+        FriendList list = new FriendList(c, null);
 //        FriendList friendList= new FriendList(c, c, new Category(2, "cat"));
         GenricDao<Client> genricDao = new GenricDao<>(Client.class);
-        ArrayList<Client> selectAllBy = genricDao.selectAllBy(c);
+        GenricDao<FriendList> genric = new GenricDao<>(FriendList.class);
+        ArrayList<FriendList> selectAllBy1 = genric.selectAllBy(list);
+        
+        for (FriendList selectAllBy11 : selectAllBy1) {
+            System.out.println(selectAllBy11.getOwner()+"."+selectAllBy11.getFriend()+"."+selectAllBy11.getCategory());
+        }
 //        
 //        if(genricDao.check(c)){
 //            System.out.println("founded");
 //        }
 //        
+                ArrayList<Client> selectAllBy = genricDao.selectAllBy(c);
+
         for (Client client : selectAllBy) {
             System.out.println(client.getClientId()+" : "+client.getEmail()+" : "+Config.formatedDate(client.getBirthDate()));
         }
