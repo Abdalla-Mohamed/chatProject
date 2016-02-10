@@ -14,6 +14,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 import iti.chat.faces.ClientFace;
 import iti.chat.server.dao.DaoCategory;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.text.Style;
 
@@ -21,58 +22,54 @@ import javax.swing.text.Style;
  *
  * @author Abdalla
  */
-public class UserServices extends UnicastRemoteObject implements UserFace{
+public class UserServices extends UnicastRemoteObject implements UserFace {
 
-    Vector<ClientFace> userList ;
+    Vector<ClientFace> userList;
     DaoUser daoUser;
     DaoCategory doaCategory;
     int check;
-    
-    
+
     public UserServices() throws RemoteException {
         userList = new Vector<>();
-        daoUser =  new DaoUser();
+        daoUser = new DaoUser();
     }
 
-    
-    
     @Override
     public int checkMail(String mail) throws RemoteException {
-       check=daoUser.checkMailDoa(mail);
-       return check;
+        check = daoUser.checkMailDoa(mail);
+        return check;
     }
 
     @Override
     public int checkpass(String mail, String pass) throws RemoteException {
-        check=daoUser.checkPassDoa(mail,pass);
-       return check;
+        check = daoUser.checkPassDoa(mail, pass);
+        return check;
     }
 
     @Override
     public int checkUserName(String userName) throws RemoteException {
-          check=daoUser.checkUserNameDoa(userName);
-       return check;
+        check = daoUser.checkUserNameDoa(userName);
+        return check;
     }
 
     @Override
     public int signup(Client newuser) throws RemoteException {
-        check=0;
-         if(checkMail(newuser.getEmail())==0&&checkUserName(newuser.getUserName())==0)
-        {
-           newuser.setClientId(0);
+        check = 0;
+        if (checkMail(newuser.getEmail()) == 0 && checkUserName(newuser.getUserName()) == 0) {
+            newuser.setClientId(0);
             boolean insert = daoUser.insert(newuser);
-           if(insert)
-               check=1;
+            if (insert) {
+                check = 1;
+            }
         }
         return check;
     }
 
     @Override
     public int signin(Client user) throws RemoteException {
-            check=0;
-        if(daoUser.check(user))
-        {
-            check=1;
+        check = 0;
+        if (daoUser.check(user)) {
+            check = 1;
         }
         return check;
     }
@@ -82,7 +79,7 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-  @Override
+    @Override
     public void register(ClientFace c) throws RemoteException {
         userList.add(c);
         System.out.println("client add");
@@ -106,10 +103,9 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     }
 
     @Override
-    public void sendFile() throws RemoteException {
+    public void sendFile(File file) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
 
     @Override
     public ArrayList loadFriendsAddRequests() throws RemoteException {
@@ -122,28 +118,28 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     }
 
     @Override
-    public boolean addFriend(String myEmail, String friendEmail) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void blockFriend(String myEmail, String frienfEmail) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public String loadContactList(Client user) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public ArrayList loadCategory() throws RemoteException {
-          check=0;
-          Category category=new Category();
-          doaCategory=new DaoCategory();
-          ArrayList<Category> catList=new ArrayList<>();
-        catList=doaCategory.selectAllBy(category);
+        check = 0;
+        Category category = new Category();
+        doaCategory = new DaoCategory();
+        ArrayList<Category> catList = new ArrayList<>();
+        catList = doaCategory.selectAllBy(category);
         return catList;
     }
-    
+
+    @Override
+    public boolean addFriend(int userID, int friendID) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void blockFriend(int userID, int friendID) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
