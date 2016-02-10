@@ -46,10 +46,22 @@ public class StartFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("URL Address :");
 
-        txtIPAddress.setText("localhost");
+        txtIPAddress.setText("Server IP");
+        txtIPAddress.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtIPAddressFocusGained(evt);
+            }
+        });
+        txtIPAddress.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIPAddressActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Port Number :");
+
+        txtPortNo.setText("Port");
 
         btnCancel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancel.setText("Cancel");
@@ -136,6 +148,14 @@ public class StartFrame extends javax.swing.JFrame {
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
+
+    private void txtIPAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIPAddressActionPerformed
+        txtIPAddress.setText("");
+    }//GEN-LAST:event_txtIPAddressActionPerformed
+
+    private void txtIPAddressFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtIPAddressFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIPAddressFocusGained
 
     private boolean validateIPAddress(String ipAddress) {
         String regex = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."

@@ -6,6 +6,7 @@
 package iti.chat.client.connections;
 
 import iti.chat.client.Services.ClientImpOperation;
+import iti.chat.entites.Category;
 import iti.chat.entites.Client;
 import iti.chat.faces.ClientFace;
 import iti.chat.faces.UserFace;
@@ -14,8 +15,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -81,5 +84,24 @@ public class ConnctionHndlr {
         return check;
 
     }
+     public int loadCategory() {
+        int check=0;
+        try {
+            ArrayList<Category> Category=new ArrayList<>();
+            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
+            user = (UserFace) registry.lookup(UserFace.serviceName);
+            Category = user.loadCategory();
+            if (Category !=null) {
+                JOptionPane.showMessageDialog(null, "cattegory loadeed");
+            }
+        } catch (RemoteException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return check;
+
+    }  
+    
 
 }

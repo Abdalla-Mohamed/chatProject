@@ -5,6 +5,7 @@
  */
 package iti.chat.server.dao.services;
 
+import iti.chat.entites.Category;
 import iti.chat.entites.Client;
 import iti.chat.faces.UserFace;
 import iti.chat.server.dao.DaoUser;
@@ -12,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Vector;
 import iti.chat.faces.ClientFace;
+import iti.chat.server.dao.DaoCategory;
 import java.util.ArrayList;
 import javax.swing.text.Style;
 
@@ -23,7 +25,9 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
 
     Vector<ClientFace> userList ;
     DaoUser daoUser;
+    DaoCategory doaCategory;
     int check;
+    
     
     public UserServices() throws RemoteException {
         userList = new Vector<>();
@@ -106,10 +110,6 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public String loadContactList() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public ArrayList loadFriendsAddRequests() throws RemoteException {
@@ -129,6 +129,21 @@ public class UserServices extends UnicastRemoteObject implements UserFace{
     @Override
     public void blockFriend(String myEmail, String frienfEmail) throws RemoteException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String loadContactList(Client user) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList loadCategory() throws RemoteException {
+          check=0;
+          Category category=new Category();
+          doaCategory=new DaoCategory();
+          ArrayList<Category> catList=new ArrayList<>();
+        catList=doaCategory.selectAllBy(category);
+        return catList;
     }
     
 }
