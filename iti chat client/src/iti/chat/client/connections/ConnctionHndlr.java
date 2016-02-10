@@ -5,7 +5,9 @@
  */
 package iti.chat.client.connections;
 
+import framepackage.StartFrame;
 import iti.chat.client.Services.ClientImpOperation;
+import iti.chat.entites.Category;
 import iti.chat.entites.Client;
 import iti.chat.faces.ClientFace;
 import iti.chat.faces.UserFace;
@@ -14,8 +16,10 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,11 +30,12 @@ public class ConnctionHndlr {
     Registry registry;
     UserFace user;
     ClientFace client;
+    StartFrame startfram;
 
     public ConnctionHndlr() {
         try {
             client = new ClientImpOperation();
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
+            registry = LocateRegistry.getRegistry(StartFrame.serverIP,StartFrame.serverPort);
             user = (UserFace) registry.lookup(UserFace.serviceName);
 //            booleancheckpass = user.checkpass("a@g.com", " 123");
   //          if (checkpass == 1) {
@@ -47,18 +52,13 @@ public class ConnctionHndlr {
     public boolean singup(Client client) {
          boolean check=false;
         try {
-            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
-            user = (UserFace) registry.lookup(UserFace.serviceName);
             check = user.signup(client);
             if (check == true) {
                 System.out.println("done");
-          //      user.register((ClientFace) client);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NotBoundException ex) {
-            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         return check;
 
     }
@@ -77,9 +77,9 @@ public class ConnctionHndlr {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        } 
         return check;
 
-    }
-
+    }  
+    
 }
