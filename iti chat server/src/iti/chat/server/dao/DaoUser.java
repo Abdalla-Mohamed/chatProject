@@ -5,12 +5,10 @@
  */
 package iti.chat.server.dao;
 
+import iti.chat.entites.Category;
 import iti.chat.entites.Client;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import iti.chat.entites.FriendList;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -24,27 +22,26 @@ public class DaoUser extends GenricDao<Client> {
         super(Client.class);
     }
 
-    public int checkMailDoa(String mail) {
-        int check = 0;
+    public boolean checkMailDoa(String mail) {
+        boolean check = false;
         Client c = new Client();
         c.setEmail(mail);
         if (check(c)) {
-            check = 1;
+            check = true;
         } else {
-            check = 0;
+            check = false;
         }
         return check;
     }
 
-    public int checkPassDoa(String mail, String pass) {
+    public boolean checkPassDoa( String pass) {
         Client client = new Client();
-        client.setEmail(mail);
-        client.setPassword(mail);
+        client.setPassword(pass);
 
         if (check(client)) {
-            return 1;
+            return true;
         } else {
-            return 0;
+            return false;
         }
 
     }
@@ -59,20 +56,37 @@ public class DaoUser extends GenricDao<Client> {
     }
 
 
-    public int checkUserNameDoa(String user_name) {
-        int check = 0;
+    public boolean checkUserNameDoa(String user_name) {
+        boolean check = false;
         Client c = new Client();
         c.setUserName(user_name);
         if (check(c)) {
-            check = 1;
+            check = true;
         } else {
-            check = 0;
+            check = false;
         }
         return check;
     }
 
-    private ArrayList<Client> excuteQury(String string) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Category> getClientFrindList(Client client){
+        
+        client.getClientId();
+        FriendList friendList = new  FriendList(client, null);
+        ArrayList<Category> categorys = new DaoCategory().selectAllBy(new Category());
+        for (Category category : categorys) {
+            category.setClientList(new ArrayList<>());
+            friendList = new  FriendList(client, null,category);
+            ArrayList<FriendList> friendLists = new DaoFriendList().selectAllBy(friendList);
+               for (FriendList friend : friendLists) {
+                Client friendObj = selectAllBy(friend.getFriend()).get(0);
+                category.getClientList().add(friendObj);
+                friend.setFriend(friendObj);
+            }
+        
+        }
+       return categorys;
     }
+    
+    
 
 }

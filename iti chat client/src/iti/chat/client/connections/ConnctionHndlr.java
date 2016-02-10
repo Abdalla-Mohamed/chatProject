@@ -32,7 +32,7 @@ public class ConnctionHndlr {
             client = new ClientImpOperation();
             registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
             user = (UserFace) registry.lookup(UserFace.serviceName);
-//            int checkpass = user.checkpass("a@g.com", " 123");
+//            booleancheckpass = user.checkpass("a@g.com", " 123");
   //          if (checkpass == 1) {
     //            System.out.println("done");
       //          user.register(client);
@@ -44,13 +44,13 @@ public class ConnctionHndlr {
 
     }
 
-    public int singup(Client client) {
-        int check=0;
+    public boolean singup(Client client) {
+         boolean check=false;
         try {
             registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
             user = (UserFace) registry.lookup(UserFace.serviceName);
             check = user.signup(client);
-            if (check == 1) {
+            if (check == true) {
                 System.out.println("done");
           //      user.register((ClientFace) client);
             }
@@ -63,13 +63,13 @@ public class ConnctionHndlr {
 
     }
     
-    public int singin(Client client) {
-        int check=0;
+    public boolean singin(Client client) {
+        boolean check=false;
         try {
             registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
             user = (UserFace) registry.lookup(UserFace.serviceName);
-            check = user.signin(client);
-            if (check == 1) {
+            check = user.login(client);
+            if (check == true) {
                 System.out.println("done");
           //      user.register((ClientFace) client);
             }

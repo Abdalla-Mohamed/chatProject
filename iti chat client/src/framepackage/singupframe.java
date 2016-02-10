@@ -395,7 +395,7 @@ public class singupframe extends javax.swing.JFrame {
             client.setQuestion(new Question(1));
             ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
 
-            if (connection.singup(client)>0) {
+            if (connection.singup(client)) {
                 String msg = "Welcome " + username
                         + " .\nYour UserName is : " + email
                         + "\n Your Password is : " + password

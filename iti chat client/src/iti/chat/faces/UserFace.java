@@ -5,6 +5,8 @@
  */
 package iti.chat.faces;
 
+import iti.chat.entites.Category;
+import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -17,20 +19,32 @@ import javax.swing.text.Style;
  */
 public interface UserFace extends Remote{
     String serviceName="userService";
-    int checkMail(String mail) throws RemoteException;
-    int checkpass(String mail,String pass) throws RemoteException;
-    int checkUserName(String userName) throws RemoteException;
-    int signup(Client newuser) throws RemoteException;
-    int signin(Client user) throws RemoteException;
-    int resetPass(Client userForget) throws RemoteException;
+    boolean checkMail(String mail) throws RemoteException;
+    boolean checkpass(String pass) throws RemoteException;
+    boolean checkUserName(String userName) throws RemoteException;
+    boolean signup(Client newuser) throws RemoteException;
+    boolean login(Client loginUser) throws RemoteException;
+    Client getMe(Client loginUser) throws RemoteException;
+    boolean resetPass(Client userForget) throws RemoteException;
+    boolean changeStatus(Client c)throws RemoteException;
+
+//    String loadContactList(Client c)throws RemoteException;
+    //--------------------------------------------------------------------------
+
+    ArrayList loadFriendsAddRequests()throws RemoteException;
+    boolean acceptFriendRequest(Client owner,Client frnd) throws RemoteException;
+    boolean addFriend(Client owner,Client frnd) throws RemoteException;
+    boolean blockFriend(Client owner,Client frnd) throws RemoteException;
+    boolean removeFriend(Client owner,Client frnd) throws RemoteException;
+//    void sendFile()throws RemoteException;
+    
+    //--------------------------------------------------------------------------
+    void sendMessage(String msg, int chatid, String from,Style msgStyle) throws RemoteException;
+    void startChat( ChatGroup chatGroup) throws RemoteException;
+
+//---------------------------------------------------
     void register(ClientFace c)throws RemoteException;
-    void unRegister(ClientFace c)throws RemoteException;
-    void changeStatus(ClientFace c)throws RemoteException;
-    public void sendMessage(String msg, String session, String to, String from,Style msgStyle) throws RemoteException;
-    public void sendFile()throws RemoteException;
-    public String loadContactList()throws RemoteException;
-    public ArrayList loadFriendsAddRequests()throws RemoteException;
-    public void acceptFriendRequest(String myEmail, String friendEmail) throws RemoteException;
-    public boolean addFriend(String myEmail, String friendEmail) throws RemoteException;
-    public void blockFriend(String myEmail, String frienfEmail) throws RemoteException;
+    void logout(ClientFace c)throws RemoteException;
+
+
 }

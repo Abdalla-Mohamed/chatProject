@@ -622,7 +622,7 @@ public class LoginFrame extends javax.swing.JFrame {
             client.setEmail(username);
             client.setPassword(password);
             ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
-            if (connection.singin(client) > 0) {
+            if (connection.singin(client) ) {
                 JOptionPane.showMessageDialog(null, "welcom");
             }
 
@@ -663,7 +663,7 @@ public class LoginFrame extends javax.swing.JFrame {
             client.setQuestion(new Question(question));
             ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
 
-            if (connection.singup(client) > 0) {
+            if (connection.singup(client) ) {
                 String msg = "Welcome " + username
                         + " .\nYour UserName is : " + email
                         + "\n Your Password is : " + password

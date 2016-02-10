@@ -165,7 +165,7 @@ public class clientloginframe extends javax.swing.JFrame {
             client.setEmail(username);
             client.setPassword(password);
            ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
-           if(connection.singin(client)>0){
+           if(connection.singin(client)){
                JOptionPane.showMessageDialog(null, "welcom");
            }
                    
