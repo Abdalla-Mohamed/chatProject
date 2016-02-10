@@ -6,6 +6,7 @@
 package iti.chat.entites;
 
 import iti.chat.annotions.Column;
+import iti.chat.annotions.ForignKey;
 import iti.chat.annotions.Id;
 import iti.chat.annotions.ManyToMany;
 import iti.chat.annotions.ManyToOne;
@@ -31,7 +32,7 @@ public class ChatGroup implements Serializable {
     private Date lastMsg;
     @ManyToMany(type = Client.class)
     private List<Client> clientList;
-    @ManyToOne(type = Client.class)
+    @ForignKey(type = Client.class,keyField = "clientId")
     private Client uAdmin;
 
     public ChatGroup() {

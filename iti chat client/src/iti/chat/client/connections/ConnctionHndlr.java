@@ -32,11 +32,11 @@ public class ConnctionHndlr {
             client = new ClientImpOperation();
             registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
             user = (UserFace) registry.lookup(UserFace.serviceName);
-            int checkpass = user.checkpass("a@g.com", " 123");
-            if (checkpass == 1) {
-                System.out.println("done");
-                user.register(client);
-            }
+//            int checkpass = user.checkpass("a@g.com", " 123");
+  //          if (checkpass == 1) {
+    //            System.out.println("done");
+      //          user.register(client);
+        //    }
 
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();

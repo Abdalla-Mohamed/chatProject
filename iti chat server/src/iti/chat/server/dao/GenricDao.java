@@ -6,6 +6,7 @@
 package iti.chat.server.dao;
 
 import iti.chat.annotions.Column;
+import iti.chat.annotions.ForignKey;
 import iti.chat.annotions.Id;
 import iti.chat.annotions.Table;
 import iti.chat.config.Config;
@@ -18,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import oracle.jdbc.OracleDriver;
@@ -36,7 +38,7 @@ public class GenricDao<T> {
 
 //--------------------------------------------------------------------------
     //<editor-fold defaultstate="collapsed" desc="connection variables">
-    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
     private final String userName = "chat";
     private final String password = "chat";
     Connection con = null;
@@ -75,7 +77,7 @@ public class GenricDao<T> {
 
             PreparedStatement prepareStatement = con.prepareStatement(insertQuery);
             int executeQuery = prepareStatement.executeUpdate();
-            if(executeQuery>0){
+            if (executeQuery > 0) {
                 createImp = true;
             }
             closeConnection();
@@ -350,7 +352,7 @@ public class GenricDao<T> {
                     ColmnValue = "'" + field.get(realObj) + "'";
 
                 } else if (field.getType() == Date.class) {
-                    ColmnValue = "to_date('"+ Config.formatedDate((Date) field.get(realObj)) +"' , '"+ Config.dateFormat +"')"  ;
+                    ColmnValue = "to_date('" + Config.formatedDate((Date) field.get(realObj)) + "' , '" + Config.dateFormat + "')";
                 } else {
                     ColmnValue = "" + field.get(realObj);
 
@@ -472,6 +474,7 @@ public class GenricDao<T> {
         tableName = findClassTableName(classType);
         ArrayList<Field> annotedFields = findAnnotedFields(classType, Column.class);
         ArrayList<Field> idFields = findAnnotedFields(classType, Id.class);
+
         createQueryNames(kind, annotedFields, o);
         if (kind == queryKind.Update) {
             createQueryValues(kind, idFields, o);
@@ -491,8 +494,29 @@ public class GenricDao<T> {
             while (resultSet.next()) {
                 T newInstance = (T) classType.newInstance();
                 for (Field field : findAnnotedFields) {
-                    Object object = resultSet.getObject(findFieldColmName(field), field.getType());
-                    field.set(newInstance, object);
+
+                    if (field.isAnnotationPresent(ForignKey.class)) {
+                        // get id in bridge table
+                        Object object = resultSet.getObject(findFieldColmName(field), Integer.class);
+                        // get type of of object in class
+                        Class type = field.getAnnotation(ForignKey.class).type();
+                        // get name of the id felid in forign class 
+                        String keyField = field.getAnnotation(ForignKey.class).keyField();
+                        // get field and make it accessable
+                        Field idField = type.getDeclaredField(keyField);
+                        idField.setAccessible(true);
+                        // create object from the forign class
+                        Object completeObj = type.newInstance();
+                        // fill id of object
+                        idField.set(completeObj, object);
+                        
+                        // set object in the primary object
+                        field.set(newInstance, completeObj);
+
+                    } else {
+                        Object object = resultSet.getObject(findFieldColmName(field), field.getType());
+                        field.set(newInstance, object);
+                    }
                 }
                 tList.add(newInstance);
 
@@ -503,7 +527,14 @@ public class GenricDao<T> {
             Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchFieldException ex) {
+            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return tList;
     }
+    
+    
+    
 }
