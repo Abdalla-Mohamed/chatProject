@@ -614,10 +614,8 @@ public class LoginFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         if (txtLoginEmail.getText().trim() != null && new String(txtLoginPass.getPassword()) != null) {
-
             String username = txtLoginEmail.getText();
             String password = txtLoginPass.getText();
-
             Client client = new Client();
             client.setEmail(username);
             client.setPassword(password);

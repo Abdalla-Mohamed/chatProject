@@ -23,24 +23,24 @@ import java.util.logging.Logger;
 public class ConnctionHndlr {
 
     Registry registry;
+    public static final int SERVER_PORT = 5005;
 
     public ConnctionHndlr() {
-           //  UnicastRemoteObject.unexportObject(serviceName, true);
+        //  UnicastRemoteObject.unexportObject(serviceName, true);
     }
 
     public void openService() {
         try {
             UserFace obj = new UserServices();
-            registry = LocateRegistry.createRegistry(5005);
+            registry = LocateRegistry.createRegistry(SERVER_PORT);
             registry.rebind(UserFace.serviceName, obj);
             System.out.println("start.........");
         } catch (RemoteException ex) {
             ex.printStackTrace();
         }
     }
-    
-    public void stopService()
-    {
+
+    public void stopService() {
         try {
             registry.unbind(serviceName);
         } catch (RemoteException ex) {

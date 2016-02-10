@@ -8,6 +8,7 @@ package iti.chat.faces;
 import iti.chat.entites.Category;
 import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
+import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;

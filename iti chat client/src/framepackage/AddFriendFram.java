@@ -4,6 +4,7 @@
  */
 package framepackage;
 
+import iti.chat.client.connections.ConnctionHndlr;
 import javax.swing.JOptionPane;
 
 /**
@@ -40,7 +41,7 @@ public class AddFriendFram extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("Write Friend Email to add :");
+        jLabel1.setText("Write Friend's Email to add :");
 
         btnAddFriend.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAddFriend.setForeground(new java.awt.Color(0, 102, 102));
@@ -84,7 +85,7 @@ public class AddFriendFram extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtFriendEmailField, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 127, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
