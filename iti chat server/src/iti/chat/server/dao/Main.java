@@ -9,9 +9,8 @@ import iti.chat.config.Config;
 import iti.chat.entites.Category;
 import iti.chat.entites.Client;
 import iti.chat.entites.FriendList;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -20,45 +19,35 @@ import java.util.Date;
 public class Main {
 
     public Main() {
-    
-                
-    }
-    
-    public static void main(String[] args) {
-        
-        Client c = new Client();
-        c.setEmail("a@g.com");
-        c.setClientId(1);
-        FriendList list = new FriendList(c, null);
-//        FriendList friendList= new FriendList(c, c, new Category(2, "cat"));
-        GenricDao<Client> genricDao = new GenricDao<>(Client.class);
-        GenricDao<FriendList> genric = new GenricDao<>(FriendList.class);
-        ArrayList<FriendList> selectAllBy1 = genric.selectAllBy(list);
-        
-        for (FriendList selectAllBy11 : selectAllBy1) {
-            System.out.println(selectAllBy11.getOwner()+"."+selectAllBy11.getFriend()+"."+selectAllBy11.getCategory());
-        }
-//        
-//        if(genricDao.check(c)){
-//            System.out.println("founded");
-//        }
-//        
-                ArrayList<Client> selectAllBy = genricDao.selectAllBy(c);
 
-        for (Client client : selectAllBy) {
-            System.out.println(client.getClientId()+" : "+client.getEmail()+" : "+Config.formatedDate(client.getBirthDate()));
+    }
+
+    public static void main(String[] args) {
+
+        Client c = new Client();
+        c.setClientId(1);
+        c.setStatus(2);
+        Client c2 = new Client();
+        c2.setClientId(2);
+        Category cat = new Category(3);
+
+        if (new DaoUser().check(c)) {
+            ArrayList<Client> selectAllBy = new DaoUser().selectAllBy(c);
+        } else {
+            System.out.println("not");
         }
+
 //        GenricDao<FriendList> xgenricDao = new GenricDao<>(FriendList.class);
 //        genricDao.insert(c);
 //        genricDao.delete(c);
-//        genricDao.select(c);
+//        genricDao.selectAny(c);
 //        genricDao.selectAllBy(c);
 //        genricDao.update(c);
 //    
 //        xgenricDao.insert(friendList);
 //        xgenricDao.delete(friendList);
-//        xgenricDao.select(friendList);
+//        xgenricDao.selectAny(friendList);
 //        xgenricDao.update(friendList);
     }
-    
+
 }

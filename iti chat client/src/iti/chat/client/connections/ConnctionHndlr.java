@@ -37,6 +37,11 @@ public class ConnctionHndlr {
             client = new ClientImpOperation();
             registry = LocateRegistry.getRegistry(StartFrame.serverIP,StartFrame.serverPort);
             user = (UserFace) registry.lookup(UserFace.serviceName);
+//            booleancheckpass = user.checkpass("a@g.com", " 123");
+  //          if (checkpass == 1) {
+    //            System.out.println("done");
+      //          user.register(client);
+        //    }
 
         } catch (RemoteException | NotBoundException ex) {
             ex.printStackTrace();
@@ -44,11 +49,11 @@ public class ConnctionHndlr {
 
     }
 
-    public int singup(Client client) {
-        int check=0;
+    public boolean singup(Client client) {
+         boolean check=false;
         try {
             check = user.signup(client);
-            if (check == 1) {
+            if (check == true) {
                 System.out.println("done");
             }
         } catch (RemoteException ex) {
@@ -58,33 +63,23 @@ public class ConnctionHndlr {
 
     }
     
-    public int singin(Client client) {
-        int check=0;
+    public boolean singin(Client client) {
+        boolean check=false;
         try {
-            check = user.signin(client);
-            if (check == 1) {
+            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
+            user = (UserFace) registry.lookup(UserFace.serviceName);
+            check = user.login(client);
+            if (check == true) {
                 System.out.println("done");
+          //      user.register((ClientFace) client);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        return check;
-
-    }
-     public int loadCategory() {
-        int check=0;
-        try {
-            ArrayList<Category> Category=new ArrayList<>();
-            Category = user.loadCategory();
-            if (Category !=null) {
-                JOptionPane.showMessageDialog(null, "cattegory loadeed");
-            }
-        } catch (RemoteException ex) {
+        } catch (NotBoundException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return check;
 
     }  
     
-
 }
