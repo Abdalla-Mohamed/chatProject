@@ -6,6 +6,7 @@ package framepackage;
 
 import com.healthmarketscience.rmiio.RemoteInputStreamServer;
 import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
+import iti.chat.entites.Client;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
@@ -53,7 +54,7 @@ public class ChatForm extends javax.swing.JFrame {
     private String otherSideSession;
     private Thread send;
     ArrayList<String> msglist;
- //   MssageSaver msgsave;
+    //   MssageSaver msgsave;
     String line;
     String path;
     static String color = "red";
@@ -69,17 +70,15 @@ public class ChatForm extends javax.swing.JFrame {
     public ChatForm() {
         super("Chat Form");
         initComponents();
-//
-//        String[] fontsList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-//        for (String font : fontsList) {
-//            comboBoxTxtFont.addItem(font);
-//        }
-//
-//        for (int i = 12; i < 80; i += 2) {
-//            comboBoxTxtSize.addItem(i);
-//        }
-//
-//        msglist = new ArrayList<>();
+
+        String[] fontsList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        for (String font : fontsList) {
+            comboBoxTxtFont.addItem(font);
+        }
+        for (int i = 12; i < 80; i += 2) {
+            comboBoxTxtSize.addItem(i);
+        }
+        msglist = new ArrayList<>();
 //        msgsave = new MssageSaver();
 //
 //        friendEmail_ = friendEmail;
@@ -123,23 +122,23 @@ public class ChatForm extends javax.swing.JFrame {
 //            // Conference = true;
 //            otherSideSession = friendEmail;
 //        }
-//        sc = new StyleContext();
-//        doc = new DefaultStyledDocument(sc);
-//        txtChatArea.setDocument(doc);
-//        face = "Tahoma";
-//        txtSize = Integer.parseInt(comboBoxTxtSize.getSelectedItem().toString());
-//        msgColor = Color.red;
+        sc = new StyleContext();
+        doc = new DefaultStyledDocument(sc);
+        txtChatArea.setDocument(doc);
+        face = "Tahoma";
+        txtSize = Integer.parseInt(comboBoxTxtSize.getSelectedItem().toString());
+        msgColor = Color.red;
 //
 //        this.client.registerAppendingArea(txtChatArea, listChatWithFriends, comboBoxFriends, friendEmail_, otherSideSession, this.friendEmail);
 //        Conference = this.client.getConfFlag(friendEmail_);
 //
-//        txtMsgArea.setFont(new Font(face, Font.PLAIN, txtSize));
-//        txtMsgArea.setForeground(msgColor);
+        txtsend.setFont(new Font(face, Font.PLAIN, txtSize));
+        txtsend.setForeground(msgColor);
 
     }
 
     public void setFriendEmail(String friendEmail) {
-     //   this.friendEmail = friendEmail;
+        //   this.friendEmail = friendEmail;
     }
 
     /**
@@ -154,7 +153,7 @@ public class ChatForm extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtChatArea = new javax.swing.JTextPane();
         jScrollPane2 = new javax.swing.JScrollPane();
-        txtMsgArea = new javax.swing.JTextArea();
+        txtsend = new javax.swing.JTextArea();
         btnSendMsg = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         listChatWithFriends = new javax.swing.JList();
@@ -183,11 +182,11 @@ public class ChatForm extends javax.swing.JFrame {
         txtChatArea.setEditable(false);
         jScrollPane1.setViewportView(txtChatArea);
 
-        txtMsgArea.setColumns(20);
-        txtMsgArea.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
-        txtMsgArea.setRows(5);
-        txtMsgArea.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jScrollPane2.setViewportView(txtMsgArea);
+        txtsend.setColumns(20);
+        txtsend.setFont(new java.awt.Font("Courier New", 0, 12)); // NOI18N
+        txtsend.setRows(5);
+        txtsend.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jScrollPane2.setViewportView(txtsend);
 
         btnSendMsg.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnSendMsg.setForeground(new java.awt.Color(0, 51, 51));
@@ -257,7 +256,6 @@ public class ChatForm extends javax.swing.JFrame {
         });
 
         btnSaveChat.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        btnSaveChat.setForeground(new java.awt.Color(255, 255, 204));
         btnSaveChat.setText("Save Chat");
         btnSaveChat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -373,28 +371,28 @@ public class ChatForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSendMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMsgActionPerformed
-        // TODO add your handling code here:
+
 //        friendEmail_ = client.getNewSessionName(txtChatArea);
 //        friendEmail = client.getSessiontFriendEMail(friendEmail_);
 //        otherSideSession = client.getOtherSideSession(friendEmail_);
 //        Conference = client.getConfFlag(friendEmail_);
-//        String msg = txtMsgArea.getText().trim();
-//        Style chatStyle = sc.addStyle("chat", null);
-//        chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
-//        chatStyle.addAttribute(StyleConstants.FontFamily, face);
-//        chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
-//        //doc.setParagraphAttributes(doc.getEndPosition().getOffset(),msg.length(), chatStyle,false);
-//        if (!(msg.equals(""))) {
-//            try {
-//                doc.insertString(doc.getEndPosition().getOffset(),  myEmail + "(" + Calendar.getInstance().getTime().toString() + "): " + msg+"\n", chatStyle);
+        String msg = txtsend.getText().trim();
+        Style chatStyle = sc.addStyle("chat", null);
+        chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
+        chatStyle.addAttribute(StyleConstants.FontFamily, face);
+        chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
+        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), chatStyle, false);
+        if (!(msg.equals(""))) {
+            try {
+                doc.insertString(doc.getEndPosition().getOffset(), myEmail + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n", chatStyle);
 //                client.addLineStyle(chatStyle, friendEmail_);
 //                client.sendMsg(friendEmail.trim(), this.myEmail, otherSideSession, msg, chatStyle);
-//                txtMsgArea.setText("");
-//            } catch (BadLocationException ex) {
-//                Logger.getLogger(ChatForm.class.getName()).log(Level.SEVERE, null, ex);
-//            }
+                txtsend.setText("");
+            } catch (BadLocationException ex) {
+                Logger.getLogger(ChatForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
 //
-//        }
+        }
     }//GEN-LAST:event_btnSendMsgActionPerformed
 
     private void btnAddFriendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFriendActionPerformed
@@ -459,7 +457,6 @@ public class ChatForm extends javax.swing.JFrame {
 //            friendEmail += "%##%";
 //        }
 //        friendEmail = friendEmail.substring(0, friendEmail.length() - 4);
-
 
     }//GEN-LAST:event_listChatWithFriendsAncestorAdded
 
@@ -573,7 +570,6 @@ public class ChatForm extends javax.swing.JFrame {
 //
 //        msgsave.saveXML(msgline, path, size, color, fontFamilyName);
 //    }
-
 //    public void writeToFile() {
 //
 //        try {
@@ -612,7 +608,6 @@ public class ChatForm extends javax.swing.JFrame {
 //            e.printStackTrace();
 //        }
 //    }
-
 //    public class myFileFilter extends FileFilter {
 //
 //        @Override
@@ -631,7 +626,6 @@ public class ChatForm extends javax.swing.JFrame {
 //            }
 //        }
 //    }
-
 //    public class myFileView extends FileView {
 //
 //        @Override
@@ -654,8 +648,9 @@ public class ChatForm extends javax.swing.JFrame {
         // TODO add your handling code here:
         Color color = Color.black;
         msgColor = JColorChooser.showDialog(rootPane, "Select Color.", color);
-        txtMsgArea.setFont(new Font(face, Font.PLAIN, txtSize));
-        txtMsgArea.setForeground(msgColor);
+        btnTxtColor.setBackground(msgColor);
+        txtsend.setFont(new Font(face, Font.PLAIN, txtSize));
+        txtsend.setForeground(msgColor);
 
     }//GEN-LAST:event_btnTxtColorActionPerformed
 
@@ -667,8 +662,8 @@ public class ChatForm extends javax.swing.JFrame {
     private void comboBoxTxtFontItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxTxtFontItemStateChanged
         // TODO add your handling code here:
         face = comboBoxTxtFont.getSelectedItem().toString();
-        txtMsgArea.setFont(new Font(face, Font.PLAIN, txtSize));
-        txtMsgArea.setForeground(msgColor);
+        txtsend.setFont(new Font(face, Font.PLAIN, txtSize));
+        txtsend.setForeground(msgColor);
     }//GEN-LAST:event_comboBoxTxtFontItemStateChanged
 
     private void menuItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemExitActionPerformed
@@ -685,8 +680,8 @@ public class ChatForm extends javax.swing.JFrame {
     private void comboBoxTxtSizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxTxtSizeItemStateChanged
         // TODO add your handling code here:
         txtSize = Integer.parseInt(comboBoxTxtSize.getSelectedItem().toString());
-        txtMsgArea.setFont(new Font(face, Font.PLAIN, txtSize));
-        txtMsgArea.setForeground(msgColor);
+        txtsend.setFont(new Font(face, Font.PLAIN, txtSize));
+        txtsend.setForeground(msgColor);
     }//GEN-LAST:event_comboBoxTxtSizeItemStateChanged
     /**
      * @param args the command line arguments
@@ -742,6 +737,30 @@ public class ChatForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuItemExit;
     private javax.swing.JMenuItem menuItemSaveChat;
     private javax.swing.JTextPane txtChatArea;
-    private javax.swing.JTextArea txtMsgArea;
+    private javax.swing.JTextArea txtsend;
     // End of variables declaration//GEN-END:variables
+public static void main(String[] args) {
+        new ChatForm().setVisible(true);
+
+    }
+
+    public void displayMessage(String msg, Client client, Style msgStyle) {
+        msg = txtsend.getText().trim();
+   //     Style chatStyle = sc.addStyle("chat", null);
+   //     chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
+   //     chatStyle.addAttribute(StyleConstants.FontFamily, face);
+   //     chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
+        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), msgStyle, false);
+        if (!(msg.equals(""))) {
+            try {
+                doc.insertString(doc.getEndPosition().getOffset(), client.getEmail() + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n", msgStyle);
+//                client.addLineStyle(chatStyle, friendEmail_);
+//                client.sendMsg(friendEmail.trim(), this.myEmail, otherSideSession, msg, chatStyle);
+                txtsend.setText("");
+            } catch (BadLocationException ex) {
+                Logger.getLogger(ChatForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+//
+        }
+    }
 }

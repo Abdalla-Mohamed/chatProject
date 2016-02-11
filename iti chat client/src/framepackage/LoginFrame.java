@@ -671,8 +671,9 @@ public class LoginFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Congratulation \n you account has been created."
                         + "\nAn Email has been sent to you with your username & password.", "Register Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                clientloginframe loginFram = new clientloginframe();
-                loginFram.setVisible(true);
+                clientmainview mainFram = new clientmainview();
+               
+                mainFram.setVisible(true);
             }
         }
     }

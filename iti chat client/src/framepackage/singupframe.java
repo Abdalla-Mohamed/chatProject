@@ -11,9 +11,6 @@ import iti.chat.config.Config;
 import iti.chat.entites.Client;
 import iti.chat.entites.Question;
 import java.awt.Color;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Pattern;
 import javax.swing.ImageIcon;
@@ -405,8 +402,6 @@ public class singupframe extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Congratulation \n you account has been created."
                         + "\nAn Email has been sent to you with your username & password.", "Register Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                clientloginframe loginFram=new clientloginframe();
-                loginFram.setVisible(true);
            }
         }
     }

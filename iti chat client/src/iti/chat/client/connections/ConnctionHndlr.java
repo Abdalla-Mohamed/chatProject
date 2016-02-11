@@ -5,13 +5,13 @@
  */
 package iti.chat.client.connections;
 
+import framepackage.ChatForm;
 import framepackage.StartFrame;
 import iti.chat.client.Services.ClientImpOperation;
 import iti.chat.entites.Category;
 import iti.chat.entites.Client;
 import iti.chat.faces.ClientFace;
 import iti.chat.faces.UserFace;
-import static iti.chat.faces.UserFace.serviceName;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.text.Style;
 
 /**
  *
@@ -30,8 +31,9 @@ public class ConnctionHndlr {
     Registry registry;
     UserFace user;
     ClientFace client;
-    StartFrame startfram;
-
+    //StartFrame startfram;
+    ChatForm chfram;
+    
     public ConnctionHndlr() {
         try {
             client = new ClientImpOperation();
@@ -84,7 +86,11 @@ public class ConnctionHndlr {
         } 
         return check;
 
-    }  
+    }
+     
+    public void displayMessage(String msg, Client client, Style msgStyle) {
+        chfram.displayMessage(msg,client,msgStyle);
+    }
     
 
 }
