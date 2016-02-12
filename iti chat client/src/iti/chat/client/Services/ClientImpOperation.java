@@ -6,12 +6,15 @@
 package iti.chat.client.Services;
 
 import com.nitido.utils.toaster.Toaster;
+import framepackage.ChatForm;
 import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import iti.chat.faces.ClientFace;
 import java.io.File;
+import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.text.Style;
 
@@ -23,9 +26,10 @@ public class ClientImpOperation extends UnicastRemoteObject implements ClientFac
 
     ConnctionHndlr controller;
     Toaster toasterManager;
-
+    transient  HashMap<Integer,ChatForm> hashMap;
     public ClientImpOperation() throws RemoteException {
         toasterManager = new Toaster();
+        hashMap = new HashMap<>();
     }
 
     @Override
@@ -60,9 +64,19 @@ public class ClientImpOperation extends UnicastRemoteObject implements ClientFac
     }
 
     @Override
-    public void recieveMessage(String msg, Client client, Style msgStyle) throws RemoteException {
-        controller.displayMessage(msg, client, msgStyle);
+    public void recieveMessage(String msg,int chatId, Client client) throws RemoteException {
+      //  controller.displayMessage(msg, client);
+        System.out.println("reiceved: "+msg);
+        hashMap.get(chatId).displayMessage(msg, client);
 
+    }
+
+    @Override
+    public void openChatFram(ChatGroup chatGroup) throws RemoteException {
+        ChatForm ch=new ChatForm(chatGroup);
+        ch.setTitle(""+chatGroup.getCgId());
+        hashMap.put(chatGroup.getCgId(), ch);
+        ch.setVisible(true);
     }
 
 }

@@ -62,7 +62,7 @@ public class FriendRequestFrame extends javax.swing.JFrame {
         txtAddFriendField.setOpaque(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("want to add you to his contacts list.");
+        jLabel1.setText("want's to add you .");
 
         btnAcceptRequest.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAcceptRequest.setForeground(new java.awt.Color(0, 102, 102));

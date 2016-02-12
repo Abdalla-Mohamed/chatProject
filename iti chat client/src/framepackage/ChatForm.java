@@ -6,6 +6,8 @@ package framepackage;
 
 import com.healthmarketscience.rmiio.RemoteInputStreamServer;
 import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
+import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -43,7 +46,7 @@ import javax.swing.text.StyleContext;
  *
  * @author 7amouda
  */
-public class ChatForm extends javax.swing.JFrame {
+public class ChatForm extends javax.swing.JFrame implements Serializable{
 
     private String friendEmail = "";
     private String myEmail;
@@ -66,10 +69,14 @@ public class ChatForm extends javax.swing.JFrame {
     DefaultStyledDocument msgDoc;
     Style txtChatStyle;
     ArrayList<String> filelines;
-
-    public ChatForm() {
+    ConnctionHndlr controller;
+    ChatGroup chGroup;
+    
+    public ChatForm(ChatGroup chatGroup) {
         super("Chat Form");
         initComponents();
+        chGroup=chatGroup;
+        controller =new ConnctionHndlr();
 
         String[] fontsList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         for (String font : fontsList) {
@@ -377,20 +384,17 @@ public class ChatForm extends javax.swing.JFrame {
 //        otherSideSession = client.getOtherSideSession(friendEmail_);
 //        Conference = client.getConfFlag(friendEmail_);
         String msg = txtsend.getText().trim();
-        Style chatStyle = sc.addStyle("chat", null);
-        chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
-        chatStyle.addAttribute(StyleConstants.FontFamily, face);
-        chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
-        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), chatStyle, false);
+//        Style chatStyle = sc.addStyle("chat", null);
+//        chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
+//        chatStyle.addAttribute(StyleConstants.FontFamily, face);
+//        chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
+//        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), , false);
         if (!(msg.equals(""))) {
-            try {
-                doc.insertString(doc.getEndPosition().getOffset(), myEmail + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n", chatStyle);
+//                doc.insertString(doc.getEndPosition().getOffset(), myEmail + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n", chatStyle);
 //                client.addLineStyle(chatStyle, friendEmail_);
 //                client.sendMsg(friendEmail.trim(), this.myEmail, otherSideSession, msg, chatStyle);
+                controller.sendMessage(msg, chGroup.getCgId(),ConnctionHndlr.me  );
                 txtsend.setText("");
-            } catch (BadLocationException ex) {
-                Logger.getLogger(ChatForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
 //
         }
     }//GEN-LAST:event_btnSendMsgActionPerformed
@@ -739,28 +743,26 @@ public class ChatForm extends javax.swing.JFrame {
     private javax.swing.JTextPane txtChatArea;
     private javax.swing.JTextArea txtsend;
     // End of variables declaration//GEN-END:variables
-public static void main(String[] args) {
-        new ChatForm().setVisible(true);
 
-    }
-
-    public void displayMessage(String msg, Client client, Style msgStyle) {
-        msg = txtsend.getText().trim();
-   //     Style chatStyle = sc.addStyle("chat", null);
-   //     chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
-   //     chatStyle.addAttribute(StyleConstants.FontFamily, face);
-   //     chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
-        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), msgStyle, false);
-        if (!(msg.equals(""))) {
-            try {
-                doc.insertString(doc.getEndPosition().getOffset(), client.getEmail() + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n", msgStyle);
+    public void displayMessage(String msg, Client client) {
+        // msg = txtsend.getText().trim();
+        //     Style chatStyle = sc.addStyle("chat", null);
+        //     chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
+        //     chatStyle.addAttribute(StyleConstants.FontFamily, face);
+        //     chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
+//        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), false);
+        // if (!(msg.equals(""))) {
+        //   doc.insertString(doc.getEndPosition().getOffset(), client.getEmail() + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n");
 //                client.addLineStyle(chatStyle, friendEmail_);
 //                client.sendMsg(friendEmail.trim(), this.myEmail, otherSideSession, msg, chatStyle);
-                txtsend.setText("");
-            } catch (BadLocationException ex) {
-                Logger.getLogger(ChatForm.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//                JOptionPane.showMessageDialog(null, msg+" from "+client.getDisplayName());
+        String text = txtChatArea.getText();
+        
+                
+
+                txtChatArea.setText(text+"\n"+client.getDisplayName()+": "+msg);
+              //  repaint();
 //
-        }
+      //  }
     }
 }

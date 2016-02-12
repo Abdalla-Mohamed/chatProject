@@ -5,7 +5,17 @@
  */
 package framepackage;
 
+import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.entites.Category;
+import iti.chat.entites.ChatGroup;
+import iti.chat.entites.Client;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -13,22 +23,18 @@ import java.awt.Dimension;
  */
 public class clientmainview extends javax.swing.JFrame {
 
-    /**
-     * Creates new form NewJFrame1
-     */
-//    private String[][] countryList = {{"Available", "ClientGUI.Images/avail.png"},
-//                                      {"Away", "ClientGUI.Images/away1.png"},
-//                                      {"Busy", "ClientGUI.Images/busy1.png"}
-//                                     };
+    Client c;
+    ConnctionHndlr controller;
+    HashMap<DefaultMutableTreeNode, Object> treeMap;
 
-    public clientmainview() {
+    public clientmainview(Client client) {
         initComponents();
-//        CountryComboBox customCombobox = new CountryComboBox();
-//        customCombobox.setPreferredSize(new Dimension(90, 20));
-//        customCombobox.setEditable(true);
-//        customCombobox.addItems(countryList);
-//         
-//        add(customCombobox);
+        c = client;
+        treeMap = new HashMap<>();
+        DefaultTreeModel treeModel = new DefaultTreeModel(processHierarchy());
+        jTree1.setModel(treeModel);
+        controller = new ConnctionHndlr();
+        repaint();
 
     }
 
@@ -44,10 +50,10 @@ public class clientmainview extends javax.swing.JFrame {
         jSplitPane1 = new javax.swing.JSplitPane();
         jTree1 = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
-        add_friend_Buttom = new javax.swing.JToggleButton();
-        new_chat_group_Buttom = new javax.swing.JToggleButton();
         block_Button = new javax.swing.JToggleButton();
-        my_avilabilty_ComboBox = new javax.swing.JComboBox<String>();
+        my_avilabilty_ComboBox = new javax.swing.JComboBox<>();
+        add_friend_Buttom = new javax.swing.JButton();
+        new_chat_group_Buttom = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         Friends_Menu = new javax.swing.JMenu();
         add_friend_menuItem = new javax.swing.JMenuItem();
@@ -66,27 +72,31 @@ public class clientmainview extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("contact list");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("family");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("abdallah");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("friends");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("bakar");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("coworkers");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("shorouk");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("iti");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("aya");
-        treeNode2.add(treeNode3);
-        treeNode1.add(treeNode2);
-        jTree1.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        jTree1.setAutoscrolls(true);
+        jTree1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jTree1MousePressed(evt);
+            }
+        });
+        jTree1.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
+            public void valueChanged(javax.swing.event.TreeSelectionEvent evt) {
+                jTree1ValueChanged(evt);
+            }
+        });
+
+        block_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/blocked offline.png"))); // NOI18N
+        block_Button.setToolTipText("block friend");
+        block_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                block_ButtonActionPerformed(evt);
+            }
+        });
+
+        my_avilabilty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "my availabilty", "available ", "busy", "invisable" }));
 
         add_friend_Buttom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/add.png"))); // NOI18N
-        add_friend_Buttom.setMaximumSize(new java.awt.Dimension(20, 20));
+        add_friend_Buttom.setToolTipText("add friend");
+        add_friend_Buttom.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         add_friend_Buttom.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 add_friend_ButtomActionPerformed(evt);
@@ -94,10 +104,12 @@ public class clientmainview extends javax.swing.JFrame {
         });
 
         new_chat_group_Buttom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/27.png"))); // NOI18N
-
-        block_Button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/blocked offline.png"))); // NOI18N
-
-        my_avilabilty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "my availabilty", "available ", "busy", "invisable" }));
+        new_chat_group_Buttom.setToolTipText("new chat");
+        new_chat_group_Buttom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                new_chat_group_ButtomActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -106,31 +118,29 @@ public class clientmainview extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(my_avilabilty_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(new_chat_group_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add_friend_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(block_Button)
+                .addGap(46, 46, 46)
+                .addComponent(new_chat_group_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(add_friend_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(block_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {add_friend_Buttom, block_Button});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(my_avilabilty_ComboBox)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(block_Button)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(add_friend_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(new_chat_group_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                    .addComponent(new_chat_group_Buttom, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(my_avilabilty_ComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(block_Button, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(add_friend_Buttom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
-
-        jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {add_friend_Buttom, block_Button, new_chat_group_Buttom});
 
         Friends_Menu.setText("Friends");
 
@@ -188,6 +198,11 @@ public class clientmainview extends javax.swing.JFrame {
 
         available_MenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/13.png"))); // NOI18N
         available_MenuItem.setText("available");
+        available_MenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                available_MenuItemActionPerformed(evt);
+            }
+        });
         my_availability_menuItem.add(available_MenuItem);
 
         busy_MenuItem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/15.png"))); // NOI18N
@@ -230,7 +245,7 @@ public class clientmainview extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTree1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                        .addComponent(jTree1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -238,8 +253,8 @@ public class clientmainview extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTree1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTree1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -259,28 +274,69 @@ public class clientmainview extends javax.swing.JFrame {
     }//GEN-LAST:event_invisible_MenuItemActionPerformed
 
     private void add_friend_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_friend_menuItemActionPerformed
-        AddFriendFram addFriend=new AddFriendFram(" ");//my email
+        AddFriendFram addFriend = new AddFriendFram(c);//my email
         addFriend.setVisible(true);
     }//GEN-LAST:event_add_friend_menuItemActionPerformed
 
-    private void add_friend_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_friend_ButtomActionPerformed
-       AddFriendFram addFriend=new AddFriendFram(" ");//my email
-        addFriend.setVisible(true);
-    }//GEN-LAST:event_add_friend_ButtomActionPerformed
-
     private void remove_friend_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_remove_friend_menuItemActionPerformed
-        RemoveFriendFrame removeFriend=new RemoveFriendFrame(" ");
+        RemoveFriendFrame removeFriend = new RemoveFriendFrame(c);
         removeFriend.setVisible(true);
     }//GEN-LAST:event_remove_friend_menuItemActionPerformed
 
     private void block_Friend_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block_Friend_MenuItemActionPerformed
-        // TODO add your handling code here:
+        RemoveFriendFrame removeFriend = new RemoveFriendFrame(c);
+        removeFriend.setVisible(true);
     }//GEN-LAST:event_block_Friend_MenuItemActionPerformed
 
     private void send_Mail_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_send_Mail_MenuItemActionPerformed
-        SendMailFrame sendMail=new SendMailFrame();
+        SendMailFrame sendMail = new SendMailFrame();
         sendMail.setVisible(true);
     }//GEN-LAST:event_send_Mail_MenuItemActionPerformed
+
+    private void block_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_block_ButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_block_ButtonActionPerformed
+
+    private void add_friend_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_friend_ButtomActionPerformed
+        AddFriendFram addFriend = new AddFriendFram(c);//my email
+        addFriend.setVisible(true);
+
+    }//GEN-LAST:event_add_friend_ButtomActionPerformed
+
+    private void new_chat_group_ButtomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_new_chat_group_ButtomActionPerformed
+//        new ChatForm().setVisible(true);
+    }//GEN-LAST:event_new_chat_group_ButtomActionPerformed
+
+    private void available_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_available_MenuItemActionPerformed
+        c.setStatus(1);
+        controller.changeStatus(c);
+//        jTree1.getSelectionPath()
+    }//GEN-LAST:event_available_MenuItemActionPerformed
+
+    private void jTree1ValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_jTree1ValueChanged
+        System.out.println(evt.getNewLeadSelectionPath());
+        Client selectNode = getSelectNode();
+        if (selectNode != null) {
+            System.out.println(selectNode.getClientId() + " : " + selectNode.getEmail());
+        }
+    }//GEN-LAST:event_jTree1ValueChanged
+
+    private void jTree1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTree1MousePressed
+        if (evt.getClickCount() == 2) {
+            Client selectNode = getSelectNode();
+            if (selectNode != null) {
+                ChatGroup chatGroup = new ChatGroup();
+                chatGroup.setClientList(new ArrayList<>());
+                chatGroup.getClientList().add(c);
+                chatGroup.getClientList().add(selectNode);
+                chatGroup.setuAdmin(c);
+                System.out.println(selectNode.getClientId() + " : " + selectNode.getEmail());
+                controller.startChat(chatGroup);
+
+            }
+
+        }
+    }//GEN-LAST:event_jTree1MousePressed
 
     /**
      * @param args the command line arguments
@@ -315,7 +371,7 @@ public class clientmainview extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new clientmainview().setVisible(true);
+//                new clientmainview().setVisible(true);
             }
         });
     }
@@ -324,7 +380,7 @@ public class clientmainview extends javax.swing.JFrame {
     private javax.swing.JMenuItem Create_Chat_Group_menuItem;
     private javax.swing.JMenu Friends_Menu;
     private javax.swing.JMenuItem Log_Out_MenuItem;
-    private javax.swing.JToggleButton add_friend_Buttom;
+    private javax.swing.JButton add_friend_Buttom;
     private javax.swing.JMenuItem add_friend_menuItem;
     private javax.swing.JMenuItem available_MenuItem;
     private javax.swing.JToggleButton block_Button;
@@ -338,9 +394,46 @@ public class clientmainview extends javax.swing.JFrame {
     private javax.swing.JMenu logout_Menu;
     private javax.swing.JMenu my_availability_menuItem;
     private javax.swing.JComboBox<String> my_avilabilty_ComboBox;
-    private javax.swing.JToggleButton new_chat_group_Buttom;
+    private javax.swing.JButton new_chat_group_Buttom;
     private javax.swing.JMenuItem remove_friend_menuItem;
     private javax.swing.JMenuItem send_Mail_MenuItem;
     private javax.swing.JMenu settings_Menu;
     // End of variables declaration//GEN-END:variables
+
+    public DefaultMutableTreeNode processHierarchy() {
+        DefaultMutableTreeNode frindList = new DefaultMutableTreeNode("freinds list");
+        DefaultMutableTreeNode cat, frnds;
+
+        List<Category> categorys = this.c.getCategoryList();
+        for (Category category : categorys) {
+            cat = new DefaultMutableTreeNode(category.getCatName());
+            frindList.add(cat);
+            treeMap.put(cat, category);
+
+            List<Client> clientList = category.getClientList();
+            if (clientList.isEmpty()) {
+                frnds = new DefaultMutableTreeNode();
+                treeMap.put(frnds, "");
+
+            } else {
+                for (Client client : clientList) {
+                    frnds = new DefaultMutableTreeNode(client.getDisplayName());
+                    cat.add(frnds);
+                    treeMap.put(frnds, client);
+
+                }
+            }
+        }
+
+        return (frindList);
+    }
+
+    Client getSelectNode() {
+        Object lastSelectedPathComponent = jTree1.getLastSelectedPathComponent();
+        Object selectedNode = treeMap.get(lastSelectedPathComponent);
+        if (selectedNode instanceof Client) {
+            return (Client) selectedNode;
+        }
+        return null;
+    }
 }

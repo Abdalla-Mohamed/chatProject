@@ -33,12 +33,12 @@ public class GenricDao<T> {
 
     enum queryKind {
 
-        SelectAll, Select, Insert, Update, Delete
+        SelectAll, SelectAny, Insert, Update, Delete
     }
 
 //--------------------------------------------------------------------------
     //<editor-fold defaultstate="collapsed" desc="connection variables">
-    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
+    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
     private final String userName = "chat";
     private final String password = "chat";
     Connection con = null;
@@ -88,20 +88,22 @@ public class GenricDao<T> {
         return createImp;
     }
 
-    public ArrayList<T> select(T o) {
+    public ArrayList<T> selectAny(T o) {
+ ArrayList<T> convertResultSet = new ArrayList<>();
 
-        T readImp = null;
-        String query = createQuery(o, queryKind.Select);
-        System.out.println(query);
-//        try {
-//            openConnection();
-////            readImp = readImp(id);
-//            closeConnection();
-//
-//        } catch (SQLException ex) {
-//            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        return null;
+        try {
+            openConnection();
+            String query = createQuery(o, queryKind.SelectAny);
+            System.out.println(query);
+            PreparedStatement prepareStatement = con.prepareStatement(query);
+            ResultSet executeQuery = prepareStatement.executeQuery();
+            convertResultSet = convertResultSet(executeQuery);
+            closeConnection();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return convertResultSet;
     }
 
     public ArrayList<T> selectAllBy(T o) {
@@ -124,33 +126,44 @@ public class GenricDao<T> {
 
     public boolean update(T o) {
 
-        String query = createQuery(o, queryKind.Update);
-        System.out.println(query);
-//     
-//        try {
-//            openConnection();
-////            updateImp(o);
-//            closeConnection();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+       boolean createImp = false;
+        try {
+            openConnection();
+            String insertQuery = createQuery(o, queryKind.Update);
+            System.out.println(insertQuery);
 
-        return false;
+            PreparedStatement prepareStatement = con.prepareStatement(insertQuery);
+            int executeQuery = prepareStatement.executeUpdate();
+            if (executeQuery > 0) {
+                createImp = true;
+            }
+            closeConnection();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return createImp;
+
     }
 
     public boolean delete(T o) {
-        String query = createQuery(o, queryKind.Delete);
-        System.out.println(query);
+        boolean createImp = false;
+        try {
+            openConnection();
+            String insertQuery = createQuery(o, queryKind.Delete);
+            System.out.println(insertQuery);
 
-//        
-//        try {
-//            openConnection();
-////            deleteImp(o);
-//            closeConnection();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        return false;
+            PreparedStatement prepareStatement = con.prepareStatement(insertQuery);
+            int executeQuery = prepareStatement.executeUpdate();
+            if (executeQuery > 0) {
+                createImp = true;
+            }
+            closeConnection();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return createImp;
     }
 
     public ArrayList<T> getAll() {
@@ -168,21 +181,7 @@ public class GenricDao<T> {
         }
         return allImp;
     }
-////<editor-fold defaultstate="collapsed" desc="excute">
 
-//    public ArrayList<T> excuteQury(String query) {
-//        try {
-//            openConnection();
-//            result = Stmt.executeQuery(query);
-//            result.next();
-//            System.out.println(result.getString(1));
-//            closeConnection();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(GenricDao.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return new ArrayList<>();
-//    }
-//</editor-fold>
     public boolean check(T object) {
 
         boolean match = false;
@@ -203,10 +202,7 @@ public class GenricDao<T> {
         return match;
     }
 
-    public T getById(T object) {
-
-        return null;
-    }
+    
 
 //</editor-fold>
 //<editor-fold defaultstate="collapsed" desc="connection methods">
@@ -221,10 +217,11 @@ public class GenricDao<T> {
 //</editor-fold>
 
 //--------------------------------------------------------------------------
-    static public String findClassTableName(Class<?> clazz) {
+//<editor-fold defaultstate="collapsed" desc="quary bilder">
+    private String findClassTableName(Class<?> clazz) {
         String tableName = null;
         try {
-            // check if class has correspond table 
+            // check if class has correspond table
             if (clazz.getAnnotation(Table.class) != null) {
                 // get table name in database
                 tableName = clazz.getAnnotation(Table.class).name();
@@ -234,7 +231,7 @@ public class GenricDao<T> {
         }
         return tableName + " ";
     }
-
+    
     private void createQueryHeader(queryKind kind) {
         query = new StringBuilder();
         switch (kind) {
@@ -247,7 +244,7 @@ public class GenricDao<T> {
             case Delete:
                 query.append("DELETE FROM ").append(tableName).append(values);
                 break;
-            case Select:
+            case SelectAny:
                 query.append("Select ").append(colmnNames).append(" from ").append(tableName).append(values);
                 break;
             case SelectAll:
@@ -257,7 +254,7 @@ public class GenricDao<T> {
         colmnNames = new StringBuilder("");
         values = new StringBuilder("");
     }
-
+    
     private void createQueryNames(queryKind kind, ArrayList<Field> fields, Object object) {
         if (!fields.isEmpty()) {
             for (Field field : fields) {
@@ -270,16 +267,16 @@ public class GenricDao<T> {
                         colmnNames.append(" , ");
                     }
                     colmnNames.append(convertToColmnPart(kind, fieldColmName, fieldValue));
-
+                    
                 }
             }
-
+            
         }
     }
-
+    
     private void createQueryValues(queryKind kind, ArrayList<Field> fields, T object) {
         if (!fields.isEmpty()) {
-
+            
             for (Field field : fields) {
                 String fieldValue;
                 field.setAccessible(true);
@@ -289,7 +286,7 @@ public class GenricDao<T> {
                 } else {
                     fieldValue = findFieldValue(field, object);
                 }
-
+                
                 // append on part of colmen name in quary
                 if (fieldValue != null && !fieldValue.equals("null")) {
                     if (!values.toString().equals("")) {
@@ -298,16 +295,16 @@ public class GenricDao<T> {
                         values.append(" where ");
                     }
                     values.append(convertToValuePart(kind, fieldColmName, fieldValue));
-
+                    
                 }
             }
-
+            
         }
     }
-
+    
     private void checkFirstQueryName(queryKind kind, String colmnName) {
         if (colmnNames.equals("")) {
-
+            
             switch (kind) {
                 case Insert:
                     colmnNames.append(" ( ");
@@ -318,7 +315,7 @@ public class GenricDao<T> {
                 case Delete:
                     colmnNames.append("");
                     break;
-                case Select:
+                case SelectAny:
                     colmnNames.append("");
                     break;
                 case SelectAll:
@@ -326,38 +323,38 @@ public class GenricDao<T> {
                     break;
             }
         }
-
+        
     }
-
-    static public String findFieldColmName(Field field) {
+    
+    private  String findFieldColmName(Field field) {
         String ColmName = "";
-
+        
         field.setAccessible(true);
-
+        
         if (field != null && field.getAnnotation(Column.class) != null) {
             ColmName = field.getAnnotation(Column.class).name();
         }
-
+        
         return ColmName;
     }
-
-    static public String findFieldValue(Field field, Object realObj) {
+    
+    private  String findFieldValue(Field field, Object realObj) {
         String ColmnValue = null;
         try {
             field.setAccessible(true);
-
+            
             if (field.get(realObj) != null && field.getAnnotation(Column.class) != null) {
-
+                
                 if (field.getType() == String.class || field.getType() == char.class) {
                     ColmnValue = "'" + field.get(realObj) + "'";
-
+                    
                 } else if (field.getType() == Date.class) {
                     ColmnValue = "to_date('" + Config.formatedDate((Date) field.get(realObj)) + "' , '" + Config.dateFormat + "')";
                 } else {
                     ColmnValue = "" + field.get(realObj);
-
+                    
                 }
-
+                
             }
 //           //<editor-fold defaultstate="collapsed" desc="old id">
             if (field != null && field.getAnnotation(Id.class) != null) {
@@ -380,7 +377,7 @@ public class GenricDao<T> {
 //                System.out.println(field.getName() + " has colmn in DB called = " + ColmnValue);
 //</editor-fold>
             }
-
+            
         } catch (SecurityException e) {
             e.printStackTrace();
         } catch (IllegalArgumentException ex) {
@@ -390,12 +387,12 @@ public class GenricDao<T> {
         }
         return ColmnValue;
     }
-
-    static public String findFieldSeq(Field field) {
+    
+    private  String findFieldSeq(Field field) {
         field.setAccessible(true);
         return "" + field.getAnnotation(Column.class).sequnce();
     }
-
+    
     private String convertToColmnPart(queryKind kind, String colName, String value) {
         String combine = "";
         switch (kind) {
@@ -407,15 +404,14 @@ public class GenricDao<T> {
                 break;
             case Delete:
                 break;
-            case Select:
-                combine = colName;
+            case SelectAny:
                 break;
             case SelectAll:
                 break;
         }
         return combine;
     }
-
+    
     private String convertToValuePart(queryKind kind, String colName, String value) {
         String combine = "";
         switch (kind) {
@@ -428,7 +424,7 @@ public class GenricDao<T> {
             case Delete:
                 combine = colName + " = " + value + " ";
                 break;
-            case Select:
+            case SelectAny:
                 combine = colName + " = " + value + " ";
                 break;
             case SelectAll:
@@ -437,22 +433,24 @@ public class GenricDao<T> {
         }
         return combine;
     }
-
+    
     private String getValueSprator(queryKind kind) {
         String spltr = "";
         switch (kind) {
             case Insert:
                 spltr = " , ";
                 break;
+            case SelectAny:
+                spltr = " or ";
             case Update:
             case Delete:
-            case Select:
             case SelectAll:
                 spltr = " and ";
+                
         }
         return spltr;
     }
-
+    
     private ArrayList<Field> findAnnotedFields(Class<?> classs, Class<? extends Annotation> annotation) {
         ArrayList<Field> annotedFields = new ArrayList<>();
         for (Field field : classs.getDeclaredFields()) {
@@ -460,34 +458,35 @@ public class GenricDao<T> {
                 annotedFields.add(field);
             }
         }
-
+        
         return annotedFields;
-
+        
     }
-
+    
     private String createQuery(T o, queryKind kind) {
         query = new StringBuilder("");
         colmnNames = new StringBuilder("");
         values = new StringBuilder("");
-
+        
         classType = o.getClass();
         tableName = findClassTableName(classType);
         ArrayList<Field> annotedFields = findAnnotedFields(classType, Column.class);
         ArrayList<Field> idFields = findAnnotedFields(classType, Id.class);
-
+        
         createQueryNames(kind, annotedFields, o);
         if (kind == queryKind.Update) {
             createQueryValues(kind, idFields, o);
-
+            
         } else {
             createQueryValues(kind, annotedFields, o);
-
+            
         }
         createQueryHeader(kind);
         return "" + query;
     }
+//</editor-fold>
 
-    ArrayList<T> convertResultSet(ResultSet resultSet) {
+     ArrayList<T> convertResultSet(ResultSet resultSet) {
         ArrayList<T> tList = new ArrayList<>();
         try {
             ArrayList<Field> findAnnotedFields = findAnnotedFields(classType, Column.class);
@@ -509,7 +508,7 @@ public class GenricDao<T> {
                         Object completeObj = type.newInstance();
                         // fill id of object
                         idField.set(completeObj, object);
-                        
+
                         // set object in the primary object
                         field.set(newInstance, completeObj);
 
@@ -534,7 +533,5 @@ public class GenricDao<T> {
         }
         return tList;
     }
-    
-    
-    
+
 }

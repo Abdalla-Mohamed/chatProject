@@ -388,11 +388,11 @@ public class singupframe extends javax.swing.JFrame {
 
         if (name && userName && emai) {//check validate done 
 
-            Client client = new Client( username, fName, email, password, date, question);
+            Client client = new Client( username, fName, email, password, date, gender,question);
             client.setQuestion(new Question(1));
             ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
 
-            if (connection.singup(client)>0) {
+            if (connection.singup(client)) {
                 String msg = "Welcome " + username
                         + " .\nYour UserName is : " + email
                         + "\n Your Password is : " + password

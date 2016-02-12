@@ -133,6 +133,8 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Email");
 
+        txtLoginEmail.setToolTipText("enter your email");
+
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("password");
 
@@ -158,7 +160,7 @@ public class LoginFrame extends javax.swing.JFrame {
             }
         });
 
-        txtLoginPass.setText("jPasswordField1");
+        txtLoginPass.setToolTipText("password");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -225,6 +227,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("mobile");
 
+        txtMobile.setToolTipText("mobile ");
         txtMobile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMobileActionPerformed(evt);
@@ -234,6 +237,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("password");
 
+        txtEmail.setToolTipText("email@example.com");
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmailActionPerformed(evt);
@@ -243,6 +247,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Email");
 
+        txtUsrName.setToolTipText("user name");
         txtUsrName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUsrNameActionPerformed(evt);
@@ -252,6 +257,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("user name");
 
+        txtName.setToolTipText("your name");
         txtName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNameActionPerformed(evt);
@@ -294,7 +300,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("answer");
 
-        txtPass.setText("jPasswordField1");
+        txtPass.setToolTipText("password");
 
         jLabel12.setBackground(new java.awt.Color(255, 255, 255));
         jLabel12.setForeground(new java.awt.Color(0, 255, 153));
@@ -435,7 +441,6 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addContainerGap(43, Short.MAX_VALUE))
         );
 
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Abdalla\\Desktop\\22.png")); // NOI18N
         jButton1.setToolTipText("");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -464,6 +469,9 @@ public class LoginFrame extends javax.swing.JFrame {
                 .addComponent(downCrcl, javax.swing.GroupLayout.DEFAULT_SIZE, 306, Short.MAX_VALUE))
         );
 
+        z.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        z.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout zLayout = new javax.swing.GroupLayout(z);
         z.setLayout(zLayout);
         zLayout.setHorizontalGroup(
@@ -478,8 +486,6 @@ public class LoginFrame extends javax.swing.JFrame {
             .addGroup(zLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        z.setLayer(jPanel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        z.setLayer(jPanel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -620,8 +626,10 @@ public class LoginFrame extends javax.swing.JFrame {
             client.setEmail(username);
             client.setPassword(password);
             ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
-            if (connection.singin(client) > 0) {
-                JOptionPane.showMessageDialog(null, "welcom");
+            if (connection.singin(client) ) {
+                this.dispose();
+                
+                new clientmainview(connection.getMe(client)).setVisible(true);
             }
 
         } else {
@@ -657,11 +665,11 @@ public class LoginFrame extends javax.swing.JFrame {
 
         if (name && userName && emai) {//check validate done 
 
-            Client client = new Client(username, fName, email, password, date, answr);
+            Client client = new Client(username, fName, email, password, date,gender, answr);
             client.setQuestion(new Question(question));
             ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
 
-            if (connection.singup(client) > 0) {
+            if (connection.singup(client) ) {
                 String msg = "Welcome " + username
                         + " .\nYour UserName is : " + email
                         + "\n Your Password is : " + password
@@ -671,8 +679,7 @@ public class LoginFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Congratulation \n you account has been created."
                         + "\nAn Email has been sent to you with your username & password.", "Register Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                clientmainview mainFram = new clientmainview();
-               
+                clientmainview mainFram = new clientmainview(client);
                 mainFram.setVisible(true);
             }
         }
@@ -841,4 +848,5 @@ public class LoginFrame extends javax.swing.JFrame {
     private framepackage.CirclePart upCrcl;
     private javax.swing.JLayeredPane z;
     // End of variables declaration//GEN-END:variables
+
 }

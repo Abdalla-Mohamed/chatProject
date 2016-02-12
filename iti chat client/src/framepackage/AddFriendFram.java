@@ -5,6 +5,7 @@
 package framepackage;
 
 import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.entites.Client;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,11 +14,16 @@ import javax.swing.JOptionPane;
  */
 public class AddFriendFram extends javax.swing.JFrame {
 
-    private String myEmail;
+    ConnctionHndlr controller;
+    Client owner;
+    Client frnd;
 
-    public AddFriendFram(String myEmail) {
+    public AddFriendFram(Client owen) {
+        controller = new ConnctionHndlr();
+        owner = owen;
+        frnd = new Client(0);
         initComponents();
-        this.myEmail = myEmail;
+
     }
 
     /**
@@ -41,7 +47,7 @@ public class AddFriendFram extends javax.swing.JFrame {
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setText("Write Friend Email to add :");
+        jLabel1.setText("Write Friend's Email to add :");
 
         btnAddFriend.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAddFriend.setForeground(new java.awt.Color(0, 102, 102));
@@ -113,16 +119,15 @@ public class AddFriendFram extends javax.swing.JFrame {
     private void btnAddFriendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFriendActionPerformed
         // TODO add your handling code here:
         boolean addDone = false;
-        String friendEmail = txtFriendEmailField.getText();
-        if (friendEmail != null) {
-            
-           // addDone = messengerData.addFriend(myEmail, friendEmail.concat("@syhe.com"));
-            if (addDone) {
-                JOptionPane.showMessageDialog(rootPane, "Done.! Friend Request sent successfully.!", "Request Sent.", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Sorry! this Email address not registered on this Server.", "Not Registered", JOptionPane.INFORMATION_MESSAGE);
-            }
+        frnd = new Client();
+        frnd.setEmail(txtFriendEmailField.getText());
+
+        if (controller.addFriend(owner, frnd)) {
+            JOptionPane.showMessageDialog(rootPane, "Done.! Friend Request sent successfully.!", "Request Sent.", JOptionPane.INFORMATION_MESSAGE);
+            Client newFrnd = controller.getMe(frnd);
+            owner.getCategoryList().get(2).getClientList().add(newFrnd);
+
+            this.dispose();
         } else {
             JOptionPane.showMessageDialog(rootPane, "Invalid Email Address !!!", "Error.", JOptionPane.ERROR_MESSAGE, null);
         }

@@ -17,5 +17,5 @@ public class DaoCategory extends GenricDao<Category> {
     public DaoCategory() {
         super(Category.class);
     }
-    
+   
 }

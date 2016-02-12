@@ -6,6 +6,7 @@
 package iti.chat.entites;
 
 import iti.chat.annotions.Column;
+import iti.chat.annotions.ForignKey;
 import iti.chat.annotions.Id;
 import iti.chat.annotions.ManyToMany;
 import iti.chat.annotions.ManyToOne;
@@ -57,7 +58,8 @@ public class Client implements Serializable {
     @OneToMany(type = ChatGroup.class)
     private List<ChatGroup> chatGroupList;
     @ManyToOne(type = Question.class)
-    //@Column(name = "SECQUS")
+    @Column(name = "SECQUS")
+    @ForignKey(type = Question.class,keyField = "qId")
     private Question question;
     @OneToMany(type = FriendList.class)
     private List<FriendList> friendList;
@@ -71,7 +73,7 @@ public class Client implements Serializable {
         this.clientId = clientId;
     }
 
-    public Client( String userName, String displayName, String email, String password, Date birthDate, String qAns) {
+    public Client( String userName, String displayName, String email, String password, Date birthDate,String gnder ,String qAns) {
         this.clientId = 0;
         this.userName = userName;
         this.displayName = displayName;
@@ -79,6 +81,28 @@ public class Client implements Serializable {
         this.password = password;
         this.birthDate = birthDate;
         this.qAns = qAns;
+        this.gender = gnder;
+    }
+
+    public Client(Integer clientId, String userName, String displayName, String email, String password, Date birthDate, String phone, String gender, String country, Integer status, String qAns, List<Category> categoryList, List<ChatGroup> myChatList, List<Announcement> announcementList, List<ChatGroup> chatGroupList, Question question, List<FriendList> friendList, List<FriendList> friendAtList) {
+        this.clientId = clientId;
+        this.userName = userName;
+        this.displayName = displayName;
+        this.email = email;
+        this.password = password;
+        this.birthDate = birthDate;
+        this.phone = phone;
+        this.gender = gender;
+        this.country = country;
+        this.status = status;
+        this.qAns = qAns;
+        this.categoryList = categoryList;
+        this.myChatList = myChatList;
+        this.announcementList = announcementList;
+        this.chatGroupList = chatGroupList;
+        this.question = question;
+        this.friendList = friendList;
+        this.friendAtList = friendAtList;
     }
 
     public Integer getClientId() {

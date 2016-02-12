@@ -30,19 +30,10 @@ public class ChatClient {
         
   
             Toaster toasterManager = new Toaster();
-//            toasterManager.setDisplayTime(2000);
-//            toasterManager.setBorderColor(Color.black);
-//            toasterManager.setMessageColor(Color.green);
-//            toasterManager.setToasterHeight(100);
-//            toasterManager.setToasterWidth(250);
-//            toasterManager.setToasterMessageFont(new Font("tahoma", 2, 20));
-            toasterManager.showToaster("Welcom In Java Chat v1.0");
-           // toasterManager.showToaster(new ImageIcon("F:\\ITI_36\\14-java advanced\\project\\chatProject\\iti chat client\\src\\ClientGUI\\Images\\13.png"), "JToaster Hello World!" );
 
+            toasterManager.showToaster("Welcom In Java Chat v1.0");
             try {
                 UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-                //UIManager.setLookAndFeel(new SyntheticaStandardLookAndFeel());
-                
                 
             } catch (UnsupportedLookAndFeelException ex) {
                 Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);

@@ -5,6 +5,7 @@
  */
 package iti.chat.faces;
 
+import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
 import java.io.File;
 import java.rmi.Remote;
@@ -18,7 +19,7 @@ import javax.swing.text.Style;
  */
 public interface ClientFace extends Remote {
 
-    void recieveMessage(String msg,Client client,Style msgStyle) throws RemoteException;
+    public void recieveMessage(String msg,int chatId, Client client) throws RemoteException ;
 
     void statusNotify(Client c) throws RemoteException;
 
@@ -32,5 +33,6 @@ public interface ClientFace extends Remote {
 
     void serverIsDown() throws RemoteException;
 
+    void openChatFram(ChatGroup chatGroup) throws RemoteException;
 //    void refreshContactsList(String email) throws RemoteException;
 }
