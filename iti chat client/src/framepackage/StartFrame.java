@@ -4,6 +4,7 @@
  */
 package framepackage;
 
+import iti.chat.client.connections.ConnctionHndlr;
 import java.awt.Cursor;
 import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
@@ -13,9 +14,6 @@ import javax.swing.JOptionPane;
  * @author 7amouda
  */
 public class StartFrame extends javax.swing.JFrame {
-
-    public static String serverIP;
-    public static int serverPort;
 
     /**
      * Creates new form StartFrame
@@ -134,6 +132,7 @@ public class StartFrame extends javax.swing.JFrame {
         String ipAddress = txtIPAddress.getText().trim();
         String portNo = txtPortNo.getText().trim();
         if (validateIPAddress(ipAddress) && validatePortNo(portNo)) {
+            
             this.dispose();
             new LoginFrame().setVisible(true);
         }
@@ -165,10 +164,10 @@ public class StartFrame extends javax.swing.JFrame {
         boolean validIP = false;
         if (!(ipAddress.equals(""))) {
             if (ipAddress.equalsIgnoreCase("localhost")) {
-                serverIP = ipAddress.toLowerCase();
+                ConnctionHndlr.serverIP=ipAddress;
                 validIP = true;
             } else if (Pattern.matches(regex, ipAddress)) {
-                serverIP = ipAddress;
+                 ConnctionHndlr.serverIP = ipAddress;
                 validIP = true;
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Invalid IP Address !!!", "Invalid URL", JOptionPane.ERROR_MESSAGE);
@@ -191,7 +190,7 @@ private boolean validatePortNo(String portNo) {
             if (!(portNo.equals(""))) {
                 if (Pattern.matches(regex, portNo)) {
                     port = Integer.parseInt(portNo);
-                    serverPort = port;
+                     ConnctionHndlr.serverPort = port;
                     validPort = true;
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "Invalid Port Number !!!", "Invalid Port", JOptionPane.ERROR_MESSAGE);

@@ -43,6 +43,8 @@ public class ConnctionHndlr {
     public void stopService() {
         try {
             registry.unbind(serviceName);
+            UnicastRemoteObject.unexportObject(registry,true);
+                    
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NotBoundException ex) {

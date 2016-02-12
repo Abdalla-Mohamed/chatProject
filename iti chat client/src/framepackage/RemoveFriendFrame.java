@@ -4,6 +4,9 @@
  */
 package framepackage;
 
+import com.sun.media.jfxmedia.locator.ConnectionHolder;
+import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.entites.Client;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -14,11 +17,15 @@ import javax.swing.JOptionPane;
 public class RemoveFriendFrame extends javax.swing.JFrame {
 
     private String emails = null;
+    ConnctionHndlr controller;
+    Client owen;
+    Client frnd;
 
-    public RemoveFriendFrame(String emails) {
+    public RemoveFriendFrame(Client owner) {
         super("Remove Friend From Contacts");
         initComponents();
-        this.emails = emails;
+        controller=new ConnctionHndlr();
+        owen=owner;
         lblNoFriends.setVisible(false);
         friendsList();
 
@@ -26,16 +33,8 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
     }
 
     private void friendsList() {
-//        if (emails != null) {
-//            for (String email : emails) {
-//                cmbFriendList.addItem(email);
-//            }
-//        } else {
-//            lblNoFriends.setVisible(true);
-//            cmbFriendList.addItem("No Friends.");
-//            cmbFriendList.setEnabled(false);
-//            btnRemove.setEnabled(false);
-//        }
+        //load contact list in combo box
+        //emails list
     }
 
     /**
@@ -53,6 +52,7 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
         btnRemove = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
         lblNoFriends = new javax.swing.JLabel();
+        btnBlock = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -78,6 +78,15 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
         lblNoFriends.setForeground(new java.awt.Color(255, 0, 0));
         lblNoFriends.setText("*** You have no friends.");
 
+        btnBlock.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnBlock.setForeground(new java.awt.Color(204, 0, 0));
+        btnBlock.setText("Block");
+        btnBlock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBlockActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,6 +97,8 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnRemove)
+                        .addGap(82, 82, 82)
+                        .addComponent(btnBlock)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnCancel))
                     .addGroup(layout.createSequentialGroup()
@@ -112,7 +123,9 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancel)
-                    .addComponent(btnRemove))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnRemove)
+                        .addComponent(btnBlock)))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -124,8 +137,12 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
         if (emails != null) {
             int response = JOptionPane.showConfirmDialog(rootPane, "Are you sure", "Confirme Remove", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if(response == JOptionPane.YES_OPTION){
-                String friendEmail = cmbFriendList.getSelectedItem().toString();
-                //remove friend
+                frnd=new Client();
+                frnd.setEmail(cmbFriendList.getSelectedItem().toString());
+                if (controller.removeFriend(owen, frnd)) {
+                    JOptionPane.showMessageDialog(null, "deleted success");
+                }
+
                 this.dispose();
             }
         }
@@ -136,7 +153,23 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
+    private void btnBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlockActionPerformed
+         if (emails != null) {
+            int response = JOptionPane.showConfirmDialog(rootPane, "Are you sure", "Confirme Remove", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(response == JOptionPane.YES_OPTION){
+                frnd=new Client();
+                frnd.setEmail(cmbFriendList.getSelectedItem().toString());
+                if (controller.removeFriend(owen, frnd)) {
+                    JOptionPane.showMessageDialog(null, "deleted success");
+                }
+
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_btnBlockActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBlock;
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnRemove;
     private javax.swing.JComboBox cmbFriendList;

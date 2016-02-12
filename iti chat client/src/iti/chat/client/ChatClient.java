@@ -5,7 +5,17 @@
  */
 package iti.chat.client;
 
-import iti.chat.client.connections.ConnctionHndlr;
+import com.nitido.utils.toaster.Toaster;
+import de.javasoft.plaf.synthetica.SyntheticaBlackEyeLookAndFeel;
+import javax.swing.UIManager;
+import framepackage.StartFrame;
+import java.awt.Color;
+import java.awt.Font;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UnsupportedLookAndFeelException;
+
 
 /**
  *
@@ -17,8 +27,25 @@ public class ChatClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ConnctionHndlr connctionHndlr = new ConnctionHndlr();
         
+  
+            Toaster toasterManager = new Toaster();
+
+            toasterManager.showToaster("Welcom In Java Chat v1.0");
+            try {
+                UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
+                
+            } catch (UnsupportedLookAndFeelException ex) {
+                Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
+                Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new StartFrame().setVisible(true);
+                }
+            });
+        }
     }
     
-}

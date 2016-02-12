@@ -196,6 +196,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtLoginEmail">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="enter your email"/>
+                      </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel7">
                       <Properties>
@@ -231,7 +234,7 @@
                     </Component>
                     <Component class="javax.swing.JPasswordField" name="txtLoginPass">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+                        <Property name="toolTipText" type="java.lang.String" value="password"/>
                       </Properties>
                     </Component>
                   </SubComponents>
@@ -408,6 +411,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtMobile">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="mobile "/>
+                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtMobileActionPerformed"/>
                       </Events>
@@ -421,6 +427,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtEmail">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="email@example.com"/>
+                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtEmailActionPerformed"/>
                       </Events>
@@ -434,6 +443,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtUsrName">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="user name"/>
+                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtUsrNameActionPerformed"/>
                       </Events>
@@ -447,6 +459,9 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="txtName">
+                      <Properties>
+                        <Property name="toolTipText" type="java.lang.String" value="your name"/>
+                      </Properties>
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNameActionPerformed"/>
                       </Events>
@@ -529,7 +544,7 @@
                     </Component>
                     <Component class="javax.swing.JPasswordField" name="txtPass">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
+                        <Property name="toolTipText" type="java.lang.String" value="password"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JLabel" name="jLabel12">
@@ -610,9 +625,6 @@
           <SubComponents>
             <Component class="javax.swing.JButton" name="jButton1">
               <Properties>
-                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-                  <Image iconType="2" name="C:\Users\Abdalla\Desktop\22.png"/>
-                </Property>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
               <Events>

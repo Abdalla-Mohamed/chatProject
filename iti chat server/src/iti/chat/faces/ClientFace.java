@@ -5,20 +5,34 @@
  */
 package iti.chat.faces;
 
+import iti.chat.entites.ChatGroup;
+import iti.chat.entites.Client;
+import java.io.File;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import javax.swing.ImageIcon;
+import javax.swing.text.Style;
 
 /**
  *
  * @author Bakar M.M.R
  */
-public interface ClientFace extends Remote{
-    
-    void recieve (String msg)throws RemoteException;
-    public void recieveFile() throws RemoteException;
-    public void serverIsDown() throws RemoteException;
-    public void refreshContactsList(String email) throws RemoteException;
-    public void recieveAnnoucementNotification(String serverAnnounce) throws RemoteException;
-    public void recieveFriendStatus(int i, String sentMail) throws RemoteException;
-    public void recieveFriendRequest(String sentMail) throws RemoteException;
+public interface ClientFace extends Remote {
+
+    public void recieveMessage(String msg,int chatId, Client client) throws RemoteException ;
+
+    void statusNotify(Client c) throws RemoteException;
+
+    void recieveAnnoucement(String text, ImageIcon img) throws RemoteException;
+
+    boolean terminateNotify(String msg) throws RemoteException;
+
+    void acceptRequestNtify(Client client) throws RemoteException;
+
+    void recieveFile(File file) throws RemoteException;
+
+    void serverIsDown() throws RemoteException;
+
+    void openChatFram(ChatGroup chatGroup) throws RemoteException;
+//    void refreshContactsList(String email) throws RemoteException;
 }
