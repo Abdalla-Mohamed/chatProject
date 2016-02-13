@@ -44,7 +44,7 @@ public class StartFrame extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel2.setText("URL Address :");
 
-        txtIPAddress.setText("Server IP");
+        txtIPAddress.setText("127.0.0.1");
         txtIPAddress.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtIPAddressFocusGained(evt);
@@ -59,7 +59,7 @@ public class StartFrame extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setText("Port Number :");
 
-        txtPortNo.setText("Port");
+        txtPortNo.setText("5005");
 
         btnCancel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnCancel.setText("Cancel");

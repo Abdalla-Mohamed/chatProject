@@ -26,10 +26,12 @@ public class ClientImpOperation extends UnicastRemoteObject implements ClientFac
 
     ConnctionHndlr controller;
     Toaster toasterManager;
-    transient  HashMap<Integer,ChatForm> hashMap;
-    public ClientImpOperation() throws RemoteException {
+    
+    
+    public ClientImpOperation(ConnctionHndlr contro) throws RemoteException {
         toasterManager = new Toaster();
-        hashMap = new HashMap<>();
+        controller= contro;
+        
     }
 
     @Override
@@ -66,17 +68,24 @@ public class ClientImpOperation extends UnicastRemoteObject implements ClientFac
     @Override
     public void recieveMessage(String msg,int chatId, Client client) throws RemoteException {
       //  controller.displayMessage(msg, client);
-        System.out.println("reiceved: "+msg);
-        hashMap.get(chatId).displayMessage(msg, client);
+        controller.recieveMessage(msg, chatId, client);
 
     }
 
     @Override
     public void openChatFram(ChatGroup chatGroup) throws RemoteException {
-        ChatForm ch=new ChatForm(chatGroup);
-        ch.setTitle(""+chatGroup.getCgId());
-        hashMap.put(chatGroup.getCgId(), ch);
-        ch.setVisible(true);
+        controller.openChatFram(chatGroup);
+    }
+
+    @Override
+    public void updateFrndStates(Integer clientID, Integer status) {
+        controller.updateFrndStates(clientID, status);
+    }
+
+    @Override
+    public void reciveFrndRqust(Client owner, Client friend) throws RemoteException {
+                controller.reciveFrndRqust(owner, friend);
+
     }
 
 }

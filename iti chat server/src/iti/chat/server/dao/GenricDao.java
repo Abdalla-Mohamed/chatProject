@@ -38,7 +38,7 @@ public class GenricDao<T> {
 
 //--------------------------------------------------------------------------
     //<editor-fold defaultstate="collapsed" desc="connection variables">
-    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+    private final String DBurl = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
     private final String userName = "chat";
     private final String password = "chat";
     Connection con = null;

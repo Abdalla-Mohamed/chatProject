@@ -41,7 +41,7 @@ public class ServerControlFrame extends javax.swing.JFrame {
 
         txtPortNoField.setText("" + ConnctionHndlr.SERVER_PORT);
 
-        server = new ConnctionHndlr();
+        server = ConnctionHndlr.getHandeler();
 
         txtLogArea.setWrapStyleWord(true);
         //   serverData = new ServerData();
@@ -272,7 +272,7 @@ public class ServerControlFrame extends javax.swing.JFrame {
     private void btnStartServerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStartServerActionPerformed
         // TODO add your handling code here:
         if (server != null) {
-            server.openService();
+            server.openService(serverIP);
           //  new ServerData().setAllUsersOffLine();
             startFlag = false;
             othersFlag = true;
@@ -321,9 +321,7 @@ public class ServerControlFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAllUsersActionPerformed
 
     private void btnAnnounceUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnnounceUsersActionPerformed
-        
-        // TODO add your handling code here:
-      //  new AnnounceAllUsers().setVisible(true);
+//     server.sendAnnoncement(serverIP, null);
     }//GEN-LAST:event_btnAnnounceUsersActionPerformed
 
     private void btnHideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHideActionPerformed

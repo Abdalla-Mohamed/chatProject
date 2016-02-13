@@ -13,30 +13,31 @@ import iti.chat.faces.UserFace;
 import iti.chat.server.dao.DaoUser;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Vector;
 import iti.chat.faces.ClientFace;
+import iti.chat.server.connections.ConnctionHndlr;
 import iti.chat.server.dao.DaoChatGroub;
 import iti.chat.server.dao.DaoFriendList;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
-import javax.swing.text.Style;
 
 /**
  *
  * @author Abdalla
  */
 public class UserServices extends UnicastRemoteObject implements UserFace {
+//
+//    HashMap<Integer, ClientFace> userList;
+//    HashMap<Integer, ChatGroup> onlineChat;
 
-    HashMap<Integer, ClientFace> userList;
-    HashMap<Integer, ChatGroup> onlineChat;
     DaoUser daoUser;
     boolean check;
+    ConnctionHndlr controller;
 
     public UserServices() throws RemoteException {
-        userList = new HashMap<Integer, ClientFace>();
-        onlineChat = new HashMap<Integer, ChatGroup>();
+
         daoUser = new DaoUser();
+        controller = ConnctionHndlr.getHandeler();
     }
 
     @Override
@@ -94,20 +95,12 @@ public class UserServices extends UnicastRemoteObject implements UserFace {
 
     @Override
     public void register(Client client, ClientFace c) throws RemoteException {
-        userList.put(client.getClientId(), c);
-        System.out.println("client add");
-        //  c.recieve("registred");
+        controller.register(client, c);
     }
 
     @Override
     public void logout(ClientFace c) throws RemoteException {
-        userList.remove(c);
-        System.out.println("client remove");
-    }
-
-    @Override
-    public boolean changeStatus(Client c) throws RemoteException {
-        return daoUser.update(c);
+        controller.logout(c);
     }
 
 //
@@ -131,8 +124,13 @@ public class UserServices extends UnicastRemoteObject implements UserFace {
 
     @Override
     public boolean addFriend(Client owner, Client frnd) throws RemoteException {
-        return new DaoFriendList().insert(new FriendList(new Client(owner.getClientId()), new Client(frnd.getClientId()), new Category(3)));
-
+        boolean insert = new DaoFriendList().insert(new FriendList(new Client(owner.getClientId()), new Client(frnd.getClientId()), new Category(3)));
+        if (insert) {
+            controller.requstAddFreind(owner, frnd);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
@@ -148,31 +146,21 @@ public class UserServices extends UnicastRemoteObject implements UserFace {
 
     @Override
     public void startChat(ChatGroup chatGroup) throws RemoteException {
-        chatGroup.setCgId(0);
-        new DaoChatGroub().insert(chatGroup);
-        chatGroup.setCgId(null);
-        ChatGroup newChatGroup = new DaoChatGroub().selectAllBy(chatGroup).get(0);
-        onlineChat.put(newChatGroup.getCgId(), newChatGroup);
-
-        newChatGroup.setClientList(chatGroup.getClientList());
-        List<Client> clients = newChatGroup.getClientList();
-
-        for (Client client : clients) {
-            ClientFace get = userList.get(client.getClientId());
-            if (get != null) {
-                get.openChatFram(newChatGroup);
-            }
-        }
+        controller.startChat(chatGroup);
 
     }
 
     @Override
     public void sendMessage(String msg, int chatid, Client sender) throws RemoteException {
-        ChatGroup get = onlineChat.get(chatid);
-        List<Client> clientList = get.getClientList();
-        for (Client client : clientList) {
-            userList.get(client.getClientId()).recieveMessage(msg,chatid, sender);
-            System.out.println("server send to "+client.getClientId());
+        controller.sendMessage(msg, chatid, sender);
+    }
+
+    @Override
+    public void changeStatus(Integer clientID, Integer status) throws RemoteException {
+        Client c = new Client(clientID);
+        c.setStatus(status);
+        if (daoUser.update(c)) {
+            controller.changeStatus(clientID, status);
         }
 
     }

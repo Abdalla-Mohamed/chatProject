@@ -9,11 +9,19 @@ import iti.chat.client.connections.ConnctionHndlr;
 import iti.chat.entites.Category;
 import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
+import iti.chat.faces.ClientStates;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
@@ -26,14 +34,18 @@ public class clientmainview extends javax.swing.JFrame {
     Client c;
     ConnctionHndlr controller;
     HashMap<DefaultMutableTreeNode, Object> treeMap;
+    HashMap<Integer, Client> chatMember;
 
-    public clientmainview(Client client) {
+    public clientmainview(Client client,ConnctionHndlr hndlr) {
         initComponents();
         c = client;
         treeMap = new HashMap<>();
+        chatMember= new HashMap<>();
         DefaultTreeModel treeModel = new DefaultTreeModel(processHierarchy());
+        jTree1.setCellRenderer(getCellRenderForTree());
         jTree1.setModel(treeModel);
-        controller = new ConnctionHndlr();
+        controller = hndlr;
+        controller.setMainFrame(this);
         repaint();
 
     }
@@ -47,11 +59,12 @@ public class clientmainview extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSplitPane1 = new javax.swing.JSplitPane();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jTree1 = new javax.swing.JTree();
         jPanel1 = new javax.swing.JPanel();
         block_Button = new javax.swing.JToggleButton();
-        my_avilabilty_ComboBox = new javax.swing.JComboBox<>();
+        my_avilabilty_ComboBox = new javax.swing.JComboBox<String>();
         add_friend_Buttom = new javax.swing.JButton();
         new_chat_group_Buttom = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -69,8 +82,21 @@ public class clientmainview extends javax.swing.JFrame {
         logout_Menu = new javax.swing.JMenu();
         Log_Out_MenuItem = new javax.swing.JMenuItem();
 
+        jMenuItem1.setText("start Chat");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                formMouseClicked(evt);
+            }
+        });
 
         jTree1.setAutoscrolls(true);
         jTree1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -92,7 +118,13 @@ public class clientmainview extends javax.swing.JFrame {
             }
         });
 
-        my_avilabilty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "my availabilty", "available ", "busy", "invisable" }));
+        my_avilabilty_ComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "my availabilty", "available ", "busy", "invisable" }));
+        my_avilabilty_ComboBox.setEnabled(false);
+        my_avilabilty_ComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                my_avilabilty_ComboBoxActionPerformed(evt);
+            }
+        });
 
         add_friend_Buttom.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ClientGUI/Images/add.png"))); // NOI18N
         add_friend_Buttom.setToolTipText("add friend");
@@ -245,7 +277,7 @@ public class clientmainview extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTree1, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+                        .addComponent(jTree1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -266,11 +298,13 @@ public class clientmainview extends javax.swing.JFrame {
     }//GEN-LAST:event_Create_Chat_Group_menuItemActionPerformed
 
     private void busy_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_busy_MenuItemActionPerformed
-        // TODO add your handling code here:
+       c.setStatus(ClientStates.busy);
+        controller.changeStatus(c);        // TODO add your handling code here:
     }//GEN-LAST:event_busy_MenuItemActionPerformed
 
     private void invisible_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invisible_MenuItemActionPerformed
-        // TODO add your handling code here:
+       c.setStatus(ClientStates.inWork);
+        controller.changeStatus(c);        // TODO add your handling code here:
     }//GEN-LAST:event_invisible_MenuItemActionPerformed
 
     private void add_friend_menuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_friend_menuItemActionPerformed
@@ -308,7 +342,7 @@ public class clientmainview extends javax.swing.JFrame {
     }//GEN-LAST:event_new_chat_group_ButtomActionPerformed
 
     private void available_MenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_available_MenuItemActionPerformed
-        c.setStatus(1);
+        c.setStatus(ClientStates.online);
         controller.changeStatus(c);
 //        jTree1.getSelectionPath()
     }//GEN-LAST:event_available_MenuItemActionPerformed
@@ -337,6 +371,26 @@ public class clientmainview extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_jTree1MousePressed
+
+    private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+        if (evt.getButton() == MouseEvent.BUTTON3) {
+            int row = jTree1.getClosestRowForLocation(evt.getX(), evt.getY());
+            jTree1.setSelectionRow(row);
+            Object lastSelectedPathComponent = jTree1.getLastSelectedPathComponent();
+            Object selectedNode = treeMap.get(lastSelectedPathComponent);
+            if (selectedNode instanceof Client) {
+                jPopupMenu1.show(evt.getComponent(), evt.getX(), evt.getY());
+            }
+        }
+    }//GEN-LAST:event_formMouseClicked
+
+    private void my_avilabilty_ComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_my_avilabilty_ComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_my_avilabilty_ComboBoxActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -388,8 +442,9 @@ public class clientmainview extends javax.swing.JFrame {
     private javax.swing.JMenuItem busy_MenuItem;
     private javax.swing.JMenuItem invisible_MenuItem;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JTree jTree1;
     private javax.swing.JMenu logout_Menu;
     private javax.swing.JMenu my_availability_menuItem;
@@ -417,9 +472,10 @@ public class clientmainview extends javax.swing.JFrame {
 
             } else {
                 for (Client client : clientList) {
-                    frnds = new DefaultMutableTreeNode(client.getDisplayName());
+                    frnds = new DefaultMutableTreeNode(client);
                     cat.add(frnds);
                     treeMap.put(frnds, client);
+                    chatMember.put(client.getClientId(), client);
 
                 }
             }
@@ -436,4 +492,66 @@ public class clientmainview extends javax.swing.JFrame {
         }
         return null;
     }
+
+    DefaultTreeCellRenderer getCellRenderForTree() {
+        DefaultTreeCellRenderer defaultTreeCellRenderer = new DefaultTreeCellRenderer() {
+
+            public Icon online = new ImageIcon(getClass().getResource("/ClientGUI/Images/online-icon.png"));
+            public Icon off = new ImageIcon(getClass().getResource("/ClientGUI/Images/offline-icon.png"));
+            public Icon outside = new ImageIcon(getClass().getResource("/ClientGUI/Images/rightback-icon.png"));
+            public Icon busy = new ImageIcon(getClass().getResource("/ClientGUI/Images/avail.png"));
+            public Icon work = new ImageIcon(getClass().getResource("/ClientGUI/Images/lunchbreak-girl-icon.png"));
+
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
+
+                System.out.println("sssss");
+
+                if (value instanceof DefaultMutableTreeNode) {
+
+                    DefaultMutableTreeNode x = (DefaultMutableTreeNode) value;
+                    if (x.getUserObject() != null && x.getUserObject() instanceof Client) {
+
+                        Client userObject = (Client) x.getUserObject();
+                        value = userObject.getUserName();
+
+                        switch (userObject.getStatus()) {
+                            case ClientStates.online:
+                                setLeafIcon(online);
+                                break;
+                            case ClientStates.offline:
+                                setLeafIcon(off);
+                                break;
+                            case ClientStates.inWork:
+                                setLeafIcon(work);
+                                break;
+                            case ClientStates.busy:
+                                setLeafIcon(busy);
+                                break;
+                            case ClientStates.out:
+                                setLeafIcon(outside);
+                                break;
+                        }
+                    } else {
+                        setLeafIcon(closedIcon);
+                    }
+
+                } else {
+                }
+                return super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+            }
+
+        };
+
+        return defaultTreeCellRenderer;
+    }
+    
+    public void updateFrndStates(Integer clientID,Integer status){
+    if(chatMember.get(clientID)!= null){
+        chatMember.get(clientID).setStatus(status);
+        jTree1.repaint();
+    }
+        
+    }
+
 }

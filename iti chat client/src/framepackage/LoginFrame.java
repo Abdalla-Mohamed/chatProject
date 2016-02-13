@@ -629,7 +629,7 @@ public class LoginFrame extends javax.swing.JFrame {
             if (connection.singin(client) ) {
                 this.dispose();
                 
-                new clientmainview(connection.getMe(client)).setVisible(true);
+                new clientmainview(connection.getMe(client),connection).setVisible(true);
             }
 
         } else {
@@ -678,9 +678,8 @@ public class LoginFrame extends javax.swing.JFrame {
                 mailerService.sendMail("itijavachat@gmail.com", email, "WithMe UserName and Password", msg);
                 JOptionPane.showMessageDialog(rootPane, "Congratulation \n you account has been created."
                         + "\nAn Email has been sent to you with your username & password.", "Register Success", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
-                clientmainview mainFram = new clientmainview(client);
-                mainFram.setVisible(true);
+//                this.dispose();
+                lblNewMouseClicked(null);
             }
         }
     }
