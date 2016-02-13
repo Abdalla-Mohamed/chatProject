@@ -1,0 +1,182 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1048576 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=2740, tid=5628
+#
+# JRE version:  (8.0_45-b15) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.45-b02 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000000028ae000):  JavaThread "Unknown thread" [_thread_in_vm, id=5628, stack(0x0000000002790000,0x0000000002890000)]
+
+Stack: [0x0000000002790000,0x0000000002890000]
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x32b57a]
+V  [jvm.dll+0x279873]
+V  [jvm.dll+0x27a509]
+V  [jvm.dll+0x271825]
+V  [jvm.dll+0x1606]
+V  [jvm.dll+0x3f7fb2]
+V  [jvm.dll+0x3f898f]
+V  [jvm.dll+0x3f8a5d]
+V  [jvm.dll+0x3f8c26]
+V  [jvm.dll+0xf2cf2]
+V  [jvm.dll+0x20f0c9]
+V  [jvm.dll+0x240e0a]
+V  [jvm.dll+0x15ba41]
+C  [java.exe+0x216e]
+C  [java.exe+0xcce7]
+C  [java.exe+0xcd7b]
+C  [KERNEL32.DLL+0x16ad]
+C  [ntdll.dll+0x6e954]
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x00000000028ae000 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=5628, stack(0x0000000002790000,0x0000000002890000)]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Heap:
+ PSYoungGen      total 18944K, used 327K [0x00000000eac00000, 0x00000000ec100000, 0x0000000100000000)
+  eden space 16384K, 2% used [0x00000000eac00000,0x00000000eac51ec8,0x00000000ebc00000)
+  from space 2560K, 0% used [0x00000000ebe80000,0x00000000ebe80000,0x00000000ec100000)
+  to   space 2560K, 0% used [0x00000000ebc00000,0x00000000ebc00000,0x00000000ebe80000)
+ ParOldGen       total 44032K, used 0K [0x00000000c0400000, 0x00000000c2f00000, 0x00000000eac00000)
+  object space 44032K, 0% used [0x00000000c0400000,0x00000000c0400000,0x00000000c2f00000)
+ Metaspace       used 766K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 75K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000011d70000,0x0000000011f70000] byte_map_base: 0x000000001176e000
+
+Marking Bits: (ParMarkBitMap*) 0x0000000059b24040
+ Begin Bits: [0x00000000124d0000, 0x00000000134c0000)
+ End Bits:   [0x00000000134c0000, 0x00000000144b0000)
+
+Polling page: 0x0000000002620000
+
+CodeCache: size=245760Kb used=328Kb max_used=328Kb free=245431Kb
+ bounds [0x00000000029b0000, 0x0000000002c20000, 0x00000000119b0000]
+ total_blobs=57 nmethods=0 adapters=37
+ compilation: enabled
+
+Compilation events (0 events):
+No events
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.084 loading class java/lang/Short
+Event: 0.084 loading class java/lang/Short done
+Event: 0.084 loading class java/lang/Integer
+Event: 0.084 loading class java/lang/Integer done
+Event: 0.084 loading class java/lang/Long
+Event: 0.084 loading class java/lang/Long done
+Event: 0.085 loading class java/lang/NullPointerException
+Event: 0.085 loading class java/lang/NullPointerException done
+Event: 0.085 loading class java/lang/ArithmeticException
+Event: 0.085 loading class java/lang/ArithmeticException done
+
+
+Dynamic libraries:
+0x00007ff6db7b0000 - 0x00007ff6db7e7000 	C:\Program Files\Java\jdk1.8.0_45\bin\java.exe
+0x00007ffdce810000 - 0x00007ffdce9bc000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007ffdcdb40000 - 0x00007ffdcdc7a000 	C:\Windows\system32\KERNEL32.DLL
+0x00007ffdcbf50000 - 0x00007ffdcc05f000 	C:\Windows\system32\KERNELBASE.dll
+0x00007ffdca660000 - 0x00007ffdca6e8000 	C:\Windows\system32\apphelp.dll
+0x00007ffdc7df0000 - 0x00007ffdc7e3f000 	C:\Windows\AppPatch\AppPatch64\AcGenral.DLL
+0x00007ffdcdc80000 - 0x00007ffdcdd27000 	C:\Windows\system32\msvcrt.dll
+0x00007ffdcb9f0000 - 0x00007ffdcba1b000 	C:\Windows\SYSTEM32\SspiCli.dll
+0x00007ffdcc5e0000 - 0x00007ffdcc631000 	C:\Windows\system32\SHLWAPI.dll
+0x00007ffdce340000 - 0x00007ffdce4b1000 	C:\Windows\system32\USER32.dll
+0x00007ffdcc240000 - 0x00007ffdcc3b8000 	C:\Windows\system32\ole32.dll
+0x00007ffdcc720000 - 0x00007ffdcdb37000 	C:\Windows\system32\SHELL32.dll
+0x00007ffdcb040000 - 0x00007ffdcb05e000 	C:\Windows\SYSTEM32\USERENV.dll
+0x00007ffdce5c0000 - 0x00007ffdce665000 	C:\Windows\system32\ADVAPI32.dll
+0x00007ffdc3270000 - 0x00007ffdc328b000 	C:\Windows\SYSTEM32\MPR.dll
+0x00007ffdcc430000 - 0x00007ffdcc567000 	C:\Windows\system32\RPCRT4.dll
+0x00007ffdcc3c0000 - 0x00007ffdcc417000 	C:\Windows\SYSTEM32\sechost.dll
+0x00007ffdcdf00000 - 0x00007ffdce0d6000 	C:\Windows\SYSTEM32\combase.dll
+0x00007ffdce190000 - 0x00007ffdce2d4000 	C:\Windows\system32\GDI32.dll
+0x00007ffdcbb40000 - 0x00007ffdcbb54000 	C:\Windows\SYSTEM32\profapi.dll
+0x00007ffdca2f0000 - 0x00007ffdca38f000 	C:\Windows\SYSTEM32\SHCORE.dll
+0x00007ffdcdec0000 - 0x00007ffdcdef4000 	C:\Windows\system32\IMM32.DLL
+0x00007ffdcdd30000 - 0x00007ffdcde81000 	C:\Windows\system32\MSCTF.dll
+0x00007ffdc9820000 - 0x00007ffdc9a7a000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.9600.17031_none_6242a4b3ecbb55a1\COMCTL32.dll
+0x00007ffdcb940000 - 0x00007ffdcb9d6000 	C:\Windows\system32\guard64.dll
+0x00007ffdcc640000 - 0x00007ffdcc647000 	C:\Windows\system32\PSAPI.DLL
+0x00007ffdcb930000 - 0x00007ffdcb93a000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007ffdcb920000 - 0x00007ffdcb92a000 	C:\Windows\SYSTEM32\fltlib.dll
+0x00007ffdcb8f0000 - 0x00007ffdcb920000 	C:\Windows\SYSTEM32\ntmarta.dll
+0x0000000059240000 - 0x0000000059312000 	C:\Program Files\Java\jdk1.8.0_45\jre\bin\msvcr100.dll
+0x0000000059320000 - 0x0000000059ba3000 	C:\Program Files\Java\jdk1.8.0_45\jre\bin\server\jvm.dll
+0x00007ffdb94f0000 - 0x00007ffdb94f9000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007ffdc7bb0000 - 0x00007ffdc7bcf000 	C:\Windows\SYSTEM32\WINMM.dll
+0x0000000002670000 - 0x00000000026c8000 	C:\Windows\system32\WS2_32.dll
+0x00007ffdc7b70000 - 0x00007ffdc7b9a000 	C:\Windows\SYSTEM32\WINMMBASE.dll
+0x00007ffdcde90000 - 0x00007ffdcde99000 	C:\Windows\system32\NSI.dll
+0x00007ffdcbc20000 - 0x00007ffdcbc6a000 	C:\Windows\SYSTEM32\cfgmgr32.dll
+0x00007ffdca8b0000 - 0x00007ffdca8d6000 	C:\Windows\SYSTEM32\DEVOBJ.dll
+0x0000000059230000 - 0x000000005923f000 	C:\Program Files\Java\jdk1.8.0_45\jre\bin\verify.dll
+0x0000000059200000 - 0x0000000059229000 	C:\Program Files\Java\jdk1.8.0_45\jre\bin\java.dll
+0x00000000591e0000 - 0x00000000591f6000 	C:\Program Files\Java\jdk1.8.0_45\jre\bin\zip.dll
+0x00007ffdc3540000 - 0x00007ffdc36c8000 	C:\Windows\SYSTEM32\dbghelp.dll
+
+VM Arguments:
+jvm_args: -Dfile.encoding=UTF-8 
+java_command: iti.chat.client.ChatClient
+java_class_path (initial): C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\jpa20-persistence\javax.persistence_2.1.0.v201304241213.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\DateChooser.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\JTattooDebug.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\commons-logging-1.1.1-javadoc.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\commons-logging-1.1.1-sources.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\commons-logging-1.1.1.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\commons-logging-adapters-1.1.1.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\commons-logging-api-1.1.1.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\commons-logging-tests.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\jtoaster-1.0.5.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\mail.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\rmiio-2.0.0.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\synthetica.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\syntheticaAluOxide.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\syntheticaBatik.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\syntheticaBlackEye.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\lib\syntheticaClassy.jar;C:\Users\Abdalla\Documents\NetBeansProjects\chatProject\iti chat client\build\classes
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_45
+PATH=C:\ProgramData\Oracle\Java\javapath;D:\oracle\DB\product\11.2.0\dbhome_1\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Java\jdk1.8.0_25\bin;D:\DevSuiteHome_1\jdk\jre\bin\classic;D:\DevSuiteHome_1\jdk\jre\bin;D:\DevSuiteHome_1\jdk\jre\bin\client;D:\DevSuiteHome_1\jlib;D:\DevSuiteHome_1\bin;D:\DevSuiteHome_1\jre\1.4.2\bin\client;D:\DevSuiteHome_1\jre\1.4.2\bin;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\glassfish4\bin;C:\Program Files (x86)\Common Files\lenovo\easyplussdk\bin;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5.4 & MySQL Utilities 1.5.4 1.5\;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5.4 & MySQL Utilities 1.5.4 1.5\Doctrine extensions for PHP\;d:\BC5\BIN;C:\Apache Software Foundation\apache-maven-3.3.3\bin
+USERNAME=Abdalla
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 8.1 , 64 bit Build 9600 (6.3.9600.17056)
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, aes, clmul, ht, tsc, tscinvbit
+
+Memory: 4k page, physical 4171532k(929504k free), swap 7243532k(4968k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.45-b02) for windows-amd64 JRE (1.8.0_45-b15), built on Apr 30 2015 12:40:44 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Sat Feb 13 16:27:34 2016
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

@@ -35,4 +35,8 @@ public interface ClientFace extends Remote {
 
     void openChatFram(ChatGroup chatGroup) throws RemoteException;
 //    void refreshContactsList(String email) throws RemoteException;
+    
+     public void updateFrndStates(Integer clientID,Integer status)throws RemoteException;
+     public void reciveFrndRqust(Client owner,Client friend)throws RemoteException;
+     
 }
