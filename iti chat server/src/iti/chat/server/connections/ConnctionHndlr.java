@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.text.Style;
 
 /**
  *
@@ -36,11 +37,13 @@ public class ConnctionHndlr {
     private static ConnctionHndlr sharedHndlr;
 
     HashMap<Integer, ClientFace> userList;
+    HashMap<Integer, Client> onlineClients;
     HashMap<Integer, ChatGroup> onlineChat;
 
     private ConnctionHndlr() {
 
         userList = new HashMap<Integer, ClientFace>();
+        onlineClients = new HashMap<Integer, Client>();
         onlineChat = new HashMap<Integer, ChatGroup>();
 //  UnicastRemoteObject.unexportObject(serviceName, true);
     }
@@ -79,8 +82,10 @@ public class ConnctionHndlr {
 
     public void register(Client client, ClientFace c) throws RemoteException {
         userList.put(client.getClientId(), c);
+        onlineClients.put(client.getClientId(), client);
         System.out.println("client add");
         //  c.recieve("registred");
+
     }
 
     public void logout(ClientFace c) throws RemoteException {
@@ -107,11 +112,11 @@ public class ConnctionHndlr {
 
     }
 
-    public void sendMessage(String msg, int chatid, Client sender) throws RemoteException {
+    public void sendMessage(String msg, int chatid, Client sender, Style msgStyle) throws RemoteException {
         ChatGroup get = onlineChat.get(chatid);
         List<Client> clientList = get.getClientList();
         for (Client client : clientList) {
-            userList.get(client.getClientId()).recieveMessage(msg, chatid, sender);
+            userList.get(client.getClientId()).recieveMessage(msg, chatid, sender, msgStyle);
             System.out.println("server send to " + client.getClientId());
         }
 
@@ -125,8 +130,8 @@ public class ConnctionHndlr {
         }
 
     }
-    
-    public void sendAnnoncement(String annc,ImageIcon icon){
+
+    public void sendAnnoncement(String annc, ImageIcon icon) {
         Collection<ClientFace> clientFaces = userList.values();
         for (ClientFace clientFace : clientFaces) {
             try {
@@ -137,12 +142,28 @@ public class ConnctionHndlr {
         }
     }
 
-    
-    public void requstAddFreind(Client owner,Client fried){
+    public void requstAddFreind(Client owner, Client fried) {
         try {
             userList.get(fried.getClientId()).reciveFrndRqust(owner, fried);
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void addToChat(Integer cgId, Integer clientId) {
+        try {
+            Client client = onlineClients.get(clientId);
+            ChatGroup chatGroup = onlineChat.get(cgId);
+            
+            List<Client> clientList = chatGroup.getClientList();
+            for (Client chatClient : clientList) {
+                userList.get(chatClient.getClientId()).addToChat(cgId, client);
+            }
+            chatGroup.getClientList().add(client);
+            userList.get(clientId).openChatFram(chatGroup);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

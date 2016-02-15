@@ -4,8 +4,7 @@
  */
 package framepackage;
 
-import com.healthmarketscience.rmiio.RemoteInputStreamServer;
-import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
+import chsave.MssageSaver;
 import iti.chat.client.connections.ConnctionHndlr;
 import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
@@ -15,26 +14,21 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileView;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
@@ -46,18 +40,10 @@ import javax.swing.text.StyleContext;
  *
  * @author 7amouda
  */
-public class ChatForm extends javax.swing.JFrame implements Serializable{
+public class ChatForm extends javax.swing.JFrame implements Serializable {
 
-    private String friendEmail = "";
-    private String myEmail;
-//    private ClientConnection client;
-    private ArrayList<String> emails;
-    private boolean Conference;
-    private String friendEmail_;
-    private String otherSideSession;
-    private Thread send;
     ArrayList<String> msglist;
-    //   MssageSaver msgsave;
+    MssageSaver msgsave;
     String line;
     String path;
     static String color = "red";
@@ -69,14 +55,18 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
     DefaultStyledDocument msgDoc;
     Style txtChatStyle;
     ArrayList<String> filelines;
+
+    HashMap<Integer, Client> chatMemberList;
+    ArrayList<Client> frndList;
+
     ConnctionHndlr controller;
     ChatGroup chGroup;
-    
+
     public ChatForm(ChatGroup chatGroup) {
         super("Chat Form");
         initComponents();
-        chGroup=chatGroup;
-        controller =new ConnctionHndlr();
+        chGroup = chatGroup;
+        controller = ConnctionHndlr.createHandler();
 
         String[] fontsList = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         for (String font : fontsList) {
@@ -86,66 +76,28 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
             comboBoxTxtSize.addItem(i);
         }
         msglist = new ArrayList<>();
-//        msgsave = new MssageSaver();
-//
-//        friendEmail_ = friendEmail;
-//
-//        String[] friends = friendEmail.split("%##%");
-//        this.myEmail = Messenger.myEmail;
-//        for (String friendE : friends) {
-//            if (!friendE.equals(this.myEmail)) {
-//                this.friendEmail += friendE;
-//                this.friendEmail += "%##%";
-//            }
-//        }
-//
-//        this.friendEmail = this.friendEmail.substring(0, this.friendEmail.length() - 4);
-//        this.client = client;
-//
-//        this.emails = Messenger.emails;
-//
-//        String[] currentChatingFriends = this.friendEmail.split("%##%");
-//        DefaultListModel listModel = new DefaultListModel();
-//        for (String chatFriend : currentChatingFriends) {
-//            listModel.addElement(chatFriend);
-//
-//        }
-//        listChatWithFriends.setModel(listModel);
-//
-//        if (emails != null) {
-//            for (String mail : emails) {
-//                for (String chatFriend : currentChatingFriends) {
-//
-//                    if (!(mail.equals(chatFriend))) {
-//                        comboBoxFriends.addItem(mail);
-//                    }
-//                }
-//            }
-//        }
-//        if (currentChatingFriends.length == 1) {
-//            //Conference = false;
-//            otherSideSession = this.myEmail;
-//        } else {
-//            // Conference = true;
-//            otherSideSession = friendEmail;
-//        }
+        msgsave = new MssageSaver();
         sc = new StyleContext();
         doc = new DefaultStyledDocument(sc);
         txtChatArea.setDocument(doc);
         face = "Tahoma";
         txtSize = Integer.parseInt(comboBoxTxtSize.getSelectedItem().toString());
         msgColor = Color.red;
-//
-//        this.client.registerAppendingArea(txtChatArea, listChatWithFriends, comboBoxFriends, friendEmail_, otherSideSession, this.friendEmail);
-//        Conference = this.client.getConfFlag(friendEmail_);
-//
-        txtsend.setFont(new Font(face, Font.PLAIN, txtSize));
-        txtsend.setForeground(msgColor);
+        msglist.clear();
 
+        listChatWithFriends.setModel(new DefaultListModel());
+        chatMemberList = new HashMap<>();
+        prepareListOfChatMember();
+        comboBoxFriends.setModel(new DefaultComboBoxModel());
+        prepareListOfFrindMember();
     }
 
     public void setFriendEmail(String friendEmail) {
         //   this.friendEmail = friendEmail;
+    }
+
+    public void setHndlr(ConnctionHndlr hndlr) {
+        controller = hndlr;
     }
 
     /**
@@ -170,7 +122,6 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
         btnAttachFile = new javax.swing.JButton();
         comboBoxTxtFont = new javax.swing.JComboBox();
         btnTxtColor = new javax.swing.JButton();
-        btnSaveChat = new javax.swing.JButton();
         comboBoxTxtSize = new javax.swing.JComboBox();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -236,12 +187,12 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Chatting with");
+        jLabel1.setForeground(new java.awt.Color(0, 0, 255));
+        jLabel1.setText("Chatting with :");
 
         comboBoxFriends.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Add Friends to Chat" }));
 
-        btnAttachFile.setText("Attach File");
+        btnAttachFile.setText("Send File");
         btnAttachFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAttachFileActionPerformed(evt);
@@ -259,14 +210,6 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
         btnTxtColor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTxtColorActionPerformed(evt);
-            }
-        });
-
-        btnSaveChat.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
-        btnSaveChat.setText("Save Chat");
-        btnSaveChat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSaveChatActionPerformed(evt);
             }
         });
 
@@ -308,36 +251,29 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnSaveChat)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(comboBoxTxtFont, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(comboBoxTxtSize, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(comboBoxTxtFont, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(9, 9, 9)
-                        .addComponent(comboBoxTxtSize, 0, 58, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnTxtColor, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnTxtColor, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 409, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(comboBoxFriends, 0, 122, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAddFriend, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(btnAttachFile, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addComponent(btnSendMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAttachFile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAddFriend, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnSendMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -351,27 +287,26 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
                         .addGap(11, 11, 11)
                         .addComponent(comboBoxFriends, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAddFriend)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnAttachFile))
+                        .addComponent(btnAddFriend, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnTxtColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(2, 2, 2))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(comboBoxTxtFont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnSaveChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(comboBoxTxtSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnTxtColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnSendMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboBoxTxtSize, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBoxTxtFont, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAttachFile)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSendMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2))
+                .addContainerGap())
         );
 
         pack();
@@ -379,76 +314,28 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
 
     private void btnSendMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendMsgActionPerformed
 
-//        friendEmail_ = client.getNewSessionName(txtChatArea);
-//        friendEmail = client.getSessiontFriendEMail(friendEmail_);
-//        otherSideSession = client.getOtherSideSession(friendEmail_);
-//        Conference = client.getConfFlag(friendEmail_);
         String msg = txtsend.getText().trim();
-//        Style chatStyle = sc.addStyle("chat", null);
-//        chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
-//        chatStyle.addAttribute(StyleConstants.FontFamily, face);
-//        chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
+        Style chatStyle = sc.addStyle("chat", null);
+        chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
+        chatStyle.addAttribute(StyleConstants.FontFamily, face);
+        chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
 //        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), , false);
         if (!(msg.equals(""))) {
 //                doc.insertString(doc.getEndPosition().getOffset(), myEmail + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n", chatStyle);
 //                client.addLineStyle(chatStyle, friendEmail_);
 //                client.sendMsg(friendEmail.trim(), this.myEmail, otherSideSession, msg, chatStyle);
-                controller.sendMessage(msg, chGroup.getCgId(),ConnctionHndlr.me  );
-                txtsend.setText("");
-//
+            controller.sendMessage(msg, chGroup.getCgId(), ConnctionHndlr.me, chatStyle);
+            save(chatStyle, txtsend.getText());
+            txtsend.setText("");
         }
     }//GEN-LAST:event_btnSendMsgActionPerformed
 
     private void btnAddFriendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFriendActionPerformed
         // TODO add your handling code here:
+        Client frendAdded = frndList.get(comboBoxFriends.getSelectedIndex());
+        controller.addToChat(chGroup.getCgId(), frendAdded.getClientId());
 
-//        String friendSelected = comboBoxFriends.getSelectedItem().toString();
-//        if (friendSelected.equals(comboBoxFriends.getItemAt(0))) {
-//            JOptionPane.showMessageDialog(rootPane, "Please select a friend to add to conference !! ");
-//        } else {
-//            comboBoxFriends.removeItem(friendSelected);
-//            DefaultListModel model = (DefaultListModel) listChatWithFriends.getModel();
-//
-//
-//            String oldOtherSideSession=otherSideSession;
-//            friendEmail_ = client.getNewSessionName(txtChatArea);
-//            friendEmail = client.getSessiontFriendEMail(friendEmail_);
-//            otherSideSession = client.getOtherSideSession(friendEmail_);
-//            Conference = client.getConfFlag(friendEmail_);
-//            String newMySession;
-//            String newOtherSideSession = "";
-//            String newFriendEmail;
-//            if (Conference == false) {
-//                if (!this.client.sessionFound(myEmail + "%##%" + friendEmail_ + "%##%" + friendSelected)) {
-//                    model.addElement(friendSelected);
-//                    listChatWithFriends.setModel(model);
-//                    if (comboBoxFriends.getSelectedIndex() != 0) {
-//                        JOptionPane.showMessageDialog(rootPane, friendSelected);
-//                    }
-//                    newMySession = myEmail + "%##%" + friendEmail_ + "%##%" + friendSelected;
-//                    newOtherSideSession = newMySession;
-//                    newFriendEmail = friendEmail + "%##%" + friendSelected;
-//                    client.modifyAppedingArea(friendEmail_, newMySession);
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "You already has a session with them !! ");
-//                }
-//            } else {
-//                if (!this.client.sessionFound(friendEmail_ + "%##%" + friendSelected)) {
-//                    model.addElement(friendSelected);
-//                    listChatWithFriends.setModel(model);
-//                    if (comboBoxFriends.getSelectedIndex() != 0) {
-//                        JOptionPane.showMessageDialog(rootPane, friendSelected);
-//                    }
-//                    newMySession = friendEmail_ + "%##%" + friendSelected;
-//                    newOtherSideSession = newMySession;
-//                    newFriendEmail = friendEmail + "%##%" + friendSelected;
-//                    client.modifyAppedingArea(friendEmail_, newMySession);
-//                } else {
-//                    JOptionPane.showMessageDialog(null, "You already has a session with them !! ");
-//                }
-//            }
-//            client.updateCoresspondingTextAreas(friendEmail, otherSideSession, newOtherSideSession);
-//        }
+
     }//GEN-LAST:event_btnAddFriendActionPerformed
 
     private void listChatWithFriendsAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_listChatWithFriendsAncestorAdded
@@ -522,7 +409,114 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
 //        }
     }//GEN-LAST:event_btnAttachFileActionPerformed
 
-    private void btnSaveChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveChatActionPerformed
+    public void save(Style chStyle, String msg) {
+        msgsave = new MssageSaver();
+        path = "c:\\";
+        savetoXML(msg, chStyle, path);
+    }
+
+    public void savetoXML(String msgline, Style chatStyle, String path) {
+
+        int size = Integer.parseInt(chatStyle.getAttribute(StyleConstants.FontSize).toString());
+        String fontFamilyName = chatStyle.getAttribute(StyleConstants.FontFamily).toString();
+        String colorTemp = Integer.toHexString(((Color) chatStyle.getAttribute(StyleConstants.Foreground)).getRGB());
+        String color = colorTemp.substring(2, colorTemp.length());
+        msgsave.saveXML(msgline, path, size, color, fontFamilyName);
+    }
+
+    public void writeToFile() {
+        try {
+            filelines = new ArrayList<String>();
+            Scanner sc = new Scanner(new File(path));
+            line = sc.nextLine();
+            while (sc.hasNext()) {
+                filelines.add(line);
+                line = sc.nextLine();
+            }//end of while
+            //add the close of </session>
+            filelines.add(line);
+            String xslpath = "<?xml-stylesheet type=" + '"' + "text/xsl" + '"' + " href=" + '"' + "C:\\" + "\\" + "Message.xsl" + '"' + "?> ";
+            /**
+             * add ref to xsl at 2nd line of xml file by add it firstly to the
+             * filelines array list
+             */
+            filelines.add(1, xslpath);
+            /**
+             * write anew file with xslt path
+             */
+            PrintWriter bw = new PrintWriter(path);
+            bw.write("");
+            for (int r = 0; r < filelines.size(); r++) {
+                bw.append(filelines.get(r));
+                bw.append("\n");
+            }
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addToChat(Client client) {
+        for (int i = 0; i < frndList.size(); i++) {
+            Client get = frndList.get(i);
+            if (get.getClientId() == client.getClientId()) {
+                ((DefaultComboBoxModel)comboBoxFriends.getModel()).removeElementAt(i);
+                comboBoxFriends.repaint();
+            }
+        }
+        ((DefaultListModel) listChatWithFriends.getModel()).addElement(client.getDisplayName());
+    }
+
+    public class myFileFilter extends FileFilter {
+
+        @Override
+        public String getDescription() {
+            return "Save Chat AS 'XML'";
+
+        }
+
+        @Override
+        public boolean accept(File f) {
+
+            if ((f.getName().toLowerCase().endsWith(".xml")) || (f.isDirectory())) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+
+    public class myFileView extends FileView {
+
+        @Override
+        public Icon getIcon(File f) {
+            if (f.isDirectory()) {
+                Image img = Toolkit.getDefaultToolkit().getImage("src/chsave/index.jpg").getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+                ImageIcon myIcon = new ImageIcon(img);
+                return myIcon;
+            } else if (f.getName().toLowerCase().endsWith(".xml")) {
+                Image img = Toolkit.getDefaultToolkit().getImage("src/chsave/xmlicon.jpg").getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+                ImageIcon gificon = new ImageIcon(img);
+                return gificon;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private void btnTxtColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtColorActionPerformed
+        // TODO add your handling code here:
+        Color color = Color.black;
+        msgColor = JColorChooser.showDialog(rootPane, "Select Color.", color);
+        btnTxtColor.setBackground(msgColor);
+        btnTxtColor.setText("color");
+        btnTxtColor.setForeground(msgColor);
+        txtsend.setFont(new Font(face, Font.PLAIN, txtSize));
+        txtsend.setForeground(msgColor);
+
+    }//GEN-LAST:event_btnTxtColorActionPerformed
+
+    private void menuItemSaveChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSaveChatActionPerformed
         // TODO add your handling code here:
 //        msglist.clear();
 //         msgsave = new MssageSaver();
@@ -561,106 +555,6 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
 //
 //            this.writeToFile();
 //        }
-//       
-    }//GEN-LAST:event_btnSaveChatActionPerformed
-
-//    public void savetoXML(String msgline, Style chatStyle, String path) {
-//        
-//        int size = Integer.parseInt(chatStyle.getAttribute(StyleConstants.FontSize).toString());
-//        String fontFamilyName = chatStyle.getAttribute(StyleConstants.FontFamily).toString();
-//        String colorTemp = Integer.toHexString(((Color) chatStyle.getAttribute(StyleConstants.Foreground)).getRGB());
-//        String color = colorTemp.substring(2, colorTemp.length());
-//
-//
-//        msgsave.saveXML(msgline, path, size, color, fontFamilyName);
-//    }
-//    public void writeToFile() {
-//
-//        try {
-//            filelines = new ArrayList<String>();
-//            Scanner sc = new Scanner(new File(path));
-//            line = sc.nextLine();
-//
-//            while (sc.hasNext()) {
-//                filelines.add(line);
-//                line = sc.nextLine();
-//
-//            }//end of while
-//            //add the close of </session>
-//            filelines.add(line);
-//            String xslpath = "<?xml-stylesheet type=" + '"' + "text/xsl" + '"' + " href=" + '"' + "C:\\" + "\\" + "Message.xsl" + '"' + "?> ";
-//            /**
-//             * add ref to xsl at 2nd line of xml file by add it firstly to the
-//             * filelines array list
-//             */
-//            filelines.add(1, xslpath);
-//            
-//
-//
-//            /**
-//             * write anew file with xslt path
-//             */
-//            PrintWriter bw = new PrintWriter(path);
-//            bw.write("");
-//            for (int r = 0; r < filelines.size(); r++) {
-//                bw.append(filelines.get(r));
-//                bw.append("\n");
-//
-//            }
-//            bw.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    public class myFileFilter extends FileFilter {
-//
-//        @Override
-//        public String getDescription() {
-//            return "Save Chat AS 'XML'";
-//
-//        }
-//
-//        @Override
-//        public boolean accept(File f) {
-//
-//            if ((f.getName().toLowerCase().endsWith(".xml")) || (f.isDirectory())) {
-//                return true;
-//            } else {
-//                return false;
-//            }
-//        }
-//    }
-//    public class myFileView extends FileView {
-//
-//        @Override
-//        public Icon getIcon(File f) {
-//            if (f.isDirectory()) {
-//                Image img = Toolkit.getDefaultToolkit().getImage("src/chsave/index.jpg").getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-//                ImageIcon myIcon = new ImageIcon(img);
-//                return myIcon;
-//            } else if (f.getName().toLowerCase().endsWith(".xml")) {
-//                Image img = Toolkit.getDefaultToolkit().getImage("src/chsave/xmlicon.jpg").getScaledInstance(25, 25, Image.SCALE_SMOOTH);
-//                ImageIcon gificon = new ImageIcon(img);
-//                return gificon;
-//            } else {
-//                return null;
-//            }
-//        }
-//    }
-
-    private void btnTxtColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTxtColorActionPerformed
-        // TODO add your handling code here:
-        Color color = Color.black;
-        msgColor = JColorChooser.showDialog(rootPane, "Select Color.", color);
-        btnTxtColor.setBackground(msgColor);
-        txtsend.setFont(new Font(face, Font.PLAIN, txtSize));
-        txtsend.setForeground(msgColor);
-
-    }//GEN-LAST:event_btnTxtColorActionPerformed
-
-    private void menuItemSaveChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSaveChatActionPerformed
-        // TODO add your handling code here:
-        btnSaveChat.doClick();
     }//GEN-LAST:event_menuItemSaveChatActionPerformed
 
     private void comboBoxTxtFontItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBoxTxtFontItemStateChanged
@@ -676,7 +570,10 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
     }//GEN-LAST:event_menuItemExitActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
+        System.out.println("close chat");
+        controller.closeChatForm(chGroup.getCgId());
+        dispose();
+// TODO add your handling code here:
 //        friendEmail_ = client.getNewSessionName(txtChatArea);
 //        client.unregisterAppendingArea(friendEmail_);
     }//GEN-LAST:event_formWindowClosing
@@ -724,7 +621,6 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddFriend;
     private javax.swing.JButton btnAttachFile;
-    private javax.swing.JButton btnSaveChat;
     private javax.swing.JButton btnSendMsg;
     private javax.swing.JButton btnTxtColor;
     private javax.swing.JComboBox comboBoxFriends;
@@ -744,25 +640,45 @@ public class ChatForm extends javax.swing.JFrame implements Serializable{
     private javax.swing.JTextArea txtsend;
     // End of variables declaration//GEN-END:variables
 
-    public void displayMessage(String msg, Client client) {
-        // msg = txtsend.getText().trim();
-        //     Style chatStyle = sc.addStyle("chat", null);
-        //     chatStyle.addAttribute(StyleConstants.FontSize, txtSize);
-        //     chatStyle.addAttribute(StyleConstants.FontFamily, face);
-        //     chatStyle.addAttribute(StyleConstants.Foreground, msgColor);
-//        doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), false);
-        // if (!(msg.equals(""))) {
-        //   doc.insertString(doc.getEndPosition().getOffset(), client.getEmail() + "(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n");
-//                client.addLineStyle(chatStyle, friendEmail_);
-//                client.sendMsg(friendEmail.trim(), this.myEmail, otherSideSession, msg, chatStyle);
-//                JOptionPane.showMessageDialog(null, msg+" from "+client.getDisplayName());
-        String text = txtChatArea.getText();
-        
-                
+    private void prepareListOfChatMember() {
+        List<Client> clientList = chGroup.getClientList();
+        DefaultListModel listModel = (DefaultListModel) listChatWithFriends.getModel();
+        listModel.removeAllElements();
+        for (Client client : clientList) {
+            listModel.addElement(client.getDisplayName());
+            chatMemberList.put(client.getClientId(), client);
 
-                txtChatArea.setText(text+"\n"+client.getDisplayName()+": "+msg);
-              //  repaint();
-//
-      //  }
+        }
+    }
+
+    private void prepareListOfFrindMember() {
+        frndList = new ArrayList<>();
+        ArrayList<Client> onlineFrindList = controller.getOnlineFrindList();
+        
+        DefaultComboBoxModel listModel = (DefaultComboBoxModel) comboBoxFriends.getModel();
+        
+        listModel.removeAllElements();
+        for (Client onlineFrind : onlineFrindList) {
+            if (chatMemberList.get(onlineFrind.getClientId()) == null) {
+                listModel.addElement(onlineFrind.getDisplayName());
+                frndList.add(onlineFrind);
+            }    
+        }
+
+    }
+
+    public void displayMessage(String msg, Client client, Style msgStyle) {
+        try {
+            // msg = txtsend.getText().trim();
+            Style chatStyle = msgStyle;
+            doc.setParagraphAttributes(doc.getEndPosition().getOffset(), msg.length(), msgStyle, false);
+            doc.insertString(doc.getEndPosition().getOffset(), client.getUserName() + ":(" + Calendar.getInstance().getTime().toString() + "): " + msg + "\n", msgStyle);
+            //String text = txtChatArea.getText();
+
+            //txtChatArea.setText(text+"\n"+client.getDisplayName()+": "+msg);
+            txtChatArea.setDocument(doc);
+        } catch (BadLocationException ex) {
+            Logger.getLogger(ChatForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

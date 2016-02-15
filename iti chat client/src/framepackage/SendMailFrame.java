@@ -12,6 +12,7 @@ package framepackage;
 
 import client.mail.service.MailerService;
 import client.mail.service.MyVerifier;
+import iti.chat.entites.Client;
 import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
@@ -36,10 +37,10 @@ public class SendMailFrame extends javax.swing.JFrame {
     /**
      * Creates new form SendMailFram
      */
-    public SendMailFrame() {
+    public SendMailFrame(Client c) {
 
         initComponents();
-        txtFrom.setText(" ");//my email
+        txtFrom.setText(c.getEmail());//my email
     }
 
     /**
@@ -185,7 +186,7 @@ public class SendMailFrame extends javax.swing.JFrame {
 
             subject = txtSubject.getText();
             message = txtAreaMessage.getText();
-
+            from=txtFrom.getText();
             MailerService mailService = new MailerService();
             int checkm = mailService.sendMail(from, to, subject, message);
             if (checkm == 1) {

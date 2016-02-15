@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?xml:stylesheet type="text/xsl" href="C:\\Users\\Eman\\Documents\\NetBeansProjects\\saveit\\src\\chsave\\Message.xsl"?> 
+<Session>
+    <msg>
+        <size>50</size>
+        <color>red</color>
+        <face>verdana</face>
+        <body>eman:hi</body>
+    </msg>
+    <msg>
+        <size>50</size>
+        <color>red</color>
+        <body>how r u</body>
+    </msg>
+    <msg>
+        <size>50</size>
+        <color>red</color>
+        <body>heba:hi</body>
+    </msg>
+</Session>

@@ -8,7 +8,9 @@ package iti.chat.server.dao;
 import iti.chat.entites.Category;
 import iti.chat.entites.Client;
 import iti.chat.entites.FriendList;
+import iti.chat.faces.ClientStates;
 import java.util.ArrayList;
+import static java.util.Collections.list;
 
 /**
  *
@@ -34,7 +36,7 @@ public class DaoUser extends GenricDao<Client> {
         return check;
     }
 
-    public boolean checkPassDoa( String pass) {
+    public boolean checkPassDoa(String pass) {
         Client client = new Client();
         client.setPassword(pass);
 
@@ -55,7 +57,6 @@ public class DaoUser extends GenricDao<Client> {
         return result.get(0);
     }
 
-
     public boolean checkUserNameDoa(String user_name) {
         boolean check = false;
         Client c = new Client();
@@ -68,23 +69,30 @@ public class DaoUser extends GenricDao<Client> {
         return check;
     }
 
-    public ArrayList<Category> getClientFrindList(Client client){
-        
+    public ArrayList<Category> getClientFrindList(Client client) {
+
         client.getClientId();
-        FriendList friendList = new  FriendList(client, null);
+        FriendList friendList = new FriendList(client, null);
         ArrayList<Category> categorys = new DaoCategory().selectAllBy(new Category());
         for (Category category : categorys) {
             category.setClientList(new ArrayList<>());
-            friendList = new  FriendList(client, null,category);
+            friendList = new FriendList(client, null, category);
             ArrayList<FriendList> friendLists = new DaoFriendList().selectAllBy(friendList);
-               for (FriendList friend : friendLists) {
+            for (FriendList friend : friendLists) {
                 Client friendObj = selectAllBy(friend.getFriend()).get(0);
                 category.getClientList().add(friendObj);
                 friend.setFriend(friendObj);
             }
-        
+
         }
-       return categorys;
+        return categorys;
+    }
+
+    public ArrayList<Client> getOfflineClients() {
+
+        Client client = new Client();
+        client.setStatus(ClientStates.offline);
+        return selectAllBy(client);
     }
     
     

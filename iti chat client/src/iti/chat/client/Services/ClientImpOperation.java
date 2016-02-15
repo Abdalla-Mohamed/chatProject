@@ -66,9 +66,9 @@ public class ClientImpOperation extends UnicastRemoteObject implements ClientFac
     }
 
     @Override
-    public void recieveMessage(String msg,int chatId, Client client) throws RemoteException {
+    public void recieveMessage(String msg,int chatId, Client client,Style msgStyle) throws RemoteException {
       //  controller.displayMessage(msg, client);
-        controller.recieveMessage(msg, chatId, client);
+        controller.recieveMessage(msg, chatId, client,msgStyle);
 
     }
 
@@ -88,4 +88,10 @@ public class ClientImpOperation extends UnicastRemoteObject implements ClientFac
 
     }
 
+    @Override
+    public void addToChat(Integer cgId, Client client) {
+        controller.addToChat( cgId,  client);
+    }
+
+    
 }
