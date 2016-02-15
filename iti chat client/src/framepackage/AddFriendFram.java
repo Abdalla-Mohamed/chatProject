@@ -19,7 +19,7 @@ public class AddFriendFram extends javax.swing.JFrame {
     Client frnd;
 
     public AddFriendFram(Client owen) {
-        controller = new ConnctionHndlr();
+        controller = ConnctionHndlr.createHandler();
         owner = owen;
         frnd = new Client(0);
         initComponents();

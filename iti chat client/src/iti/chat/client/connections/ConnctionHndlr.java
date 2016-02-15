@@ -14,6 +14,8 @@ import iti.chat.entites.Category;
 import iti.chat.entites.ChatGroup;
 import iti.chat.entites.Client;
 import iti.chat.faces.ClientFace;
+import iti.chat.faces.ClientGategory;
+import iti.chat.faces.ClientStates;
 import iti.chat.faces.UserFace;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -21,6 +23,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -42,8 +45,10 @@ public class ConnctionHndlr {
     ChatForm chfram;
     public static Client me;
     Toaster toast;
-    
-    public ConnctionHndlr() {
+
+    private static ConnctionHndlr sharedHndlr;
+
+    private ConnctionHndlr() {
         hashMap = new HashMap<>();
         toast = new Toaster();
 
@@ -58,10 +63,24 @@ public class ConnctionHndlr {
 
     }
 
-    public void setMainFrame(clientmainview aThis){
-     mainForm = aThis;
+    public static ConnctionHndlr createHandler() {
+        if (sharedHndlr == null) {
+            return new ConnctionHndlr();
+        } else {
+            return sharedHndlr;
+        }
     }
-// 
+
+    public void setMainFrame(clientmainview aThis) {
+        mainForm = aThis;
+    }
+
+    public void closeChatForm(int chatId) {
+        hashMap.get(chatId);
+        if (hashMap.remove(chatId) != null) {
+
+        }
+    }
 
     public boolean singup(Client client) {
         boolean check = false;
@@ -80,14 +99,11 @@ public class ConnctionHndlr {
     public boolean singin(Client client) {
         boolean check = false;
         try {
-//            registry = LocateRegistry.getRegistry("127.0.0.1", 5005);
-//            user = (UserFace) registry.lookup(UserFace.serviceName);
             check = user.login(client);
             if (check == true) {
                 me = user.getMe(client);
                 user.register(me, this.client);
                 System.out.println("done");
-                //      user.register((ClientFace) client);
             }
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,8 +112,8 @@ public class ConnctionHndlr {
 
     }
 
-    public void displayMessage(String msg, Client client) {
-        chfram.displayMessage(msg, client);
+    public void displayMessage(String msg, Client client, Style msgStyle) {
+        chfram.displayMessage(msg, client, msgStyle);
     }
 
     public boolean addFriend(Client owner, Client frnd) {
@@ -171,19 +187,19 @@ public class ConnctionHndlr {
         }
     }
 
-    public void sendMessage(String msg, int chatid, Client sender) {
+    public void sendMessage(String msg, int chatid, Client sender, Style msgStyle) {
         try {
-            user.sendMessage(msg, chatid, sender);
+            user.sendMessage(msg, chatid, sender, msgStyle);
             System.out.println("msg send");
         } catch (RemoteException ex) {
             Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void recieveMessage(String msg, int chatId, Client client) throws RemoteException {
+    public void recieveMessage(String msg, int chatId, Client client, Style msgStyle) throws RemoteException {
         //  controller.displayMessage(msg, client);
         System.out.println("reiceved: " + msg);
-        hashMap.get(chatId).displayMessage(msg, client);
+        hashMap.get(chatId).displayMessage(msg, client, msgStyle);
 
     }
 
@@ -191,11 +207,13 @@ public class ConnctionHndlr {
         if (hashMap.get(chatGroup.getCgId()) == null) {
             ChatForm ch = new ChatForm(chatGroup);
             ch.setTitle("" + chatGroup.getCgId());
+            ch.setHndlr(this);
             hashMap.put(chatGroup.getCgId(), ch);
             ch.setVisible(true);
-        }else{
+        } else {
             hashMap.get(chatGroup.getCgId()).requestFocus();
-                    
+            hashMap.get(chatGroup.getCgId()).setVisible(true);
+
         }
     }
 
@@ -204,7 +222,43 @@ public class ConnctionHndlr {
     }
 
     public void reciveFrndRqust(Client owner, Client friend) {
-        toast.showToaster(friend.getDisplayName()+" want to be your friend");
+        toast.showToaster(owner.getDisplayName() + " want to be your friend");
+    }
+
+    public void logout() {
+        try {
+            me.setStatus(ClientStates.offline);
+            changeStatus(me);
+            user.logout(this.client);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void addToChat(Integer cgId, Integer clientId) {
+        try {
+            user.addToChat(cgId, clientId);
+        } catch (RemoteException ex) {
+            Logger.getLogger(ConnctionHndlr.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+//-------------------------------------
+
+    public ArrayList<Client> getOnlineFrindList() {
+        ArrayList<Client> onlineList = new ArrayList<>();
+
+        me.getCategoryList().stream().forEach((category) -> {
+            Integer catId = category.getCatId();
+            if (catId != ClientGategory.blocked && catId != ClientGategory.request && catId != ClientGategory.waitResponse) {
+                onlineList.addAll(category.getClientList());
+            }
+        });
+        return onlineList;
+    }
+
+    public void addToChat(Integer cgId, Client client) {
+        hashMap.get(cgId).addToChat(client);
     }
 
 }

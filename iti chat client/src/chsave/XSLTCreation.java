@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package message.services;
+package chsave;
 
 import java.io.BufferedWriter;
 import java.io.File;

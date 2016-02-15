@@ -36,7 +36,7 @@ public interface UserFace extends Remote {
 
     boolean resetPass(Client userForget) throws RemoteException;
 
-    public void changeStatus(Integer clientID, Integer status)throws RemoteException;
+    public void changeStatus(Integer clientID, Integer status) throws RemoteException;
 
 //    String loadContactList(Client c)throws RemoteException;
     //--------------------------------------------------------------------------
@@ -52,9 +52,11 @@ public interface UserFace extends Remote {
 //    void sendFile()throws RemoteException;
 
     //--------------------------------------------------------------------------
-    void sendMessage(String msg, int chatid, Client sender) throws RemoteException;
+    void sendMessage(String msg, int chatid, Client sender, Style msgStyle) throws RemoteException;
 
     void startChat(ChatGroup chatGroup) throws RemoteException;
+
+    void addToChat (Integer cgId, Integer clientId) throws RemoteException;
 
 //---------------------------------------------------
     void register(Client client, ClientFace c) throws RemoteException;

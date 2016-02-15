@@ -625,13 +625,11 @@ public class LoginFrame extends javax.swing.JFrame {
             Client client = new Client();
             client.setEmail(username);
             client.setPassword(password);
-            ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
+            ConnctionHndlr connection = ConnctionHndlr.createHandler();//con with server has object from recive implement client interface extend remote
             if (connection.singin(client) ) {
-                this.dispose();
-                
+                this.dispose();                
                 new clientmainview(connection.getMe(client),connection).setVisible(true);
             }
-
         } else {
             JOptionPane.showMessageDialog(rootPane, "Email & Password Required to login.", "Invalid Login", JOptionPane.ERROR_MESSAGE);
         }          // TODO add your handling code here:
@@ -667,7 +665,7 @@ public class LoginFrame extends javax.swing.JFrame {
 
             Client client = new Client(username, fName, email, password, date,gender, answr);
             client.setQuestion(new Question(question));
-            ConnctionHndlr connection = new ConnctionHndlr();//con with server has object from recive implement client interface extend remote
+            ConnctionHndlr connection = ConnctionHndlr.createHandler();//con with server has object from recive implement client interface extend remote
 
             if (connection.singup(client) ) {
                 String msg = "Welcome " + username

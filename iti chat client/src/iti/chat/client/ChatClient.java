@@ -32,14 +32,14 @@ public class ChatClient {
             Toaster toasterManager = new Toaster();
 
             toasterManager.showToaster("Welcom In Java Chat v1.0");
-            try {
-                UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
-                
-            } catch (UnsupportedLookAndFeelException ex) {
-                Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ParseException ex) {
-                Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
-            }
+//            try {
+//                UIManager.setLookAndFeel(new SyntheticaBlackEyeLookAndFeel());
+//                
+//            } catch (UnsupportedLookAndFeelException ex) {
+//                Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (ParseException ex) {
+//                Logger.getLogger(ChatClient.class.getName()).log(Level.SEVERE, null, ex);
+//            }
             java.awt.EventQueue.invokeLater(new Runnable() {
                 @Override
                 public void run() {

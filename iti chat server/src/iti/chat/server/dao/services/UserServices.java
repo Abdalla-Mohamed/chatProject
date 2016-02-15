@@ -14,12 +14,14 @@ import iti.chat.server.dao.DaoUser;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import iti.chat.faces.ClientFace;
+import iti.chat.faces.ClientStates;
 import iti.chat.server.connections.ConnctionHndlr;
 import iti.chat.server.dao.DaoChatGroub;
 import iti.chat.server.dao.DaoFriendList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.swing.text.Style;
 
 /**
  *
@@ -75,6 +77,10 @@ public class UserServices extends UnicastRemoteObject implements UserFace {
         check = false;
         if (daoUser.check(user)) {
             check = true;
+            user.setStatus(ClientStates.online);
+            if (daoUser.update(user)) {
+                controller.changeStatus(user.getClientId(), ClientStates.online);
+            }
         }
         return check;
     }
@@ -151,8 +157,8 @@ public class UserServices extends UnicastRemoteObject implements UserFace {
     }
 
     @Override
-    public void sendMessage(String msg, int chatid, Client sender) throws RemoteException {
-        controller.sendMessage(msg, chatid, sender);
+    public void sendMessage(String msg, int chatid, Client sender, Style msgStyle) throws RemoteException {
+        controller.sendMessage(msg, chatid, sender, msgStyle);
     }
 
     @Override
@@ -163,6 +169,11 @@ public class UserServices extends UnicastRemoteObject implements UserFace {
             controller.changeStatus(clientID, status);
         }
 
+    }
+
+    @Override
+    public void addToChat(Integer cgId, Integer clientId) throws RemoteException {
+        controller.addToChat(cgId, clientId);
     }
 
 }

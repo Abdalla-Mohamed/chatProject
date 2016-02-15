@@ -19,7 +19,7 @@ import javax.swing.text.Style;
  */
 public interface ClientFace extends Remote {
 
-    public void recieveMessage(String msg, int chatId, Client client) throws RemoteException;
+    public void recieveMessage(String msg, int chatId, Client client,Style msgStyle) throws RemoteException;
 
     void statusNotify(Client c) throws RemoteException;
 
@@ -39,5 +39,7 @@ public interface ClientFace extends Remote {
     public void updateFrndStates(Integer clientID, Integer status) throws RemoteException;
 
     public void reciveFrndRqust(Client owner, Client friend) throws RemoteException;
+
+    public void addToChat(Integer cgId, Client client);
 
 }

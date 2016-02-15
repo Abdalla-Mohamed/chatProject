@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"	
+ elementFormDefault="unqualified">
+
+	<xs:element name="Session" type="Sessionc" />
+
+	<xs:complexType name="msgc">
+		<xs:sequence>
+                   
+                   
+                    <xs:element name="color" type="xs:string"/>
+                    <xs:element name="size" type="xs:int"/>
+                    <xs:element name="face" type="xs:string"/>
+                     <xs:element name="body" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="Sessionc">
+		<xs:sequence>
+			<xs:element name="msg" type="msgc" minOccurs="1"
+				maxOccurs="unbounded"></xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -6,8 +6,11 @@ package framepackage;
 
 import com.sun.media.jfxmedia.locator.ConnectionHolder;
 import iti.chat.client.connections.ConnctionHndlr;
+import iti.chat.entites.Category;
 import iti.chat.entites.Client;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,25 +19,35 @@ import javax.swing.JOptionPane;
  */
 public class RemoveFriendFrame extends javax.swing.JFrame {
 
-    private String emails = null;
+    private String username = null;
     ConnctionHndlr controller;
     Client owen;
     Client frnd;
+    List<Client> frnlist;
+    DefaultComboBoxModel<String> m;
 
     public RemoveFriendFrame(Client owner) {
         super("Remove Friend From Contacts");
         initComponents();
-        controller=new ConnctionHndlr();
-        owen=owner;
+        controller = ConnctionHndlr.createHandler();
+        owen = owner;
         lblNoFriends.setVisible(false);
         friendsList();
-
 
     }
 
     private void friendsList() {
-        //load contact list in combo box
-        //emails list
+        Client c = new Client(owen.getClientId());
+        m = new DefaultComboBoxModel<>();
+        frnlist = new ArrayList<>();
+        List<Category> categoryList = controller.getMe(c).getCategoryList();
+        for (Category category : categoryList) {
+            frnlist.addAll(category.getClientList());
+        }
+        for (Client f : frnlist) {
+            m.addElement(f.getUserName());
+        }
+        cmbFriendList.setModel(m);
     }
 
     /**
@@ -133,37 +146,38 @@ public class RemoveFriendFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
-        // TODO add your handling code here:
-        if (emails != null) {
+        username = (String) cmbFriendList.getSelectedItem();
+        if (username != null) {
             int response = JOptionPane.showConfirmDialog(rootPane, "Are you sure", "Confirme Remove", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(response == JOptionPane.YES_OPTION){
-                frnd=new Client();
-                frnd.setEmail(cmbFriendList.getSelectedItem().toString());
+            if (response == JOptionPane.YES_OPTION) {
+                frnd = new Client();
+                frnd.setUserName(cmbFriendList.getSelectedItem().toString());
                 if (controller.removeFriend(owen, frnd)) {
                     JOptionPane.showMessageDialog(null, "deleted success");
+                    friendsList();
                 }
-
-                this.dispose();
+                //this.dispose();
             }
         }
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
-            // TODO add your handling code here:
+        // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnCancelActionPerformed
 
     private void btnBlockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBlockActionPerformed
-         if (emails != null) {
-            int response = JOptionPane.showConfirmDialog(rootPane, "Are you sure", "Confirme Remove", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(response == JOptionPane.YES_OPTION){
-                frnd=new Client();
-                frnd.setEmail(cmbFriendList.getSelectedItem().toString());
-                if (controller.removeFriend(owen, frnd)) {
-                    JOptionPane.showMessageDialog(null, "deleted success");
-                }
 
-                this.dispose();
+        username = cmbFriendList.getSelectedItem().toString();
+        if (username != null) {
+            int response = JOptionPane.showConfirmDialog(rootPane, "Are you sure", "Confirme Remove", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (response == JOptionPane.YES_OPTION) {
+                frnd = new Client();
+                frnd.setUserName(cmbFriendList.getSelectedItem().toString());
+                if (controller.blockFriend(owen, frnd)) {
+                    JOptionPane.showMessageDialog(null, "Block success");
+                    friendsList();
+                }
             }
         }
     }//GEN-LAST:event_btnBlockActionPerformed
